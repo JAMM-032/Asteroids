@@ -67,7 +67,14 @@ public class Main extends Application{
      * Will display information about the game
      */
     private void aboutAction(ActionEvent event){
-        // Implement about menu here.
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("About Software");
+        alert.setHeaderText("Asteroidz");
+        alert.setContentText("A game based on the Atari Classic \n" + VERSION +
+                "\n\n Developed by Janit, Dmitrij & Aria");
+
+        alert.showAndWait();
     }
 
 
