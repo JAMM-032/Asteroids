@@ -26,6 +26,7 @@ replay_pid*
 
 # Custom files
 *.iml
+.DS_Store
 
 # Custom folders
 .idea/
