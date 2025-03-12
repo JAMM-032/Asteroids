@@ -27,6 +27,10 @@ public class Vector2 {
 
     }
 
+    public Vector2 scalarMul(double scalar) {
+        return new Vector2(scalar * getX(), scalar * getY());
+    }
+
     public double getX() {
         return this.x;
     }
