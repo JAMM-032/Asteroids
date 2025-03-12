@@ -7,6 +7,11 @@ Motion Idea for enemy spaceships: https://natureofcode.com/autonomous-agents/
 
 # Task Delegation
 
+## General Tasks
+- Menu / GUI
+- Interface - general input intake
+- Animations
+
 ## Aria
 - bullet class
 - types of asteroids
