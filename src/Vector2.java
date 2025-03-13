@@ -29,6 +29,7 @@ public class Vector2 {
      * @param v - is the vector2 inputted by the user
      */
     public void translate(Vector2 v) {
+
         this.x += v.getX();
         this.y += v.getY();
     }
@@ -46,10 +47,10 @@ public class Vector2 {
     /**
      * This method multiplies the current vectors by a given scalar
      * @param scalar - the amount that will multiply the current vectors
-     * @return - returns the new result (vector2 format) of the scaled vectors.
      */
-    public Vector2 scalarMul(double scalar) {
-        return new Vector2(scalar * getX(), scalar * getY());
+    public void scalarMul(double scalar) {
+        x *= scalar;
+        y *= scalar;
     }
 
     /**

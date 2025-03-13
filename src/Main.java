@@ -1,5 +1,8 @@
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -12,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
+import java.util.Random;
 
 /**
  * This class aims to initalise the menu - and all parameters about it
@@ -46,7 +50,9 @@ public class Main extends Application{
 
         Pane contentPane = new BorderPane(null, null, null, null, null);
         root.getChildren().add(contentPane);
-
+        Canvas canvas = new Canvas(600, 500);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        contentPane.getChildren().add(canvas);
 
         //showFilename(null);
         Scene scene = new Scene(root, 600, 600);
@@ -54,6 +60,15 @@ public class Main extends Application{
         stage.setTitle("Asteroidz"); // Title of the game
         stage.setScene(scene);
         stage.show();
+
+        AnimationTimer gameloop = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                gc.setFill(Color.BLUE);
+                gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            }
+        };
+        gameloop.start();
     }
 
     /**

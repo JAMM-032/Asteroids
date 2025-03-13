@@ -1,6 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
-
-import java.util.AbstractMap;
+import javafx.scene.paint.Color;
 import java.util.Random;
 
 public class Polygon {
@@ -182,5 +181,15 @@ public class Polygon {
         }
 
         return intersections % 2 != 0;
+    }
+
+    public void drawFill(GraphicsContext gc, Color col) {
+        gc.setFill(col);
+        gc.fillPolygon(xPoints, yPoints, xPoints.length);
+    }
+
+    public void drawStroke(GraphicsContext gc, Color col) {
+        gc.setStroke(col);
+        gc.strokePolygon(xPoints, yPoints, xPoints.length);
     }
 }
