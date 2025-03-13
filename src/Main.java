@@ -1,21 +1,19 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.stage.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.input.*;
-import javafx.scene.image.*;
 import javafx.event.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.VBox;
 
-import java.io.File;
-import java.util.Random;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class aims to initalise the menu - and all parameters about it
@@ -30,11 +28,10 @@ public class Main extends Application{
     private Label statusLabel;
     private Stage stage;
 
+    private final Set<KeyCode> pressedKeys = new HashSet<>();
 
-
-    private Spaceship spaceship;
     private Canvas canvas;  // The game canvas
-    private GraphicsContext graphicsContext;
+    private GraphicsContext gc;
 
 
     /**
@@ -42,53 +39,47 @@ public class Main extends Application{
      */
     @Override
     public void start(Stage stage){
-        Pane root = new Pane();
+        VBox root = new VBox();
+        makeMenuBar(root);
 
         // Create Canvas and get Graphics Context
-        this.canvas = new Canvas(600, 600);
-        graphicsContext = canvas.getGraphicsContext2D();
+        this.canvas = new Canvas(600, 500);
+        gc = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
 
-
-        spaceship = new Spaceship(new Vector2(canvas.getWidth() / 2, canvas.getHeight() / 2));
-
         this.stage = stage;
-
-        makeMenuBar(root);
 
         Scene scene = new Scene(root, 600, 600);
 
         statusLabel = new Label(VERSION);
 
-        Pane contentPane = new BorderPane(null, null, null, null, null);
-        root.getChildren().add(contentPane);
+        stage.setTitle("Asteroidz");
+        stage.setScene(scene);
+        stage.show();
+
+        GameWorld game = new GameWorld(canvas.getWidth(), canvas.getHeight());
 
         // Handle keyboard input
-        scene.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
+        scene.setOnKeyPressed(event -> {
+            pressedKeys.add(event.getCode()); // Store pressed key
+            game.handleKeyPress(pressedKeys);
+        });
+
+        scene.setOnKeyReleased(event -> {
+            pressedKeys.remove(event.getCode());  // Remove released key
+        });
 
         // Animation loop to move spaceship
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                spaceship.move();
-                drawCanvas();
+                gc.setFill(Color.ORANGE);
+                gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                game.update();
+                game.draw(gc);
             }
         };
         gameLoop.start();
-
-
-        stage.setTitle("Asteroidz");
-        stage.setScene(scene);
-        stage.show();
-
-        AnimationTimer gameloop = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                gc.setFill(Color.BLUE);
-                gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            }
-        };
-        gameloop.start();
     }
 
     /**
@@ -104,14 +95,28 @@ public class Main extends Application{
     private void aboutAction(ActionEvent event){
 
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("About Software");
+        alert.setTitle("ElegooTeam");
         alert.setHeaderText("Asteroidz");
         alert.setContentText("A game based on the Atari Classic \n" + VERSION +
-                "\n\n Developed by Janit, Dmitrij & Aria");
+                "\n\n Developed by ElegooTeam [Janit, Dmitrij & Aria]");
 
         alert.showAndWait();
     }
 
+    /**
+     * Displays the controls of the game
+     */
+    private void controls(ActionEvent event){
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Controls");
+        alert.setHeaderText("Asteroidz");
+        alert.setContentText("The left/right arrow keys cause the ship to rotate. \n" +
+                "The up/down arrow keys are for acceleration in the direction the ship faces in. \n" +
+                "Space is to shoot bullets in the direction the ship faces.");
+
+        alert.showAndWait();
+    }
 
     private void makeMenuBar(Pane parent){
 
@@ -127,35 +132,13 @@ public class Main extends Application{
 
         Menu helpMenu = new Menu("Help");
 
-        MenuItem aboutItem = new MenuItem("About Software");
+        MenuItem aboutItem = new MenuItem("About ElegooTeam");
         aboutItem.setOnAction(this::aboutAction);
 
-        helpMenu.getItems().addAll(aboutItem); // Adds to menu segment [ Help ]
+        MenuItem controlsItem = new MenuItem("Controls");
+        controlsItem.setOnAction(this::controls);
+
+        helpMenu.getItems().addAll(aboutItem, controlsItem); // Adds to menu segment [ Help ]
         menubar.getMenus().addAll(fileMenu, helpMenu); // Ads to menu segment [ Menu ]
     }
-
-
-        private void handleKeyPress(KeyCode code) {
-            switch (code) {
-                case UP:
-                    spaceship.accelerate(0.1);
-                    break;
-                case DOWN:
-//                    spaceship.setVelocity(0, speed);
-                    break;
-                case LEFT:
-                    spaceship.rotateLeft();
-                    break;
-                case RIGHT:
-                    spaceship.rotateRight();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void drawCanvas() {
-            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());  // Clear screen
-            spaceship.draw(graphicsContext); // Draw Spaceship
-        }
 }

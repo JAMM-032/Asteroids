@@ -7,7 +7,7 @@ public class Spaceship {
     private final Vector2 velocity = new Vector2(0, 0);
     private final Vector2 acceleration = new Vector2(0, 0);
     private double angle = 0;
-    private final double angle_diff = 10; // Change of angle
+    private final double angle_diff = Math.toRadians(5); // Change of angle
 
 
     /**
@@ -46,8 +46,7 @@ public class Spaceship {
      * @param accelValue the amount of acceleration to apply to the spaceship.
      */
     public void accelerate(double accelValue) {
-        double radians = Math.toRadians(angle);
-        acceleration.translate(new Vector2(Math.cos(radians) * accelValue, Math.sin(radians) * accelValue));
+        acceleration.translate(new Vector2(Math.cos(angle) * accelValue, Math.sin(angle) * accelValue));
     }
 
     /**
@@ -57,7 +56,7 @@ public class Spaceship {
      */
     public void rotateRight() {
         angle += angle_diff;
-        spaceship.rotate(Math.toRadians(angle_diff));
+        spaceship.rotate(angle_diff);
     }
 
     /**
@@ -67,7 +66,7 @@ public class Spaceship {
      */
     public void rotateLeft() {
         angle -= angle_diff;
-        spaceship.rotate(Math.toRadians(-angle_diff));
+        spaceship.rotate(-angle_diff);
     }
 
     /**
