@@ -19,6 +19,7 @@ public class Spaceship {
         this.position = position;
         spaceship = new Polygon(3, 5);
         spaceship.createIsoscelesTriangle(10, 20);
+        spaceship.translate(position);
     }
 
     /**
@@ -75,6 +76,6 @@ public class Spaceship {
      * @param gc the GraphicsContext used for drawing the spaceship.
      */
     public void draw(GraphicsContext gc) {
-        spaceship.drawStroke(gc, Color.BLUE);
+        spaceship.drawStroke(gc, Color.WHITE);
     }
 }
