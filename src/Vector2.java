@@ -25,14 +25,22 @@ public class Vector2 {
     }
 
     /**
-     * Translates the x & y of an object to the given parameters
+     * Translates the x & y of an object to the given (vector2) parameters
      * @param v - is the vector2 inputted by the user
      */
     public void translate(Vector2 v) {
-
         this.x += v.getX();
         this.y += v.getY();
+    }
 
+    /**
+     * Translate the x & y of an object to the given (double) parameters
+     * @param x - x coordinate given
+     * @param y - y coordinate given
+     */
+    public void translate(double x, double y){
+        this.x += x;
+        this.y += y;
     }
 
     /**
