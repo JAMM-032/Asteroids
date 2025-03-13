@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.util.Random;
+import java.util.Vector;
 
 /**
  * This class aims to initalise the menu - and all parameters about it
@@ -56,12 +57,21 @@ public class Main extends Application{
         stage.setTitle("Asteroidz"); // Title of the game
         stage.setScene(scene);
         stage.show();
+        Vector2 vel = new Vector2(1, 0);
+        vel.scalarMul(3);
+
+        Obstacle ob = new Obstacle(vel, new Vector2(100, 100));
+        Bullet b = new Bullet(300, 250, 0, 0);
 
         AnimationTimer gameloop = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                gc.setFill(Color.BLUE);
+                gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                ob.update();
+                ob.rotate(0.5 * (Math.PI / 180.0));
+                b.draw(gc);
+                ob.draw(gc, ob.bulletCollision(b.getPos()) ? Color.RED : Color.WHITE);
             }
         };
         gameloop.start();

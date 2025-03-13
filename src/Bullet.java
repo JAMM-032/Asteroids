@@ -1,3 +1,6 @@
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
 public class Bullet{
 
     Vector2 vector;
@@ -7,10 +10,10 @@ public class Bullet{
     double angle; // The current angle of the bullet - based on the player's orientation
     double velocity; // Current velocity of the bullet
     int TTL; // Time to live - object will disappear -
+    private static final double radius = 5.0;
+    private static final int baseVel = 4;
 
     boolean alive; // If the bullet still exists or not [ True = Alive,  False = Dead ]
-
-    int speedModifier = 5; // This is the modifier increase of the speed
 
     /**
      * Generates a bullet in space - with a given angle, and position and velocity
@@ -25,7 +28,7 @@ public class Bullet{
                     // BOTH MUST be provided by the ship when firing
 
         this.angle = angle;
-        this.velocity = velocity + speedModifier; // Increases speed so that it moves faster than
+        this.velocity = velocity + baseVel; // Increases speed so that it moves faster than
                                                   // the player
 
         alive = true; // Initally the bullet is alive
@@ -66,7 +69,13 @@ public class Bullet{
      * Collision checking method
      */
     // Collision checking method
+    public Vector2 getPos() {
+        return new Vector2(x, y);
+    }
 
-
+    public void draw(GraphicsContext gc) {
+        gc.setFill(Color.WHITE);
+        gc.fillOval(x - radius, y - radius, radius, radius);
+    }
 
 }
