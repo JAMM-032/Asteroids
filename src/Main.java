@@ -16,7 +16,6 @@ import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.util.Random;
-import java.util.Vector;
 
 /**
  * This class aims to initalise the menu - and all parameters about it
@@ -25,11 +24,17 @@ import java.util.Vector;
 public class Main extends Application{
 
     // THIS IS FOR DEBUG ONLY - CHANGE AS YOU UPDATE, ie: 0.10V -> 0.11V
-    // Please update the Github readme once you change it
+    // Please update the GitHub readme once you change it
     private static final String VERSION = "0.10V"; //
 
     private Label statusLabel;
     private Stage stage;
+
+
+
+    private Spaceship spaceship;
+    private Canvas canvas;  // The game canvas
+    private GraphicsContext graphicsContext;
 
 
     /**
@@ -37,41 +42,50 @@ public class Main extends Application{
      */
     @Override
     public void start(Stage stage){
+        Pane root = new Pane();
+
+        // Create Canvas and get Graphics Context
+        this.canvas = new Canvas(600, 600);
+        graphicsContext = canvas.getGraphicsContext2D();
+        root.getChildren().add(canvas);
+
+
+        spaceship = new Spaceship(new Vector2(canvas.getWidth() / 2, canvas.getHeight() / 2));
 
         this.stage = stage;
-        Pane root = new VBox();
+
         makeMenuBar(root);
+
+        Scene scene = new Scene(root, 600, 600);
 
         statusLabel = new Label(VERSION);
 
-
         Pane contentPane = new BorderPane(null, null, null, null, null);
         root.getChildren().add(contentPane);
-        Canvas canvas = new Canvas(600, 500);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        contentPane.getChildren().add(canvas);
 
-        //showFilename(null);
-        Scene scene = new Scene(root, 600, 600);
-        //scene.getStylesheets().add("mystyle.css"); // For CSS
-        stage.setTitle("Asteroidz"); // Title of the game
+        // Handle keyboard input
+        scene.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
+
+        // Animation loop to move spaceship
+        AnimationTimer gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                spaceship.move();
+                drawCanvas();
+            }
+        };
+        gameLoop.start();
+
+
+        stage.setTitle("Asteroidz");
         stage.setScene(scene);
         stage.show();
-        Vector2 vel = new Vector2(1, 0);
-        vel.scalarMul(3);
-
-        Obstacle ob = new Obstacle(vel, new Vector2(100, 100));
-        Bullet b = new Bullet(300, 250, 0, 0);
 
         AnimationTimer gameloop = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                gc.setFill(Color.BLACK);
+                gc.setFill(Color.BLUE);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                ob.update();
-                ob.rotate(0.5 * (Math.PI / 180.0));
-                b.draw(gc);
-                ob.draw(gc, ob.bulletCollision(b.getPos()) ? Color.RED : Color.WHITE);
             }
         };
         gameloop.start();
@@ -92,28 +106,14 @@ public class Main extends Application{
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About Software");
         alert.setHeaderText("Asteroidz");
-        alert.setContentText(VERSION + " A game based on the Atari Classic \n" +
-                " created by : Aria, Dmitrij & Janit");
+        alert.setContentText("A game based on the Atari Classic \n" + VERSION +
+                "\n\n Developed by Janit, Dmitrij & Aria");
 
         alert.showAndWait();
     }
 
-    private void controlAction(ActionEvent event){
 
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Game Controls");
-        alert.setHeaderText("Controls");
-        alert.setContentText(("W / S : Spaceship Thrust & Reverse \nA / D : Rotation of Spaceship \n" +
-                "Spacebar : Fire Button  \n"));
-
-        alert.showAndWait();
-    }
-
-    /**
-     * This initalises the menu bar - creating the relevant fields
-     */
     private void makeMenuBar(Pane parent){
-
 
         MenuBar menubar = new MenuBar();
         parent.getChildren().add(menubar);
@@ -130,13 +130,32 @@ public class Main extends Application{
         MenuItem aboutItem = new MenuItem("About Software");
         aboutItem.setOnAction(this::aboutAction);
 
-        MenuItem controlItem = new MenuItem("Controls");
-        controlItem.setOnAction(this::controlAction);
-
-        helpMenu.getItems().addAll(aboutItem, controlItem); // Adds to menu segment [ Help ]
+        helpMenu.getItems().addAll(aboutItem); // Adds to menu segment [ Help ]
         menubar.getMenus().addAll(fileMenu, helpMenu); // Ads to menu segment [ Menu ]
-
-
     }
 
+
+        private void handleKeyPress(KeyCode code) {
+            switch (code) {
+                case UP:
+                    spaceship.accelerate(0.1);
+                    break;
+                case DOWN:
+//                    spaceship.setVelocity(0, speed);
+                    break;
+                case LEFT:
+                    spaceship.rotateLeft();
+                    break;
+                case RIGHT:
+                    spaceship.rotateRight();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void drawCanvas() {
+            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());  // Clear screen
+            spaceship.draw(graphicsContext); // Draw Spaceship
+        }
 }

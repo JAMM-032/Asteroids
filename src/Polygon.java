@@ -7,7 +7,7 @@ public class Polygon {
     private double[] xPoints;
     private double[] yPoints;
     private double[][] AABB; // Access aligned bounding box - max & min x,y [ border of vector graphic ]
-                             // Used for collisions - Hitbox essentially
+    // Used for collisions - Hitbox essentially
 
     private Vector2 translation;
     private Random rand = new Random();
@@ -191,5 +191,11 @@ public class Polygon {
     public void drawStroke(GraphicsContext gc, Color col) {
         gc.setStroke(col);
         gc.strokePolygon(xPoints, yPoints, xPoints.length);
+    }
+
+    public void createIsoscelesTriangle(double base, double height) {
+
+        this.xPoints = new double[]{-height / 2, -height / 2, height / 2};
+        this.yPoints = new double[]{base / 2, -base / 2, 0};
     }
 }
