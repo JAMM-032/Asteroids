@@ -71,7 +71,7 @@ public class Main extends Application{
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About Software");
         alert.setHeaderText("Asteroidz");
-        alert.setContentText(VERSION + "V" + " A game based on the Atari Classic \n +" +
+        alert.setContentText(VERSION + " A game based on the Atari Classic \n +" +
                 " created by : Aria, Dmitrij & Janit");
 
         alert.showAndWait();
