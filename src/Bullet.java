@@ -16,6 +16,8 @@ public class Bullet{
      * Generates a bullet in space - with a given angle, and position and velocity
      * @param x - x coordinate of the object
      * @param y - y coordinate of the object
+     * @param angle - angle ( IN RADIANS ) of the spaceship
+     * @param velocity - the velocity of the spaceship
      */
     public Bullet(double x, double y, double velocity, double angle){
         this.x = x; // This will be the x of the spaceship
@@ -44,12 +46,17 @@ public class Bullet{
      * This allows for the translation of the bullet - moving in positions
      */
     public void update(){
-        vector.translate(0.1,0.1); // Translates the coordinates - by the parameters
-        this.x = vector.getX();
-        this.y = vector.getY();
+
+        // Look into incorporating this into the Vector2 class(?)
+        double dx = Math.cos(angle) * velocity * 0.1;
+        double dy = Math.sin(angle) * velocity * 0.1;
+        //####################################################\\
+
+        x += dx;
+        y += dy;
+
 
         TTL -= 1; // Decrements TTL - once it is 0, the bullet will despawn
-
         if (TTL <= 0){
             alive = false;
         }

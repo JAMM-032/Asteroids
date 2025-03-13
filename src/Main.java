@@ -24,15 +24,11 @@ import java.util.Random;
 public class Main extends Application{
 
     // THIS IS FOR DEBUG ONLY - CHANGE AS YOU UPDATE, ie: 0.10V -> 0.11V
-    // Please update the github readme once you change it
+    // Please update the Github readme once you change it
     private static final String VERSION = "0.10V"; //
 
     private Label statusLabel;
     private Stage stage;
-
-
-
-
 
 
     /**
@@ -86,7 +82,7 @@ public class Main extends Application{
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About Software");
         alert.setHeaderText("Asteroidz");
-        alert.setContentText(VERSION + " A game based on the Atari Classic \n +" +
+        alert.setContentText(VERSION + " A game based on the Atari Classic \n" +
                 " created by : Aria, Dmitrij & Janit");
 
         alert.showAndWait();
