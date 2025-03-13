@@ -7,7 +7,8 @@ public class Polygon {
 
     private double[] xPoints;
     private double[] yPoints;
-    private double[][] AABB;
+    private double[][] AABB; // Access aligned bounding box - max & min x,y [ border of vector graphic ]
+                             // Used for collisions - Hitbox essentially
 
     private Vector2 translation;
     private Random rand = new Random();

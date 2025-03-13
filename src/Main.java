@@ -77,7 +77,9 @@ public class Main extends Application{
         alert.showAndWait();
     }
 
-
+    /**
+     * This initalises the menu bar - creating the relevant fields
+     */
     private void makeMenuBar(Pane parent){
 
 
