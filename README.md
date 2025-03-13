@@ -15,8 +15,10 @@ Motion Idea for enemy spaceships: https://natureofcode.com/autonomous-agents/
 ## Aria
 - bullet class
 - types of asteroids
+- GUI Stuff - Main Menu / Game Screen
 ## Dmitrij
 - ship class
 ## Janit
 - skeleton of the asteroids (polygon representation)
 - collision of the asteroids
+- Categorisation of Asteroids 
