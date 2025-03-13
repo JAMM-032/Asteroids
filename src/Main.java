@@ -50,8 +50,8 @@ public class Main extends Application{
 
         //showFilename(null);
         Scene scene = new Scene(root, 600, 600);
-        //scene.getStylesheets().add("mystyle.css");
-        stage.setTitle("Asteroidz");
+        //scene.getStylesheets().add("mystyle.css"); // For CSS
+        stage.setTitle("Asteroidz"); // Title of the game
         stage.setScene(scene);
         stage.show();
     }
@@ -71,8 +71,19 @@ public class Main extends Application{
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About Software");
         alert.setHeaderText("Asteroidz");
-        alert.setContentText("A game based on the Atari Classic \n" + VERSION +
-                "\n\n Developed by Janit, Dmitrij & Aria");
+        alert.setContentText(VERSION + "V" + " A game based on the Atari Classic \n +" +
+                " created by : Aria, Dmitrij & Janit");
+
+        alert.showAndWait();
+    }
+
+    private void controlAction(ActionEvent event){
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Game Controls");
+        alert.setHeaderText("Controls");
+        alert.setContentText(("W / S : Spaceship Thrust & Reverse \nA / D : Rotation of Spaceship \n" +
+                "Spacebar : Fire Button  \n"));
 
         alert.showAndWait();
     }
@@ -98,7 +109,10 @@ public class Main extends Application{
         MenuItem aboutItem = new MenuItem("About Software");
         aboutItem.setOnAction(this::aboutAction);
 
-        helpMenu.getItems().addAll(aboutItem); // Adds to menu segment [ Help ]
+        MenuItem controlItem = new MenuItem("Controls");
+        controlItem.setOnAction(this::controlAction);
+
+        helpMenu.getItems().addAll(aboutItem, controlItem); // Adds to menu segment [ Help ]
         menubar.getMenus().addAll(fileMenu, helpMenu); // Ads to menu segment [ Menu ]
 
 
