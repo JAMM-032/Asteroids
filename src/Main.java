@@ -73,7 +73,7 @@ public class Main extends Application{
 
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
-            public void handle(long l){
+            public void handle(long now) {
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
             }
@@ -81,7 +81,5 @@ public class Main extends Application{
 
         gameLoop.start();
         return scene;
-
     }
-
 }

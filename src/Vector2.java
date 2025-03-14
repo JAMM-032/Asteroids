@@ -1,9 +1,9 @@
-import java.util.Arrays;
-
 public class Vector2 {
 
     private double x;
     private double y;
+
+    private static final double THRESHOLD = 0.01;
 
     public Vector2() {
         x = 0.0;
@@ -28,7 +28,7 @@ public class Vector2 {
      * Translates the x & y of an object to the given (vector2) parameters
      * @param v - is the vector2 inputted by the user
      */
-    public void translate(Vector2 v) {
+    public void vecAdd(Vector2 v) {
 
         this.x += v.getX();
         this.y += v.getY();
@@ -75,5 +75,14 @@ public class Vector2 {
      */
     public Vector2 negate() {
         return new Vector2(-x, -y);
+    }
+
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Vector2))
+            return false;
+
+        Vector2 vec = (Vector2) obj;
+
+        return (Math.abs(this.x - vec.getX()) <= THRESHOLD) && (Math.abs(this.y - vec.getY()) <= THRESHOLD);
     }
 }

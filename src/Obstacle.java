@@ -1,7 +1,6 @@
 import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.paint.Color;
-import java.util.Random;
 
 public class Obstacle {
 
@@ -22,7 +21,7 @@ public class Obstacle {
      */
     public void update() {
         shape.translate(vel);
-        vel.translate(acc);
+        vel.vecAdd(acc);
     }
 
     public void rotate(double angle) {

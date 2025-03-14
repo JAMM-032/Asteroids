@@ -1,5 +1,6 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+
 import java.util.Random;
 
 public class Polygon {
@@ -32,13 +33,40 @@ public class Polygon {
      */
     public void translate(Vector2 amount) {
         // save the translation to be used during rotation
-        translation.translate(amount);
+        translation.vecAdd(amount);
 
         for (int i = 0; i < xPoints.length; i++) {
             xPoints[i] += amount.getX();
             yPoints[i] += amount.getY();
         }
         updateAABB();
+    }
+
+    public void wrapAround(int minX, int minY, int maxX, int maxY) {
+        double x = translation.getX();
+        double y = translation.getY();
+
+        if (x < minX)
+            x = maxX;
+        else if (x > maxX)
+            x = minX;
+
+        if (y < minY)
+            y = maxY;
+        else if (y > maxY)
+            y = minY;
+
+        Vector2 vec = new Vector2(x, y);
+
+        if (!vec.equals(translation)) {
+            System.out.println("works???");
+            vec.vecAdd(translation.negate());
+            translate(vec);
+        }
+    }
+
+    public void printPos() {
+        System.out.println(translation.getX() + " " + translation.getY());
     }
 
     /**

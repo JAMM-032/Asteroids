@@ -3,10 +3,9 @@ import javafx.scene.paint.Color;
 
 public class Spaceship {
     private final Polygon spaceship;
-    private final Vector2 position;
     private final Vector2 velocity = new Vector2(0, 0);
     private final Vector2 acceleration = new Vector2(0, 0);
-    private double angle = 0;
+    private double angle = Math.toRadians(-90);
     private final double angle_diff = Math.toRadians(5); // Change of angle
 
 
@@ -16,10 +15,10 @@ public class Spaceship {
      * @param position the initial position of the spaceship.
      */
     public Spaceship(Vector2 position) {
-        this.position = position;
         spaceship = new Polygon(3, 5);
         spaceship.createIsoscelesTriangle(10, 20);
         spaceship.translate(position);
+        spaceship.rotate(angle);
     }
 
     /**
@@ -27,9 +26,8 @@ public class Spaceship {
      * Applies resistance to the velocity and acceleration.
      * Updates the position of the spaceship by translating using velocity vector .
      */
-    public void move() {
-        velocity.translate(acceleration);
-        position.translate(velocity);
+    public void move(int x, int y, int w, int h) {
+        velocity.vecAdd(acceleration);
 
         // Apply resistance
         velocity.scalarMul(0.99);
@@ -37,6 +35,11 @@ public class Spaceship {
 
         // Update position
         spaceship.translate(velocity);
+        spaceship.wrapAround(x, y, w, h);
+    }
+
+    public void printPos() {
+        spaceship.printPos();
     }
 
     /**
@@ -46,7 +49,7 @@ public class Spaceship {
      * @param accelValue the amount of acceleration to apply to the spaceship.
      */
     public void accelerate(double accelValue) {
-        acceleration.translate(new Vector2(Math.cos(angle) * accelValue, Math.sin(angle) * accelValue));
+        acceleration.vecAdd(new Vector2(Math.cos(angle) * accelValue, Math.sin(angle) * accelValue));
     }
 
     /**

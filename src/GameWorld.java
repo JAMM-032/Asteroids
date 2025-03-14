@@ -10,10 +10,17 @@ public class GameWorld {
     ArrayList<Obstacle> asteroids;
     Spaceship player;
 
+    private static final int PADDING = 30;
+
+    private static double WIDTH;
+    private static double HEIGHT;
+
     public GameWorld(double width, double height) {
         player = new Spaceship(new Vector2(width / 2, height / 2));
         bullets = new ArrayList<>();
         asteroids = new ArrayList<>();
+        WIDTH = width;
+        HEIGHT = height;
     }
 
     public void draw(GraphicsContext gc) {
@@ -37,7 +44,7 @@ public class GameWorld {
             ob.update();
         }
 
-        player.move();
+        player.move(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING);
     }
 
     public void collisionResolution() {
@@ -51,23 +58,22 @@ public class GameWorld {
     public void handleKeyPress(Set<KeyCode> keys) {
         for (KeyCode code : keys) {
             switch (code) {
-                case UP:
-                    player.accelerate(0.001);
-                    break;
-                case DOWN:
-                    player.accelerate(-0.001);
-                    break;
-                case LEFT:
+                case UP, W -> {
+                    player.accelerate(0.01);
+                }
+                case DOWN, S -> {
+                    player.accelerate(-0.01);
+                }
+                case LEFT, A -> {
                     player.rotateLeft();
-                    break;
-                case RIGHT:
+                }
+                case RIGHT, D -> {
                     player.rotateRight();
-                    break;
-                case SPACE:
-                    System.out.println("Player should have fired a bullet.");
-                    break;
-                default:
-                    break;
+                }
+                case SPACE -> {
+//                    System.out.println("Player should have fired a bullet.");
+                    player.printPos();
+                }
             }
         }
     }
