@@ -1,5 +1,6 @@
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
 import javafx.scene.Scene;
@@ -23,10 +24,14 @@ public class MainMenu extends VBox{
 
     private Polygon spaceshipShape;
 
+    private Pane MaxPayne;
+
     public MainMenu(Stage stage, Main parent){
         this.stage = stage;
         this.parent = parent;
         gameStarted = false;
+
+        MaxPayne = new Pane();
 
         Label titleLabel = new Label("Asteroidz");
         titleLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 32px;");
@@ -41,6 +46,8 @@ public class MainMenu extends VBox{
 
         spaceshipShape = new Polygon(1, 1);
         spaceshipShape.createIsoscelesTriangle(10, 20);
+        spaceshipShape.translate(new Vector2(100, 100));
+        spaceshipShape.rotate(-Math.PI / 2.0);
 
         canvas = new Canvas(200,200); // Rendering of spaceship
         drawSpaceship();
@@ -50,14 +57,13 @@ public class MainMenu extends VBox{
         setAlignment(Pos.CENTER);
         setStyle("-fx-background-color: black; -fx-padding: 50px;");
 
-        getChildren().addAll(titleLabel, startLabel, controlsLabel);
+        getChildren().addAll(titleLabel, startLabel, controlsLabel, canvas);
     }
 
     private void drawSpaceship(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setStroke(Color.WHITE);
-        gc.setLineWidth(2);
         spaceshipShape.drawStroke(gc, Color.WHITE);
     }
 
