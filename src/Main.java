@@ -62,7 +62,6 @@ public class Main extends Application{
         // Handle keyboard input
         scene.setOnKeyPressed(event -> {
             pressedKeys.add(event.getCode()); // Store pressed key
-            game.handleKeyPress(pressedKeys);
         });
 
         scene.setOnKeyReleased(event -> {
@@ -73,7 +72,8 @@ public class Main extends Application{
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                gc.setFill(Color.ORANGE);
+                game.handleKeyPress(pressedKeys);
+                gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
                 game.update();
                 game.draw(gc);
