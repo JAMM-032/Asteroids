@@ -71,11 +71,23 @@ public class Main extends Application{
         Scene scene = new Scene(root, 600, 600);
         stage.setTitle("Asteroidz - Game Session Active");
 
+        scene.setOnKeyPressed(e -> {
+            pressedKeys.add(e.getCode());
+        });
+        scene.setOnKeyReleased(e -> {
+            pressedKeys.remove(e.getCode());
+        });
+
+        GameWorld game = new GameWorld(canvas.getWidth(), canvas.getHeight());
+
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                game.handleKeyPress(pressedKeys);
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                game.update();
+                game.draw(gc);
             }
         };
 
