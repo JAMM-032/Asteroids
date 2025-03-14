@@ -10,9 +10,15 @@ Motion Idea for enemy spaceships: [here](https://natureofcode.com/autonomous-age
 ## Aria
 - bullet class
 - types of asteroids
+- Background ( WIP )
+- Menu Animations
 ## Dmitrij
 - ship class
+- Bullet Physics
+- Score 
 ## Janit
 - skeleton of the asteroids (polygon representation)
 - collision of the asteroids
+- Motion
+- Asteroids 
 
