@@ -3,50 +3,44 @@ import javafx.scene.paint.Color;
 
 public class Bullet{
 
-    private Vector2 position;
-    private double angle; // The angle of the spaceship - determines the direction of the bullet
-    private Vector2 velocity = new Vector2(0,0); // Current velocity of the bullet
+    Vector2 vector;
 
-    private int TTL; // Time to live - object will disappear -
-    private static final double radius = 5.0;
-    private static final double BASE_VELOCITY = 4; // Constant base velocity of the bullet
+    double x; // Current x-coordinate
+    double y; // Current y-coordinate
+    double angle; // The current angle of the bullet - based on the player's orientation
+    double velocity; // Current velocity of the bullet
+    private int TTL = 180; // Time to live - object will disappear -
+    private static final double radius = 2.0;
+    private static final int baseVel = 15;
 
-    boolean isAlive; // If the bullet still exists or not [ True = Alive,  False = Dead ]
+    boolean alive; // If the bullet still exists or not [ True = Alive,  False = Dead ]
 
     /**
      * Generates a bullet in space - with a given angle, and position and velocity
-     * @param spaceshipPos Position of the spaceship when it fired the bullet
-     * @param spaceshipVel Velocity of the spaceship when it fired the bullet
-     * @param spaceshipAngle Angle of the spaceship when it fired the bullet
+     * @param x - x coordinate of the object
+     * @param y - y coordinate of the object
+     * @param angle - angle ( IN RADIANS ) of the spaceship
+     * @param velocity - the velocity of the spaceship
      */
-    public Bullet(Vector2 spaceshipPos, Vector2 spaceshipVel, double spaceshipAngle){
+    public Bullet(double x, double y, double velocity, double angle){
+        this.x = x; // This will be the x of the spaceship
+        this.y = y; // This will be the y of the spaceship --
+                    // BOTH MUST be provided by the ship when firing
 
-        TTL = 150; // Initialise time-to-live
+        this.angle = angle;
+        this.velocity = velocity + baseVel; // Increases speed so that it moves faster than
+                                                  // the player
 
-        this.position = new Vector2(spaceshipPos.getX(), spaceshipPos.getY());
-
-        this.angle = spaceshipAngle;
-        Vector2 facingDirection = new Vector2(Math.cos(angle), Math.sin(angle));
-
-        // Base Velocity of the bullet in the direction that spaceship is facing
-        Vector2 baseVel = new Vector2(Math.cos(angle) * BASE_VELOCITY,
-                Math.sin(angle) * BASE_VELOCITY);
-
-        if (Vector2.dotProduct(facingDirection, spaceshipVel) > 0) {
-            velocity = new Vector2(spaceshipVel.getX(), spaceshipVel.getY());
-        }
-
-        velocity.vecAdd(baseVel); // Increases speed so that it moves faster than the player
-
-        isAlive = true; // Initially the bullet is isAlive
+        alive = true; // Initally the bullet is alive
+        this.vector = new Vector2(x,y);
     }
 
     /**
      * Requests the bullet object to see if it is alive
      * @return - gives back the boolean - announcing if the object is alive
      */
-    public boolean isAlive(){
-        return isAlive;
+    public boolean getAlive(){
+        return alive;
     }
 
 
@@ -54,17 +48,30 @@ public class Bullet{
      * Increments the position of the object - decrements the TTL
      * This allows for the translation of the bullet - moving in positions
      */
-    public void update(Score currentScore){
-        position.vecAdd(velocity);
+    public void update(int minX, int minY, int maxX, int maxY){
+
+        // Look into incorporating this into the Vector2 class(?)
+        double dx = Math.cos(angle) * velocity * 0.1;
+        double dy = Math.sin(angle) * velocity * 0.1;
+        //####################################################\\
+
+        x += dx;
+        y += dy;
+
+        if (x > maxX)
+            x = minX;
+        else if (x < minX)
+            x = maxX;
+
+        if (y > maxY)
+            y = minY;
+        else if (y < minY)
+            y = maxY;
+
 
         TTL -= 1; // Decrements TTL - once it is 0, the bullet will despawn
         if (TTL <= 0){
-            isAlive = false;
-
-
-            // Reset multiplier
-            currentScore.resetMultiplier();
-            System.out.println("Bullet despawned");
+            alive = false;
         }
     }
 
@@ -73,11 +80,27 @@ public class Bullet{
      */
     // Collision checking method
     public Vector2 getPos() {
-        return position;
+        return new Vector2(x, y);
+    }
+
+    public Vector2 getVel() {
+        double dx = Math.cos(angle) * velocity * 0.1;
+        double dy = Math.sin(angle) * velocity * 0.1;
+
+        return new Vector2(dx, dy);
     }
 
     public void draw(GraphicsContext gc) {
         gc.setFill(Color.WHITE);
-        gc.fillOval(position.getX() - radius, position.getY() - radius, radius, radius);
+        gc.fillOval(x - radius, y - radius, radius, radius);
+    }
+
+    public void setDead() {
+        alive = false;
+        System.out.println("died :(");
+    }
+
+    public boolean isAlive() {
+        return alive;
     }
 }

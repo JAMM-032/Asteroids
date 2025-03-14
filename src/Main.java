@@ -7,14 +7,13 @@ import javafx.stage.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.event.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.VBox;
 
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class aims to initalise the menu - and all parameters about it
@@ -36,7 +35,10 @@ public class Main extends Application{
 
 
     private menuBar menuBar;
+    private AtomicBoolean pause;
+
     private final Set<KeyCode> pressedKeys = new HashSet<>();
+
     private Canvas canvas;  // The game canvas
     private GraphicsContext gc;
 
@@ -63,11 +65,17 @@ public class Main extends Application{
 
     }
 
-    // Game Loop within this method
+    /**
+     * Game Loop within this method
+     * @param stage
+     * @return
+     */
     public Scene getGameScene(Stage stage){
         this.stage = stage;
         Pane root = new VBox();
         menuBar.makeMenuBar(root);
+
+        pause = new AtomicBoolean(false);
 
         statusLabel = new Label(VERSION);
 
@@ -85,6 +93,8 @@ public class Main extends Application{
 
         scene.setOnKeyPressed(e -> {
             pressedKeys.add(e.getCode());
+            if (e.getCode() == KeyCode.P)
+                pause.set(!pause.get());
         });
         scene.setOnKeyReleased(e -> {
             pressedKeys.remove(e.getCode());
@@ -102,13 +112,14 @@ public class Main extends Application{
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                game.handleKeyPress(pressedKeys);
+                if (!pause.get()) {
+                    game.handleKeyPress(pressedKeys);
+                    game.update();
+                }
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
                 drawPixelatedStars(gc);
-
-                game.update();
                 game.draw(gc);
             }
         };
@@ -147,7 +158,5 @@ public class Main extends Application{
             gc.setFill(starColour[rand.nextInt(starColour.length)]);
             gc.fillRect(x, y, size, size);
         }
-
     }
-
 }

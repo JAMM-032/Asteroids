@@ -59,7 +59,6 @@ public class Polygon {
         Vector2 vec = new Vector2(x, y);
 
         if (!vec.equals(translation)) {
-            System.out.println("works???");
             vec.vecAdd(translation.negate());
             translate(vec);
         }
@@ -231,7 +230,7 @@ public class Polygon {
      * Returns the translation (position) of the origin
      * @return Translation
      */
-    public Vector2 getTranslation() {
+    public Vector2 getPosition() {
         return translation;
     }
 }

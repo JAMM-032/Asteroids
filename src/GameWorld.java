@@ -1,6 +1,9 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.ArrayList;
 
@@ -13,6 +16,8 @@ public class GameWorld {
 
     private static final int PADDING = 30;
 
+    private boolean shotsFired = false;
+
     private static double WIDTH;
     private static double HEIGHT;
 
@@ -23,6 +28,7 @@ public class GameWorld {
         asteroids = new ArrayList<>();
         WIDTH = width;
         HEIGHT = height;
+        asteroids.add(new Obstacle(AsteroidType.LARGE, new Vector2(3, 3), new Vector2(100, 100)));
     }
 
     public void draw(GraphicsContext gc) {
@@ -40,25 +46,46 @@ public class GameWorld {
     public void update() {
 
         for (Bullet b : bullets) {
-            b.update(score);
+            b.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING);
         }
 
         // Remove 'dead' bullets
         bullets.removeIf(bullet -> !bullet.isAlive());
 
         for (Obstacle ob : asteroids) {
-            ob.update();
+            ob.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING);
         }
 
         player.move(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING);
+
+        collisionResolution();
     }
 
     public void collisionResolution() {
 
-    }
+        ArrayList<Obstacle> newAsteroids = new ArrayList<>();
 
-    private boolean collisionDetection() {
-        return true;
+        for (Iterator<Bullet> it = bullets.iterator(); it.hasNext();) {
+            Bullet b = it.next();
+            Vector2 bulletPos = b.getPos();
+            Vector2 bulletVel = b.getVel();
+
+            for (Iterator<Obstacle> it1 = asteroids.iterator(); it1.hasNext();) {
+                Obstacle ob = it1.next();
+
+                if (ob.bulletCollision(bulletPos)) {
+                    Obstacle[] newObjects = ob.spawnAsteroids(bulletVel);
+                    if (newObjects != null)
+                        newAsteroids.addAll(Arrays.asList(newObjects));
+                    it1.remove();
+                    b.setDead();
+                    break;
+                }
+            }
+            if (!b.isAlive())
+                it.remove();
+        }
+        asteroids.addAll(newAsteroids);
     }
 
     public void handleKeyPress(Set<KeyCode> keys) {
@@ -77,9 +104,17 @@ public class GameWorld {
                     player.rotateRight();
                 }
                 case SPACE -> {
-                    bullets.add(player.fire());
+
+                    if (!shotsFired) {
+                        shotsFired = true;
+                        Vector2 pos = player.getShape().getPosition();
+                        bullets.add(new Bullet(pos.getX(), pos.getY(), 0, player.getRotation()));
+                    }
                 }
             }
+        }
+        if (!keys.contains(KeyCode.SPACE)) {
+            shotsFired = false;
         }
     }
 }

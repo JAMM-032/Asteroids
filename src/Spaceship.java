@@ -53,6 +53,14 @@ public class Spaceship {
         spaceship.printPos();
     }
 
+    public Polygon getShape() {
+        return spaceship;
+    }
+
+    public double getRotation() {
+        return angle;
+    }
+
     /**
      * Accelerates the spaceship in the direction it is currently facing
      * Done by adding a vector to the acceleration based on its angle and the given acceleration value.
@@ -95,9 +103,5 @@ public class Spaceship {
      */
     public void draw(GraphicsContext gc) {
         spaceship.drawStroke(gc, Color.WHITE);
-    }
-
-    public Bullet fire() {
-        return new Bullet(spaceship.getTranslation(), velocity, angle);
     }
 }
