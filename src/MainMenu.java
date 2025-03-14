@@ -1,4 +1,7 @@
+import com.sun.jdi.request.MonitorContendedEnteredRequest;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -14,28 +17,25 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
-public class MainMenu extends VBox{
+public class MainMenu extends VBox {
 
     private Stage stage;
     private Main parent;
-    private Label titleLabel;
     private Canvas canvas;
     private Label startLabel;
-    private Group group;
     private boolean gameStarted;
     private FadeTransition fade;
     private Polygon spaceshipShape;
 
-    private Pane MaxPayne;
+    private VBox MaxPayne;
 
     public MainMenu(Stage stage, Main parent){
         this.stage = stage;
         this.parent = parent;
         gameStarted = false;
 
-        Group group = new Group();
-
-        MaxPayne = new Pane();
+        MaxPayne = new VBox();
+        MaxPayne.setAlignment(Pos.CENTER);
 
         Label titleLabel = new Label("Asteroidz");
         titleLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 32px;");
@@ -45,7 +45,7 @@ public class MainMenu extends VBox{
         startBlinkingText(); // Calls blinking method
 
         // Control Text at the bottom of the screen
-        Label controlsLabel = new Label("W / S : Thrust & Reverse |A / D : Rotate |Spacebar : Fire");
+        Label controlsLabel = new Label("W/S : Thrust & Reverse | A/D : Rotate | Spacebar : Fire");
         controlsLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 20px;");
 
         spaceshipShape = new Polygon(1, 1);
@@ -54,18 +54,16 @@ public class MainMenu extends VBox{
         spaceshipShape.rotate(-Math.PI / 2.0);
 
         canvas = new Canvas(200,200); // Rendering of spaceship
-        canvas.setTranslateY(500);
+        canvas.setTranslateY(300);
         drawSpaceship();
-
-        group = new Group();
-        group.getChildren().addAll(titleLabel, controlsLabel, startLabel);
 
         // Layout Settings for the Menu
         setSpacing(20);
         setAlignment(Pos.CENTER);
         setStyle("-fx-background-color: black; -fx-padding: 50px;");
 
-        getChildren().addAll(titleLabel, startLabel, controlsLabel, canvas);
+        MaxPayne.getChildren().addAll(titleLabel, startLabel, controlsLabel, canvas);
+        getChildren().add(MaxPayne);
     }
 
     private void drawSpaceship(){
@@ -115,16 +113,11 @@ public class MainMenu extends VBox{
     }
 
     private void animateTitleAndStartGame(){
-        TranslateTransition titleAnimation = new TranslateTransition(Duration.millis(1000), group);
-        titleAnimation.setByY(-500);
-
-        TranslateTransition spaceshipAnimation = new TranslateTransition(Duration.millis(1500), canvas);
-        //spaceshipAnimation.setByY(-300); // Starts from under the canvas // Moves by (-300)
-        spaceshipAnimation.setToY(-60); // Moves towards the centre   // Move to -500
+        TranslateTransition spaceshipAnimation = new TranslateTransition(Duration.millis(2000), MaxPayne);
+        spaceshipAnimation.setByY(-345); // Moves towards the centre   // Move to -500
 
         spaceshipAnimation.setOnFinished( event -> startGame() );
 
-        //titleAnimation.play();
         spaceshipAnimation.play();
     }
 }
