@@ -23,7 +23,7 @@ public class MainMenu extends VBox{
     private Label startLabel;
     private Group group;
     private boolean gameStarted;
-
+    private FadeTransition fade;
     private Polygon spaceshipShape;
 
     private Pane MaxPayne;
@@ -84,7 +84,7 @@ public class MainMenu extends VBox{
     }
 
     private void startBlinkingText(){
-        FadeTransition fade = new FadeTransition(Duration.millis(500), startLabel);
+        fade = new FadeTransition(Duration.millis(500), startLabel);
         fade.setFromValue(1.0);
         fade.setToValue(0.2);
         fade.setCycleCount(FadeTransition.INDEFINITE);
@@ -100,6 +100,11 @@ public class MainMenu extends VBox{
                 if (event.getCode() == KeyCode.SPACE) {
                     animateTitleAndStartGame();
                     gameStarted = true;
+                    fade.setDuration(Duration.millis(100));
+                    fade.setFromValue(1.0);
+                    fade.setToValue(0.0);
+                    fade.stop();
+                    fade.play();
                 }
             }
             else if (event.getCode() == KeyCode.ESCAPE){
