@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.layout.VBox;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -24,14 +25,18 @@ public class Main extends Application{
     // THIS IS FOR DEBUG ONLY - CHANGE AS YOU UPDATE, ie: 0.10V -> 0.11V
     // Please update the GitHub readme once you change it
     private static final String VERSION = "0.11V"; //
-
     private Label statusLabel;
     private Stage stage;
 
+    // Background Attributes
+    private int backgroundDetail;
+    private Random rand = new Random();
+    private int mapSeed; // Random map seed
+    private double[][] stars;
+
+
     private menuBar menuBar;
-
     private final Set<KeyCode> pressedKeys = new HashSet<>();
-
     private Canvas canvas;  // The game canvas
     private GraphicsContext gc;
 
@@ -45,6 +50,10 @@ public class Main extends Application{
         MainMenu mainMenu = new MainMenu(stage, this);
         menuBar = new menuBar(VERSION);
 
+        // Handling of the background
+        backgroundDetail = 50; // The number of stars in the background
+        mapSeed = rand.nextInt(1,50); // Generates a Background Seed
+
         Scene menuScene = mainMenu.createScene();
 
         stage.setTitle("Asteroidz");
@@ -54,6 +63,7 @@ public class Main extends Application{
 
     }
 
+    // Game Loop within this method
     public Scene getGameScene(Stage stage){
         this.stage = stage;
         Pane root = new VBox();
@@ -68,6 +78,8 @@ public class Main extends Application{
         GraphicsContext gc = canvas.getGraphicsContext2D();
         contentPane.getChildren().add(canvas);
 
+        stars = generateStars(canvas.getWidth(), canvas.getHeight(), mapSeed);
+
         Scene scene = new Scene(root, 600, 600);
         stage.setTitle("Asteroidz - Game Session Active");
 
@@ -78,6 +90,13 @@ public class Main extends Application{
             pressedKeys.remove(e.getCode());
         });
 
+        AnimationTimer gameLoop = getAnimationTimer(canvas, gc);
+
+        gameLoop.start(); // Game loop called
+        return scene;
+    }
+
+    private AnimationTimer getAnimationTimer(Canvas canvas, GraphicsContext gc) {
         GameWorld game = new GameWorld(canvas.getWidth(), canvas.getHeight());
 
         AnimationTimer gameLoop = new AnimationTimer() {
@@ -86,12 +105,49 @@ public class Main extends Application{
                 game.handleKeyPress(pressedKeys);
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+                drawPixelatedStars(gc);
+
                 game.update();
                 game.draw(gc);
             }
         };
-
-        gameLoop.start();
-        return scene;
+        return gameLoop;
     }
+
+    private double[][] generateStars(double width, double height, int mapSeed) {
+
+        double[][] stars = new double[backgroundDetail][3]; // x, y, seed retrieved
+
+        for (int i =0; i < backgroundDetail; i++) {
+            double x = rand.nextDouble() * width;
+            double y = rand.nextDouble() * height;
+            double size = 2 + rand.nextInt(2); // [ 2, 6 ]
+
+            stars[i][0] = x;
+            stars[i][1] = y;
+            stars[i][2] = size;
+        }
+        return stars;
+    }
+
+    private void drawPixelatedStars(GraphicsContext gc){
+        Color[] starColour = {
+                Color.rgb(255, 255, 255),
+                Color.rgb(200, 15, 15),
+                Color.rgb(65, 62, 156),
+                Color.rgb(190, 190, 190),
+        };
+
+        for (int i = 0; i < stars.length; i++){
+            double x = stars[i][0];
+            double y = stars[i][1];
+            double size = stars[i][2];
+
+            gc.setFill(starColour[rand.nextInt(starColour.length)]);
+            gc.fillRect(x, y, size, size);
+        }
+
+    }
+
 }
