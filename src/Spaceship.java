@@ -9,6 +9,11 @@ public class Spaceship {
     private final double angle_diff = Math.toRadians(5); // Change of angle
 
 
+    private static final double MAX_ACCELERATION = 1;
+    private static final double MAX_VELOCITY = 3;
+
+
+
     /**
      * Creates a new Spaceship object at the specified position.
      *
@@ -29,9 +34,15 @@ public class Spaceship {
     public void move(int x, int y, int w, int h) {
         velocity.vecAdd(acceleration);
 
+        // Check if current velocity exceeds max velocity
+        if (velocity.getMagnitude() > MAX_VELOCITY) {
+            velocity.normalise(); // Convert to unit vector
+            velocity.scalarMul(MAX_VELOCITY); // Scale to max
+        }
+
         // Apply resistance
         velocity.scalarMul(0.99);
-        acceleration.scalarMul(0.95);
+        acceleration.scalarMul(0.85);
 
         // Update position
         spaceship.translate(velocity);
@@ -50,6 +61,11 @@ public class Spaceship {
      */
     public void accelerate(double accelValue) {
         acceleration.vecAdd(new Vector2(Math.cos(angle) * accelValue, Math.sin(angle) * accelValue));
+
+        if (acceleration.getMagnitude() > MAX_ACCELERATION) {
+            acceleration.normalise(); // Convert to unit vector
+            acceleration.scalarMul(MAX_ACCELERATION); // Scale to max
+        }
     }
 
     /**
@@ -79,5 +95,9 @@ public class Spaceship {
      */
     public void draw(GraphicsContext gc) {
         spaceship.drawStroke(gc, Color.WHITE);
+    }
+
+    public Bullet fire() {
+        return new Bullet(spaceship.getTranslation(), velocity, angle);
     }
 }

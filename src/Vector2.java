@@ -39,7 +39,7 @@ public class Vector2 {
      * @param x - x coordinate given
      * @param y - y coordinate given
      */
-    public void translate(double x, double y){
+    public void vecAdd(double x, double y){
         this.x += x;
         this.y += y;
     }
@@ -84,5 +84,19 @@ public class Vector2 {
         Vector2 vec = (Vector2) obj;
 
         return (Math.abs(this.x - vec.getX()) <= THRESHOLD) && (Math.abs(this.y - vec.getY()) <= THRESHOLD);
+    }
+
+    public static double dotProduct(Vector2 v1, Vector2 v2) {
+        return v1.x * v2.x + v1.y * v2.y;
+    }
+
+    public double getMagnitude() {
+        return  Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+    }
+
+    public void normalise() {
+        double mag = getMagnitude();
+        x /= mag;
+        y /= mag;
     }
 }

@@ -226,4 +226,12 @@ public class Polygon {
         this.xPoints = new double[]{-height / 2, -height / 2, height / 2};
         this.yPoints = new double[]{base / 2, -base / 2, 0};
     }
+
+    /**
+     * Returns the translation (position) of the origin
+     * @return Translation
+     */
+    public Vector2 getTranslation() {
+        return translation;
+    }
 }

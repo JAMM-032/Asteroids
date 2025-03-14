@@ -9,6 +9,7 @@ public class GameWorld {
     ArrayList<Bullet> bullets;
     ArrayList<Obstacle> asteroids;
     Spaceship player;
+    Score score;
 
     private static final int PADDING = 30;
 
@@ -17,6 +18,7 @@ public class GameWorld {
 
     public GameWorld(double width, double height) {
         player = new Spaceship(new Vector2(width / 2, height / 2));
+        score = new Score();
         bullets = new ArrayList<>();
         asteroids = new ArrayList<>();
         WIDTH = width;
@@ -36,9 +38,13 @@ public class GameWorld {
     }
 
     public void update() {
+
         for (Bullet b : bullets) {
-            b.update();
+            b.update(score);
         }
+
+        // Remove 'dead' bullets
+        bullets.removeIf(bullet -> !bullet.isAlive());
 
         for (Obstacle ob : asteroids) {
             ob.update();
@@ -71,8 +77,7 @@ public class GameWorld {
                     player.rotateRight();
                 }
                 case SPACE -> {
-//                    System.out.println("Player should have fired a bullet.");
-                    player.printPos();
+                    bullets.add(player.fire());
                 }
             }
         }
