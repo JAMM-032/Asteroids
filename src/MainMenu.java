@@ -5,6 +5,7 @@ import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -20,6 +21,7 @@ public class MainMenu extends VBox{
     private Label titleLabel;
     private Canvas canvas;
     private Label startLabel;
+    private Group group;
     private boolean gameStarted;
 
     private Polygon spaceshipShape;
@@ -30,6 +32,8 @@ public class MainMenu extends VBox{
         this.stage = stage;
         this.parent = parent;
         gameStarted = false;
+
+        Group group = new Group();
 
         MaxPayne = new Pane();
 
@@ -50,7 +54,11 @@ public class MainMenu extends VBox{
         spaceshipShape.rotate(-Math.PI / 2.0);
 
         canvas = new Canvas(200,200); // Rendering of spaceship
+        canvas.setTranslateY(500);
         drawSpaceship();
+
+        group = new Group();
+        group.getChildren().addAll(titleLabel, controlsLabel, startLabel);
 
         // Layout Settings for the Menu
         setSpacing(20);
@@ -102,22 +110,16 @@ public class MainMenu extends VBox{
     }
 
     private void animateTitleAndStartGame(){
-        TranslateTransition titleAnimation = new TranslateTransition(Duration.millis(1000), titleLabel);
-        titleAnimation.setByY(-50);
+        TranslateTransition titleAnimation = new TranslateTransition(Duration.millis(1000), group);
+        titleAnimation.setByY(-500);
 
-        TranslateTransition spaceshipAnimation = new TranslateTransition(Duration.millis(1000), canvas);
-        spaceshipAnimation.setByY(300); // Starts from under the canvas
-        spaceshipAnimation.setToY(0); // Moves towards the centre
+        TranslateTransition spaceshipAnimation = new TranslateTransition(Duration.millis(1500), canvas);
+        //spaceshipAnimation.setByY(-300); // Starts from under the canvas // Moves by (-300)
+        spaceshipAnimation.setToY(-60); // Moves towards the centre   // Move to -500
 
-        /*
-        titleAnimation.setOnFinished(event -> {
-            Scene gameScene = parent.getGameScene(stage);
-            stage.setScene(gameScene);
-        });
-        */
         spaceshipAnimation.setOnFinished( event -> startGame() );
 
-        titleAnimation.play();
+        //titleAnimation.play();
         spaceshipAnimation.play();
     }
 }
