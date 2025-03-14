@@ -23,10 +23,12 @@ public class Main extends Application{
 
     // THIS IS FOR DEBUG ONLY - CHANGE AS YOU UPDATE, ie: 0.10V -> 0.11V
     // Please update the GitHub readme once you change it
-    private static final String VERSION = "0.10V"; //
+    private static final String VERSION = "0.11V"; //
 
     private Label statusLabel;
     private Stage stage;
+
+    private menuBar menuBar;
 
     private final Set<KeyCode> pressedKeys = new HashSet<>();
 
@@ -39,106 +41,47 @@ public class Main extends Application{
      */
     @Override
     public void start(Stage stage){
-        VBox root = new VBox();
-        makeMenuBar(root);
-
-        // Create Canvas and get Graphics Context
-        this.canvas = new Canvas(600, 500);
-        gc = canvas.getGraphicsContext2D();
-        root.getChildren().add(canvas);
-
         this.stage = stage;
+        MainMenu mainMenu = new MainMenu(stage, this);
+        menuBar = new menuBar(VERSION);
 
-        Scene scene = new Scene(root, 600, 600);
+        Scene menuScene = mainMenu.createScene();
+
+        stage.setTitle("Asteroidz");
+        stage.setScene(menuScene);
+        stage.setResizable(false);
+        stage.show();
+
+    }
+
+    public Scene getGameScene(Stage stage){
+        this.stage = stage;
+        Pane root = new VBox();
+        menuBar.makeMenuBar(root);
 
         statusLabel = new Label(VERSION);
 
-        stage.setTitle("Asteroidz");
-        stage.setScene(scene);
-        stage.show();
+        Pane contentPane = new BorderPane(null, null, null, null, null);
+        root.getChildren().add(contentPane);
+        Canvas canvas = new Canvas(600,600);
 
-        GameWorld game = new GameWorld(canvas.getWidth(), canvas.getHeight());
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        contentPane.getChildren().add(canvas);
 
-        // Handle keyboard input
-        scene.setOnKeyPressed(event -> {
-            pressedKeys.add(event.getCode()); // Store pressed key
-            game.handleKeyPress(pressedKeys);
-        });
+        Scene scene = new Scene(root, 600, 600);
+        stage.setTitle("Asteroidz - Game Session Active");
 
-        scene.setOnKeyReleased(event -> {
-            pressedKeys.remove(event.getCode());  // Remove released key
-        });
-
-        // Animation loop to move spaceship
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
-            public void handle(long now) {
-                gc.setFill(Color.ORANGE);
+            public void handle(long l){
+                gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                game.update();
-                game.draw(gc);
             }
         };
+
         gameLoop.start();
+        return scene;
+
     }
 
-    /**
-     * Method to exit the game - will close everything
-     */
-    private void quitAction(ActionEvent event){
-        System.exit(0);
-    }
-
-    /**
-     * Will display information about the game
-     */
-    private void aboutAction(ActionEvent event){
-
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("ElegooTeam");
-        alert.setHeaderText("Asteroidz");
-        alert.setContentText("A game based on the Atari Classic \n" + VERSION +
-                "\n\n Developed by ElegooTeam [Janit, Dmitrij & Aria]");
-
-        alert.showAndWait();
-    }
-
-    /**
-     * Displays the controls of the game
-     */
-    private void controls(ActionEvent event){
-
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Controls");
-        alert.setHeaderText("Asteroidz");
-        alert.setContentText("The left/right arrow keys cause the ship to rotate. \n" +
-                "The up/down arrow keys are for acceleration in the direction the ship faces in. \n" +
-                "Space is to shoot bullets in the direction the ship faces.");
-
-        alert.showAndWait();
-    }
-
-    private void makeMenuBar(Pane parent){
-
-        MenuBar menubar = new MenuBar();
-        parent.getChildren().add(menubar);
-
-        Menu fileMenu = new Menu("File");
-
-        MenuItem quitItem = new MenuItem("Quit");
-        quitItem.setOnAction(this::quitAction);
-
-        fileMenu.getItems().addAll(quitItem); // Adds to menu segment [ File ]
-
-        Menu helpMenu = new Menu("Help");
-
-        MenuItem aboutItem = new MenuItem("About ElegooTeam");
-        aboutItem.setOnAction(this::aboutAction);
-
-        MenuItem controlsItem = new MenuItem("Controls");
-        controlsItem.setOnAction(this::controls);
-
-        helpMenu.getItems().addAll(aboutItem, controlsItem); // Adds to menu segment [ Help ]
-        menubar.getMenus().addAll(fileMenu, helpMenu); // Ads to menu segment [ Menu ]
-    }
 }
