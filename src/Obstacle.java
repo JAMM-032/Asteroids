@@ -26,10 +26,6 @@ public class Obstacle {
         vel.vecAdd(acc);
     }
 
-    public void rotate(double angle) {
-        shape.rotate(angle);
-    }
-
     /**
      * Draws the obstacle onto the given canvas.
      *
@@ -52,15 +48,20 @@ public class Obstacle {
         Obstacle[] obstacles = new Obstacle[2];
 
         Vector2 pos = shape.getPosition();
+        Vector2 vel = bulletVel.copy();
+        vel.rotate(Math.toRadians(90));
+        vel.normalise();
 
         switch (type) {
             case LARGE -> {
-                obstacles[0] = new Obstacle(AsteroidType.MEDIUM, bulletVel, pos);
-                obstacles[1] = new Obstacle(AsteroidType.MEDIUM, bulletVel.negate(), pos);
+                vel.scalarMul(AsteroidType.LARGE.getSpeed());
+                obstacles[0] = new Obstacle(AsteroidType.MEDIUM, vel, pos);
+                obstacles[1] = new Obstacle(AsteroidType.MEDIUM, vel.negate(), pos);
             }
             case MEDIUM -> {
-                obstacles[0] = new Obstacle(AsteroidType.SMALL, bulletVel, pos);
-                obstacles[1] = new Obstacle(AsteroidType.SMALL, bulletVel.negate(), pos);
+                vel.scalarMul(AsteroidType.SMALL.getSpeed());
+                obstacles[0] = new Obstacle(AsteroidType.SMALL, vel, pos);
+                obstacles[1] = new Obstacle(AsteroidType.SMALL, vel.negate(), pos);
             }
             case SMALL -> {
                 return null;

@@ -107,4 +107,26 @@ public class Vector2 {
         x /= mag;
         y /= mag;
     }
+
+    /**
+     * Rotate the vector about (0,0) by the angle amount.
+     *
+     * @param angle The angle to rotate (in radians).
+     */
+    public void rotate(double angle) {
+        double tempX = getX();
+        double tempY = getY();
+
+        x = (tempX * Math.cos(angle)) - (tempY * Math.sin(angle));
+        y = (tempX * Math.sin(angle)) + (tempY * Math.cos(angle));
+    }
+
+    /**
+     * Give a copy of the current Vector2.
+     *
+     * @return A new Vector2 object.
+     */
+    public Vector2 copy() {
+        return new Vector2(x, y);
+    }
 }
