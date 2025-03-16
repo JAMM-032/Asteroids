@@ -1,23 +1,21 @@
 public enum AsteroidType {
 
-    SMALL(10, 15, 3, Math.toRadians(2)),
-    MEDIUM(20, 25, 1, Math.toRadians(1)),
-    LARGE(40, 50, 0.5, Math.toRadians(0.5));
+    SMALL(15, 3, Math.toRadians(2)),
+    MEDIUM(25, 1, Math.toRadians(1)),
+    LARGE(50, 0.5, Math.toRadians(0.5));
 
-    private final int minSize;
-    private final int maxSize;
+    private final int size;
     private final double speed;
     private final double rotationSpeed;
 
-    AsteroidType(int minSize, int maxSize, double speed, double rotationSpeed) {
-        this.minSize = minSize;
-        this.maxSize = maxSize;
+    AsteroidType(int size, double speed, double rotationSpeed) {
+        this.size = size;
         this.speed = speed;
         this.rotationSpeed = rotationSpeed;
     }
 
-    public int[] getSizeRange() {
-        return new int[] {minSize, maxSize};
+    public int getSizeRange() {
+        return size;
     }
 
     public double getSpeed() {

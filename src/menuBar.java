@@ -3,13 +3,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 
 
 public class menuBar {
 
     private String VERSION;
-    private Main main;
 
     public menuBar(String VERSION){
         this.VERSION = VERSION;
@@ -24,6 +24,7 @@ public class menuBar {
 
         MenuItem quitItem = new MenuItem("Quit");
         quitItem.setOnAction(this::quitAction);
+        quitItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
 
         fileMenu.getItems().addAll(quitItem);
 
@@ -50,8 +51,8 @@ public class menuBar {
         alert.setTitle("About Software");
         alert.setHeaderText("Asteroidz");
 
-        alert.setContentText(VERSION + " A game based on teh Atari Classic \n" +
-                " created by : Aria      Dmitrij     Janit");
+        alert.setContentText(VERSION + " A game based on the Atari Classic \n" +
+                " created by : Aria\t\tDmitrij\t\tJanit");
 
         alert.showAndWait();
     }
@@ -60,8 +61,8 @@ public class menuBar {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Controls");
         alert.setHeaderText("controls");
-        alert.setContentText("W / S : Spaceship Thrust & Reverse \n " +
-                " A / D : Rotation of Spaceship  \n Spacebar : Fire Button \n");
+        alert.setContentText("W/S (up/down arrow keys): Spaceship Thrust & Reverse \n" +
+                "A/D (right/left arrow keys) : Rotation of Spaceship \nSpacebar : Fire Button \n");
         alert.showAndWait();
     }
 

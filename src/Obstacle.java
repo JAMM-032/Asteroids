@@ -12,7 +12,7 @@ public class Obstacle {
     public Obstacle(AsteroidType type, Vector2 velocity, Vector2 position) {
         acc = new Vector2();
         vel = velocity;
-        shape = new Polygon(7, type.getSizeRange()[1]);
+        shape = new Polygon(7, type.getSizeRange());
         shape.translate(position);
         this.type = type;
     }

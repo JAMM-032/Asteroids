@@ -3,6 +3,8 @@ import javafx.application.Application;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -32,7 +34,6 @@ public class Main extends Application{
     private Random rand = new Random();
     private int mapSeed; // Random map seed
     private double[][] stars;
-
 
     private menuBar menuBar;
     private AtomicBoolean pause;
@@ -109,18 +110,25 @@ public class Main extends Application{
     private AnimationTimer getAnimationTimer(Canvas canvas, GraphicsContext gc) {
         GameWorld game = new GameWorld(canvas.getWidth(), canvas.getHeight());
 
+        gc.setFont(new Font(30));
+        gc.setTextAlign(TextAlignment.CENTER);
+
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                gc.setFill(Color.BLACK);
+                gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawPixelatedStars(gc);
+
                 if (!pause.get()) {
                     game.handleKeyPress(pressedKeys);
                     game.update();
+                    game.draw(gc);
                 }
-                gc.setFill(Color.BLACK);
-                gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-                drawPixelatedStars(gc);
-                game.draw(gc);
+                else {
+                    gc.setFill(Color.WHITE);
+                    gc.fillText("PAUSED", 300, 300);
+                }
             }
         };
         return gameLoop;
@@ -145,9 +153,10 @@ public class Main extends Application{
     private void drawPixelatedStars(GraphicsContext gc){
         Color[] starColour = {
                 Color.rgb(255, 255, 255),
-                Color.rgb(200, 15, 15),
-                Color.rgb(65, 62, 156),
-                Color.rgb(190, 190, 190),
+                Color.rgb(150, 150, 150),
+                Color.rgb(65, 62, 60),
+                Color.rgb(20, 20, 20),
+                Color.rgb(180, 190, 175)
         };
 
         for (int i = 0; i < stars.length; i++){
