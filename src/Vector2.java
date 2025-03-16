@@ -61,12 +61,20 @@ public class Vector2 {
         return this.x;
     }
 
+    public void setX(double x) {
+        this.x = x;
+    }
+
     /**
      * This method returns the y-coordinate of the object
      * @return - returns the y-coordinate associated with the object
      */
     public double getY() {
         return this.y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
     }
 
     /**

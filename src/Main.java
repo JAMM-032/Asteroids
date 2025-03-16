@@ -120,12 +120,12 @@ public class Main extends Application{
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
                 drawPixelatedStars(gc);
 
-                if (game.isGameOver()) {
-                    gc.setFill(Color.WHITE);
-                    gc.fillText("GAME OVER >:)", 300, 300);
-                    this.stop();
-                }
-                else if (!pause.get()) {
+//                if (game.isGameOver()) {
+//                    gc.setFill(Color.WHITE);
+//                    gc.fillText("GAME OVER >:)", 300, 300);
+//                    this.stop();
+//                }
+                 if (!pause.get()) {
                     game.handleKeyPress(pressedKeys);
                     game.update();
                     game.draw(gc);

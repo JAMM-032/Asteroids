@@ -7,7 +7,7 @@ public class Shape {
 
     private double[] xPoints;
     private double[] yPoints;
-    private double[][] AABB; // Axis aligned bounding box - max & min x,y [ border of vector graphic ]
+    private AABB aabb; // Axis aligned bounding box - max & min x,y [ border of vector graphic ]
     // Used for collisions - Hitbox essentially
 
     private Vector2 translation;
@@ -22,6 +22,7 @@ public class Shape {
      * @param radius Distance from center to a vertex of the (regular) polygon.
      */
     public Shape(int nSides, double radius) {
+        aabb = new AABB();
         genPoints(nSides, radius);
         translation = new Vector2();
     }
@@ -39,7 +40,7 @@ public class Shape {
             xPoints[i] += amount.getX();
             yPoints[i] += amount.getY();
         }
-        updateAABB();
+        aabb.updateAABB(xPoints, yPoints);
     }
 
     public void wrapAround(int minX, int minY, int maxX, int maxY) {
@@ -95,7 +96,7 @@ public class Shape {
             yPoints[i] += translation.getY();
         }
 
-        updateAABB();
+        aabb.updateAABB(xPoints, yPoints);
     }
 
     /**
@@ -120,52 +121,7 @@ public class Shape {
             xPoints[i] = rad * Math.cos(angle);
             yPoints[i] = rad * Math.sin(angle);
         }
-        updateAABB();
-    }
-
-    /**
-     * Updates the bounding box of the polygon,
-     * called when ever there is a change to the points
-     * (i.e. rotation, translation, or new points).
-     */
-    private void updateAABB() {
-        // contains two arrays, one for x points and another for y points
-        AABB = new double[2][2];
-        double xMin = Double.MAX_VALUE;
-        double xMax = Double.MIN_VALUE;
-
-        double yMin = Double.MAX_VALUE;
-        double yMax = Double.MIN_VALUE;
-
-        for (int i = 0; i < xPoints.length; i++) {
-            xMax = Math.max(xMax, xPoints[i]);
-            xMin = Math.min(xMin, xPoints[i]);
-
-            yMax = Math.max(yMax, yPoints[i]);
-            yMin = Math.min(yMin, yPoints[i]);
-        }
-
-        // top-right point
-        AABB[0][1] = xMax;
-        AABB[1][1] = yMax;
-
-        // bottom-left point
-        AABB[0][0] = xMin;
-        AABB[1][0] = yMin;
-    }
-
-    /**
-     * Checks whether the given point lies within the bounding box.
-     *
-     * @param point The 2D point to check against.
-     * @return True if there is a collision between the point and bounding box, else false.
-     */
-    private boolean AABBPointCollision(Vector2 point) {
-
-        boolean collides = AABB[0][0] <= point.getX() && point.getX() <= AABB[0][1];
-        collides = collides && AABB[1][0] <= point.getY() && point.getY() <= AABB[1][1];
-
-        return collides;
+        aabb.updateAABB(xPoints, yPoints);
     }
 
     /**
@@ -179,7 +135,7 @@ public class Shape {
      */
     public boolean collides(Vector2 point) {
 
-        if (!AABBPointCollision(point)) {
+        if (!aabb.checkPointCollision(point)) {
             return false;
         }
 
@@ -210,22 +166,9 @@ public class Shape {
         return intersections % 2 != 0;
     }
 
-    public boolean AABBCollision(Vector2 minPoint, Vector2 maxPoint) {
-
-        double minX = AABB[0][0];
-        double maxX = AABB[0][1];
-        double minY = AABB[1][0];
-        double maxY = AABB[1][1];
-
-        boolean collides = minX < maxPoint.getX() && minPoint.getX() < maxX;
-        collides = collides && minY < maxPoint.getY() && minPoint.getY() < maxY;
-
-        return collides;
-    }
-
     public boolean polygonPolygonCollision(Shape shape) {
 
-        if (!AABBCollision(shape.getMinPoint(), shape.getMaxPoint())) {
+        if (!aabb.checkAABBCollision(shape.getAABB())) {
             return false;
         }
 
@@ -256,19 +199,7 @@ public class Shape {
         return translation;
     }
 
-    public int getNPoints() {
-        return xPoints.length;
-    }
-
-    public double[] getPoint(int index) {
-        return new double[] {xPoints[index], yPoints[index]};
-    }
-
-    public Vector2 getMaxPoint() {
-        return new Vector2(AABB[0][1], AABB[1][1]);
-    }
-
-    public Vector2 getMinPoint() {
-        return new Vector2(AABB[0][0], AABB[1][0]);
+    public AABB getAABB() {
+        return aabb;
     }
 }
