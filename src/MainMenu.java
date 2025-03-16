@@ -1,14 +1,9 @@
-import com.sun.jdi.request.MonitorContendedEnteredRequest;
 import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -25,7 +20,7 @@ public class MainMenu extends VBox {
     private Label startLabel;
     private boolean gameStarted;
     private FadeTransition fade;
-    private Polygon spaceshipShape;
+    private Shape spaceshipShape;
 
     private VBox MaxPayne;
 
@@ -48,7 +43,7 @@ public class MainMenu extends VBox {
         Label controlsLabel = new Label("W/S : Thrust & Reverse | A/D : Rotate | Spacebar : Fire");
         controlsLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 20px;");
 
-        spaceshipShape = new Polygon(1, 1);
+        spaceshipShape = new Shape(1, 1);
         spaceshipShape.createIsoscelesTriangle(10, 20);
         spaceshipShape.translate(new Vector2(100, 100));
         spaceshipShape.rotate(-Math.PI / 2.0);
@@ -70,7 +65,7 @@ public class MainMenu extends VBox {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setStroke(Color.WHITE);
-        spaceshipShape.drawStroke(gc, Color.WHITE);
+        spaceshipShape.drawFill(gc, Color.WHITE);
     }
 
     /**

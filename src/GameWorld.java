@@ -13,6 +13,7 @@ public class GameWorld {
     ArrayList<Obstacle> asteroids;
     Spaceship player;
     Score score;
+    private boolean gameOver = false;
 
     private static final int PADDING = 30;
 
@@ -59,6 +60,19 @@ public class GameWorld {
         player.move(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING);
 
         collisionResolution();
+
+        // player collision
+        for (Obstacle ob : asteroids) {
+            if (player.getShape().polygonPolygonCollision(ob.getShape())) {
+                System.out.println("COLLISION!!!!!");
+                gameOver = true;
+                break;
+            }
+        }
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     public void collisionResolution() {

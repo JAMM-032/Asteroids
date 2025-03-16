@@ -3,11 +3,11 @@ import javafx.scene.paint.Color;
 
 import java.util.Random;
 
-public class Polygon {
+public class Shape {
 
     private double[] xPoints;
     private double[] yPoints;
-    private double[][] AABB; // Access aligned bounding box - max & min x,y [ border of vector graphic ]
+    private double[][] AABB; // Axis aligned bounding box - max & min x,y [ border of vector graphic ]
     // Used for collisions - Hitbox essentially
 
     private Vector2 translation;
@@ -21,7 +21,7 @@ public class Polygon {
      * @param nSides The number of sides to the polygon.
      * @param radius Distance from center to a vertex of the (regular) polygon.
      */
-    public Polygon(int nSides, double radius) {
+    public Shape(int nSides, double radius) {
         genPoints(nSides, radius);
         translation = new Vector2();
     }
@@ -210,6 +210,28 @@ public class Polygon {
         return intersections % 2 != 0;
     }
 
+    public boolean AABBCollision(Vector2 minPoint, Vector2 maxPoint) {
+
+        double minX = AABB[0][0];
+        double maxX = AABB[0][1];
+        double minY = AABB[1][0];
+        double maxY = AABB[1][1];
+
+        boolean collides = minX < maxPoint.getX() && minPoint.getX() < maxX;
+        collides = collides && minY < maxPoint.getY() && minPoint.getY() < maxY;
+
+        return collides;
+    }
+
+    public boolean polygonPolygonCollision(Shape shape) {
+
+        if (!AABBCollision(shape.getMinPoint(), shape.getMaxPoint())) {
+            return false;
+        }
+
+        return true;
+    }
+
     public void drawFill(GraphicsContext gc, Color col) {
         gc.setFill(col);
         gc.fillPolygon(xPoints, yPoints, xPoints.length);
@@ -227,10 +249,26 @@ public class Polygon {
     }
 
     /**
-     * Returns the translation (position) of the origin
+     * Returns the translation (position) of the polygon center.
      * @return Translation
      */
     public Vector2 getPosition() {
         return translation;
+    }
+
+    public int getNPoints() {
+        return xPoints.length;
+    }
+
+    public double[] getPoint(int index) {
+        return new double[] {xPoints[index], yPoints[index]};
+    }
+
+    public Vector2 getMaxPoint() {
+        return new Vector2(AABB[0][1], AABB[1][1]);
+    }
+
+    public Vector2 getMinPoint() {
+        return new Vector2(AABB[0][0], AABB[1][0]);
     }
 }

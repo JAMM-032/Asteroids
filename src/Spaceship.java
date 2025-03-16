@@ -2,7 +2,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Spaceship {
-    private final Polygon spaceship;
+    private final Shape spaceship;
     private final Vector2 velocity = new Vector2(0, 0);
     private final Vector2 acceleration = new Vector2(0, 0);
     private double angle = Math.toRadians(-90);
@@ -20,7 +20,7 @@ public class Spaceship {
      * @param position the initial position of the spaceship.
      */
     public Spaceship(Vector2 position) {
-        spaceship = new Polygon(3, 5);
+        spaceship = new Shape(3, 5);
         spaceship.createIsoscelesTriangle(10, 20);
         spaceship.translate(position);
         spaceship.rotate(angle);
@@ -53,7 +53,7 @@ public class Spaceship {
         spaceship.printPos();
     }
 
-    public Polygon getShape() {
+    public Shape getShape() {
         return spaceship;
     }
 
@@ -102,6 +102,6 @@ public class Spaceship {
      * @param gc the GraphicsContext used for drawing the spaceship.
      */
     public void draw(GraphicsContext gc) {
-        spaceship.drawStroke(gc, Color.WHITE);
+        spaceship.drawFill(gc, Color.WHITE);
     }
 }

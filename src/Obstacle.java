@@ -6,13 +6,13 @@ public class Obstacle {
 
     private Vector2 acc;
     private Vector2 vel;
-    private Polygon shape;
+    private Shape shape;
     private AsteroidType type;
 
     public Obstacle(AsteroidType type, Vector2 velocity, Vector2 position) {
         acc = new Vector2();
         vel = velocity;
-        shape = new Polygon(7, type.getSizeRange());
+        shape = new Shape(7, type.getSizeRange());
         shape.translate(position);
         this.type = type;
     }
@@ -43,7 +43,7 @@ public class Obstacle {
         return shape.collides(point);
     }
 
-    public Polygon getPolygon() {
+    public Shape getShape() {
         return this.shape;
     }
 
