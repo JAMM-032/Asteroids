@@ -129,4 +129,11 @@ public class Vector2 {
     public Vector2 copy() {
         return new Vector2(x, y);
     }
+
+    public double getRotation() {
+        double angle = Math.atan2(this.y, this.x);
+        if (angle < 0)
+            angle += 2.0 * Math.PI;
+        return angle;
+    }
 }

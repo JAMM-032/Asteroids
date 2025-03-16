@@ -27,6 +27,14 @@ public class Shape {
         translation = new Vector2();
     }
 
+    public Shape(double[] xPoints, double[] yPoints) {
+        this.xPoints = xPoints;
+        this.yPoints = yPoints;
+        aabb = new AABB();
+        aabb.updateAABB(this.xPoints, this.yPoints);
+        translation = new Vector2();
+    }
+
     /**
      * Translate all the points of the polygon by the given amount.
      *
@@ -185,18 +193,14 @@ public class Shape {
         gc.strokePolygon(xPoints, yPoints, xPoints.length);
     }
 
-    public void createIsoscelesTriangle(double base, double height) {
-
-        this.xPoints = new double[]{-height / 2, -height / 2, height / 2};
-        this.yPoints = new double[]{base / 2, -base / 2, 0};
-    }
-
     /**
-     * Returns the translation (position) of the polygon center.
-     * @return Translation
+     * Returns the translation (position) of the polygon center
+     * as a copy of the original translation.
+     *
+     * @return Vector2 representing translation of the shape;
      */
     public Vector2 getPosition() {
-        return translation;
+        return translation.copy();
     }
 
     public AABB getAABB() {

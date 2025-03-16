@@ -4,10 +4,10 @@ import javafx.scene.paint.Color;
 
 public class Obstacle {
 
-    private Vector2 acc;
-    private Vector2 vel;
-    private Shape shape;
-    private AsteroidType type;
+    protected Vector2 acc;
+    protected Vector2 vel;
+    protected Shape shape;
+    protected AsteroidType type;
 
     public Obstacle(AsteroidType type, Vector2 velocity, Vector2 position) {
         acc = new Vector2();

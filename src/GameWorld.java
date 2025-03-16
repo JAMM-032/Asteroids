@@ -30,6 +30,7 @@ public class GameWorld {
         WIDTH = width;
         HEIGHT = height;
         asteroids.add(new Obstacle(AsteroidType.LARGE, new Vector2(3, 3), new Vector2(100, 100)));
+        asteroids.add(new AlienShip(player.getShape(), AsteroidType.LARGE, new Vector2(0, 1), new Vector2(400, 600)));
     }
 
     public void draw(GraphicsContext gc) {

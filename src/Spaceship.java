@@ -20,8 +20,10 @@ public class Spaceship {
      * @param position the initial position of the spaceship.
      */
     public Spaceship(Vector2 position) {
-        spaceship = new Shape(3, 5);
-        spaceship.createIsoscelesTriangle(10, 20);
+        spaceship = new Shape(
+                new double[] {10, -5, -5},
+                new double[] {0, 5, -5}
+        );
         spaceship.translate(position);
         spaceship.rotate(angle);
     }

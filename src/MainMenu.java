@@ -43,8 +43,10 @@ public class MainMenu extends VBox {
         Label controlsLabel = new Label("W/S : Thrust & Reverse | A/D : Rotate | Spacebar : Fire");
         controlsLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 20px;");
 
-        spaceshipShape = new Shape(1, 1);
-        spaceshipShape.createIsoscelesTriangle(10, 20);
+        spaceshipShape = new Shape(
+                new double[] {10, -5, -5},
+                new double[] {0, 5, -5}
+        );
         spaceshipShape.translate(new Vector2(100, 100));
         spaceshipShape.rotate(-Math.PI / 2.0);
 
