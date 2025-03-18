@@ -1,3 +1,9 @@
+/**
+ * [?] - calls for the types of asteroids that can be created
+ * Large Asteroids : Can split into Medium Asteroids
+ * Medium Asteroids : Can split into Small Asteroids
+ * Small Asteroids : Will be destroyed upon being shot
+ */
 public enum AsteroidType {
 
     SMALL(15, 3, Math.toRadians(2)),

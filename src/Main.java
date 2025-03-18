@@ -25,7 +25,7 @@ public class Main extends Application{
 
     // THIS IS FOR DEBUG ONLY - CHANGE AS YOU UPDATE, ie: 0.10V -> 0.11V
     // Please update the GitHub readme once you change it
-    private static final String VERSION = "0.11V"; //
+    private static final String VERSION = "0.12V"; //
     private Label statusLabel;
     private Stage stage;
 
@@ -68,8 +68,8 @@ public class Main extends Application{
 
     /**
      * Game Loop within this method
-     * @param stage
-     * @return
+     * @param stage - Stage of the game is parsed in for use
+     * @return - Returns the Scene after processing - generates a scene
      */
     public Scene getGameScene(Stage stage){
         this.stage = stage;
@@ -107,6 +107,13 @@ public class Main extends Application{
         return scene;
     }
 
+    /**
+     * Has a timeline for animations to be handled
+     *
+     * @param canvas - current canvas given with positions - allows for modularised approach
+     * @param gc - graphics context given - parses current screen's information
+     * @return - returns the AnimationTimer Type - handled by the animation handler
+     */
     private AnimationTimer getAnimationTimer(Canvas canvas, GraphicsContext gc) {
         GameWorld game = new GameWorld(canvas.getWidth(), canvas.getHeight());
 
@@ -139,6 +146,15 @@ public class Main extends Application{
         return gameLoop;
     }
 
+    /**
+     * Generates the background imagery for the game
+     * Each star is animated - allows for a more immersive experience
+     *
+     * @param width - Width of the current canvas
+     * @param height - Height of the current canvas
+     * @param mapSeed - Random seed - altering positioning of the stars
+     * @return - returns a 2D array (type Double) - has the positions of the stars
+     */
     private double[][] generateStars(double width, double height, int mapSeed) {
 
         double[][] stars = new double[backgroundDetail][3]; // x, y, seed retrieved

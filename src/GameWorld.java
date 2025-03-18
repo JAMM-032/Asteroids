@@ -7,6 +7,13 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.ArrayList;
 
+/**
+ * A class to initalise the GameWorld - will create the basic canvas
+ * The padding serves as an intermediary between the active game screen
+ * ...(what the player sees) and the passive game screen (what is hidden)
+ * This allows for the seamless transition from one side to the other for
+ * the player and the obstacles
+ */
 public class GameWorld {
 
     ArrayList<Bullet> bullets;
@@ -22,6 +29,11 @@ public class GameWorld {
     private static double WIDTH;
     private static double HEIGHT;
 
+    /**
+     * Constructor class - initalises the general statistics of the game
+     * @param width - width of the canvas - this information is parsed into other classes
+     * @param height - height of the canvas - this information is parsed into other classes
+     */
     public GameWorld(double width, double height) {
         player = new Spaceship(new Vector2(width / 2, height / 2));
         score = new Score();
@@ -33,6 +45,15 @@ public class GameWorld {
         asteroids.add(new AlienShip(player.getShape(), AsteroidType.LARGE, new Vector2(0, 1), new Vector2(400, 600)));
     }
 
+    /**
+     * A method to draw the active items - items which have animations / move in the game
+     * Of these involve the bullet - fired by the player
+     * the asteroids - spawn as an antagonist to the player
+     *
+     * Collision resolution is also called from this class
+     *
+     * @param gc - graphics context of the current (given) scene
+     */
     public void draw(GraphicsContext gc) {
         for (Bullet b : bullets) {
             b.draw(gc);
@@ -45,6 +66,10 @@ public class GameWorld {
         player.draw(gc);
     }
 
+    /**
+     * Calls for the updating of the display
+     * Changes the current scenery, updating to the (new) positions
+     */
     public void update() {
 
         for (Bullet b : bullets) {
@@ -62,7 +87,10 @@ public class GameWorld {
 
         collisionResolution();
 
-        // player collision
+        /*
+        Player collision is handled here
+        If a collision occurs, the player will be hurt
+         */
         for (Obstacle ob : asteroids) {
             if (player.getShape().polygonPolygonCollision(ob.getShape())) {
                 System.out.println("COLLISION!!!!!");
@@ -72,10 +100,19 @@ public class GameWorld {
         }
     }
 
+    /**
+     * Boolean to check if the game has been lost
+     * @return - if True, the game will end, as the player has no more lives / is dead
+     */
     public boolean isGameOver() {
         return gameOver;
     }
 
+    /**
+     * Method to check for collisions
+     * Calls for every bullet - if an asteroid is in proximity / in contact
+     * then the asteroid will be called for its destruction
+     */
     public void collisionResolution() {
 
         ArrayList<Obstacle> newAsteroids = new ArrayList<>();
@@ -103,6 +140,11 @@ public class GameWorld {
         asteroids.addAll(newAsteroids);
     }
 
+    /**
+     * Handler for the key presses by the user
+     * Will handle user input smoothly
+     * @param keys - the current input of the user
+     */
     public void handleKeyPress(Set<KeyCode> keys) {
         for (KeyCode code : keys) {
             switch (code) {

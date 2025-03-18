@@ -24,6 +24,12 @@ public class MainMenu extends VBox {
 
     private VBox MaxPayne;
 
+    /**
+     * Main menu of the game - starting menu - initalised
+     *
+     * @param stage - the current Stage
+     * @param parent - the Parent of the Main class
+     */
     public MainMenu(Stage stage, Main parent){
         this.stage = stage;
         this.parent = parent;
@@ -78,6 +84,10 @@ public class MainMenu extends VBox {
         stage.setScene(gameScene);
     }
 
+    /**
+     * Animation handler for the 'press Start' text
+     * plays an automatic cycle
+     */
     private void startBlinkingText(){
         fade = new FadeTransition(Duration.millis(500), startLabel);
         fade.setFromValue(1.0);
@@ -88,6 +98,12 @@ public class MainMenu extends VBox {
     }
 
 
+    /**
+     * Creates the scene of the game
+     * has an animation timeline should the game be started
+     *
+     * @return - returns the Scene of the game after starting
+     */
     public Scene createScene(){
         Scene scene = new Scene(this, 600, 600);
         scene.setOnKeyPressed(event -> {
@@ -109,6 +125,9 @@ public class MainMenu extends VBox {
         return scene;
     }
 
+    /**
+     * Calls for the animation methods upon the starting method being called
+     */
     private void animateTitleAndStartGame(){
         TranslateTransition spaceshipAnimation = new TranslateTransition(Duration.millis(2000), MaxPayne);
         spaceshipAnimation.setByY(-345); // Moves towards the centre   // Move to -500
