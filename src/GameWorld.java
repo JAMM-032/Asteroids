@@ -88,6 +88,8 @@ public class GameWorld {
 
         collisionResolution();
 
+        score.update(); // resets multiplier after some time
+
         /*
         Player collision is handled here
         If a collision occurs, the player will be hurt
@@ -132,6 +134,11 @@ public class GameWorld {
                         newAsteroids.addAll(Arrays.asList(newObjects));
                     it1.remove();
                     b.setDead();
+
+                    // Add score (fixed value for now) and increment multiplier
+                    score.increase(20);
+                    score.incrementMultiplier();
+
                     break;
                 }
             }
