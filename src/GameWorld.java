@@ -64,6 +64,7 @@ public class GameWorld {
         }
 
         player.draw(gc);
+        score.draw(gc);
     }
 
     /**
