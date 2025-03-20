@@ -117,7 +117,8 @@ public class Main extends Application{
     private AnimationTimer getAnimationTimer(Canvas canvas, GraphicsContext gc) {
         GameWorld game = new GameWorld(canvas.getWidth(), canvas.getHeight());
 
-        gc.setFont(new Font(30));
+        Font gitGud = new Font(30);
+
         gc.setTextAlign(TextAlignment.CENTER);
 
         AnimationTimer gameLoop = new AnimationTimer() {
@@ -128,6 +129,7 @@ public class Main extends Application{
                 drawPixelatedStars(gc);
 
                 if (game.isGameOver()) {
+                    gc.setFont(gitGud);
                     gc.setFill(Color.WHITE);
                     gc.fillText("GAME OVER >:)", 300, 300);
                     this.stop();
@@ -138,7 +140,8 @@ public class Main extends Application{
                     game.draw(gc);
                 }
                 else {
-                    gc.setFill(Color.WHITE);
+                     gc.setFont(gitGud);
+                     gc.setFill(Color.WHITE);
                     gc.fillText("PAUSED", 300, 300);
                 }
             }

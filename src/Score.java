@@ -127,7 +127,7 @@ public class Score {
 
         gc.fillText("1", leftX, textY);
         gc.fillText(String.valueOf(MAX_MULTIPLIER), rightX, textY);
-        gc.fillText(String.format("%.2f", multiplier), centerX, textY);
+        gc.fillText("x" + String.format("%.2f", multiplier), centerX, textY);
     }
 
     public int getScore() {

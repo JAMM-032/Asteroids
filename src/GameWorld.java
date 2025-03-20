@@ -2,6 +2,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
+import javax.naming.event.EventDirContext;
+import java.util.Random;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
@@ -26,8 +28,21 @@ public class GameWorld {
 
     private boolean shotsFired = false;
 
-    private static double WIDTH;
-    private static double HEIGHT;
+    private final double WIDTH;
+    private final double HEIGHT;
+    private final Random rand = new Random();
+
+    private final double ASTEROID_PROB = 0.7;
+    private final double SHIP_PROB = 0.3;
+
+    private final int MAX_DURATION = 10 * 1000;
+    private final int MAX_ASTEROIDS = 20;
+
+    private double startTime = 0.0;
+
+    private static final String[] EDGES = {
+        "LEFT", "RIGHT", "TOP", "BOTTOM"
+    };
 
     /**
      * Constructor class - initalises the general statistics of the game
@@ -41,8 +56,6 @@ public class GameWorld {
         asteroids = new ArrayList<>();
         WIDTH = width;
         HEIGHT = height;
-        asteroids.add(new Obstacle(AsteroidType.LARGE, new Vector2(3, 3), new Vector2(100, 100)));
-        asteroids.add(new AlienShip(player.getShape(), AsteroidType.LARGE, new Vector2(0, 1), new Vector2(400, 600)));
     }
 
     /**
@@ -96,11 +109,11 @@ public class GameWorld {
          */
         for (Obstacle ob : asteroids) {
             if (player.getShape().polygonPolygonCollision(ob.getShape())) {
-                System.out.println("COLLISION!!!!!");
                 gameOver = true;
                 break;
             }
         }
+        spawnObstacles();
     }
 
     /**
@@ -181,5 +194,53 @@ public class GameWorld {
         if (!keys.contains(KeyCode.SPACE)) {
             shotsFired = false;
         }
+    }
+
+    private void spawnObstacles() {
+
+        double timeDur = System.currentTimeMillis() - startTime;
+
+        if (timeDur < MAX_DURATION || asteroids.size() >= MAX_ASTEROIDS)
+            return;
+        startTime = System.currentTimeMillis();
+
+        for (int i = 0; i < 2; i++) {
+            double prob = rand.nextDouble();
+            Vector2 pos = generateRandomPos();
+            if (prob <= SHIP_PROB) {
+                asteroids.add(new AlienShip(player.getShape(), AsteroidType.LARGE, new Vector2(), pos));
+            }
+            else if (prob <= ASTEROID_PROB) {
+                Vector2 vel = Vector2.fromPolar(AsteroidType.LARGE.getSpeed(), rand.nextDouble(0.0, 2*Math.PI));
+                asteroids.add(new Obstacle(AsteroidType.LARGE, vel, pos));
+            }
+        }
+    }
+
+    private Vector2 generateRandomPos() {
+
+        Vector2 pos = new Vector2();
+        int index = rand.nextInt(0, 4);
+
+        switch (EDGES[index]) {
+            case "LEFT" -> {
+                pos.setX(-PADDING);
+                pos.setY(rand.nextInt(0, (int) HEIGHT));
+            }
+            case "RIGHT" -> {
+                pos.setX(WIDTH+PADDING);
+                pos.setY(rand.nextInt(0, (int) HEIGHT));
+            }
+            case "TOP" -> {
+                pos.setX(rand.nextInt(0, (int) WIDTH));
+                pos.setY(-PADDING);
+            }
+            case "BOTTOM" -> {
+                pos.setX(rand.nextInt(0, (int) WIDTH));
+                pos.setY(HEIGHT+PADDING);
+            }
+        }
+
+        return pos;
     }
 }
