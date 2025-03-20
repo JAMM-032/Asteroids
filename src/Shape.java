@@ -199,7 +199,7 @@ public class Shape {
      *
      * @return Vector2 representing translation of the shape;
      */
-    public Vector2 getPosition() {
+    public Vector2 getPositionCopy() {
         return translation.copy();
     }
 

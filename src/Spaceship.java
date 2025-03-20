@@ -98,6 +98,10 @@ public class Spaceship {
         spaceship.rotate(-angle_diff);
     }
 
+    public double getVelocity() {
+        return MAX_VELOCITY;
+    }
+
     /**
      * Draws the spaceship on the given GraphicsContext with a blue stroke color.
      *

@@ -1,7 +1,3 @@
-import javafx.scene.canvas.GraphicsContext;
-
-import javafx.scene.paint.Color;
-
 public class AlienShip extends Obstacle {
 
     private Shape playerShip;
@@ -22,8 +18,8 @@ public class AlienShip extends Obstacle {
     @Override
     public void update(int x, int y, int w, int h) {
 
-        Vector2 diff = shape.getPosition().negate();
-        diff.vecAdd(playerShip.getPosition());
+        Vector2 diff = shape.getPositionCopy().negate();
+        diff.vecAdd(playerShip.getPositionCopy());
         diff.normalise();
         diff.scalarMul(ACCELERATION);
 

@@ -47,7 +47,7 @@ public class Obstacle {
 
         Obstacle[] obstacles = new Obstacle[2];
 
-        Vector2 pos = shape.getPosition();
+        Vector2 pos = shape.getPositionCopy();
         Vector2 vel = bulletVel.copy();
         vel.rotate(Math.toRadians(90));
         vel.normalise();

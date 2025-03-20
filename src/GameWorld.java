@@ -172,8 +172,8 @@ public class GameWorld {
 
                     if (!shotsFired) {
                         shotsFired = true;
-                        Vector2 pos = player.getShape().getPosition();
-                        bullets.add(new Bullet(pos.getX(), pos.getY(), 0, player.getRotation()));
+                        Vector2 pos = player.getShape().getPositionCopy();
+                        bullets.add(new Bullet(pos, player.getVelocity(), player.getRotation()));
                     }
                 }
             }

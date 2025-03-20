@@ -16,6 +16,23 @@ public class Vector2 {
     }
 
     /**
+     * Constructs a new vector from polar coordinate form (i.e. magnitude and angle)
+     * to the expected cartesian form.
+     *
+     * @param magnitude The absolute size of the vector (expected to be positive).
+     * @param rotation The angle to rotate by [from coordinate (1,0)]
+     * @return A new Vector2 object in cartesian form.
+     */
+    public static Vector2 fromPolar(double magnitude, double rotation) {
+        Vector2 vec = new Vector2(1.0, 0.0);
+
+        vec.scalarMul(magnitude);
+        vec.rotate(rotation);
+
+        return vec;
+    }
+
+    /**
      * Sets the values of x and y ( this ) to the given values
      * @param values - the value of x,y inputted as an array
      */
