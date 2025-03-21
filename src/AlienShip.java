@@ -1,10 +1,12 @@
+import java.util.Random;
+
 public class AlienShip extends Obstacle {
 
     private boolean isSpaceStation;
     private Shape playerShip;
     private double rotation;
-    private static final double ACCELERATION = 0.2;
-    private static final double MAX_SPEED = 2.5;
+    private final double ACCELERATION = (new Random()).nextDouble(0.05,0.2);
+    private static final double MAX_SPEED = 1.2;
 
     public AlienShip(Shape player, AsteroidType type, Vector2 velocity, Vector2 position) {
         super(type, new Vector2(0, -1), new Vector2());
