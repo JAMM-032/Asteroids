@@ -140,8 +140,8 @@ public class Main extends Application{
                     game.draw(gc);
                 }
                 else {
-                     gc.setFont(gitGud);
-                     gc.setFill(Color.WHITE);
+                    gc.setFont(gitGud);
+                    gc.setFill(Color.WHITE);
                     gc.fillText("PAUSED", 300, 300);
                 }
             }

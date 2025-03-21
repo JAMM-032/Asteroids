@@ -32,11 +32,11 @@ public class GameWorld {
     private final double HEIGHT;
     private final Random rand = new Random();
 
-    private final double ASTEROID_PROB = 0.7;
-    private final double SHIP_PROB = 0.3;
+    private static final double ASTEROID_PROB = 0.7;
+    private static final double SHIP_PROB = 0.3;
 
-    private final int MAX_DURATION = 10 * 1000;
-    private final int MAX_ASTEROIDS = 20;
+    private static final int MAX_DURATION = 10 * 1000;
+    private static final int MAX_ASTEROIDS = 20;
 
     private double startTime = 0.0;
 
