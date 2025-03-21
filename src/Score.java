@@ -123,8 +123,12 @@ public class Score {
         drawMultiplierLabel(gc);
 
         // Draw Score
-        gc.setFont(Font.font("Courier New", 15));
-        gc.fillText(String.valueOf(score), 35, 20);
+        gc.setFont(Font.font("Courier New",20));
+        gc.setFill(Color.WHITE);
+        String scoreText = "Score: " + score;
+        double textWidth = gc.getFont().getSize() * scoreText.length() * 0.5;
+        //gc.fillText(String.valueOf(score), 35, 20);
+        gc.fillText(scoreText, (CANVAS_WIDTH - textWidth) / 2, 30);
     }
 
     /**
