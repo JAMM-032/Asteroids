@@ -145,12 +145,13 @@ public class GameWorld {
                     Obstacle[] newObjects = ob.spawnAsteroids(bulletVel);
                     if (newObjects != null)
                         newAsteroids.addAll(Arrays.asList(newObjects));
+
+                    // Add score (fixed value for now) and increment multiplier
+                    score.increase(ob.getScoreValue());
+                    score.incrementMultiplier();
                     it1.remove();
                     b.setDead();
 
-                    // Add score (fixed value for now) and increment multiplier
-                    score.increase(20);
-                    score.incrementMultiplier();
 
                     break;
                 }

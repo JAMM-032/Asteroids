@@ -60,7 +60,7 @@ public class Score {
      *
      * @param scoreIncrease Base score to increase
      */
-    public void increase(int scoreIncrease) {
+    public void increase(double scoreIncrease) {
         score += (int) (scoreIncrease * multiplier);
     }
 

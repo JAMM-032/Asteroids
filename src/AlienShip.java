@@ -13,6 +13,7 @@ public class AlienShip extends Obstacle {
         setSpaceStationShape();
         shape.translate(position);
         rotation = 0.0;
+        scoreValue = 50;
     }
 
     private AlienShip(Shape player, Vector2 velocity, Vector2 position) {
@@ -22,6 +23,7 @@ public class AlienShip extends Obstacle {
         setAlienShipShape();
         shape.translate(position);
         rotation = 0.0;
+        scoreValue = 20;
     }
 
     @Override
