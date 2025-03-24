@@ -10,14 +10,14 @@ import java.awt.*;
 public class Score {
     private static final int MAX_MULTIPLIER = 3;
     private static final int INITIAL_MULTIPLIER_TTL = 300;
-    private static final int BAR_WIDTH = 60;
-    private static final int BAR_HEIGHT = 8;
-    private static final int TEXT_OFFSET = 20;
+    private static final int BAR_WIDTH = 90;
+    private static final int BAR_HEIGHT = 12;
+    private static final int TEXT_OFFSET = 40;
 
     private static final int CANVAS_WIDTH = 600;
     private static final int CANVAS_HEIGHT = 600;
-    private static final int X_OFFSET = 50;
-    private static final int Y_OFFSET = 10;
+    private static final int X_OFFSET = 65;
+    private static final int Y_OFFSET = 15;
 
     private int multiplierTTL; // Time after which multiplier resets
     private int score;
@@ -138,7 +138,7 @@ public class Score {
         double textY = Y_OFFSET + BAR_HEIGHT + TEXT_OFFSET; // Position below the bar
 
         gc.setFill(Color.WHITE);
-        gc.setFont(Font.font("Courier New", 10));
+        gc.setFont(Font.font("Courier New", 15));
         gc.fillText(String.format("%.2f", multiplier), CANVAS_WIDTH-X_OFFSET, textY);
     }
 

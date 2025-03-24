@@ -85,7 +85,8 @@ public class menuBar {
         alert.setTitle("Game Controls");
         alert.setHeaderText("controls");
         alert.setContentText("W/S (up/down arrow keys): Spaceship Thrust & Reverse \n" +
-                "A/D (right/left arrow keys) : Rotation of Spaceship \nSpacebar : Fire Button \n");
+                "A/D (right/left arrow keys) : Rotation of Spaceship \nSpacebar : Fire Button \n" +
+                "P : to Pause the game ");
         alert.showAndWait();
     }
 
