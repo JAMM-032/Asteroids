@@ -43,7 +43,7 @@ public class Main extends Application{
     private Canvas canvas;  // The game canvas
     private GraphicsContext gc;
 
-    private static final int TARGET_FPS = 60;
+    private static final int TARGET_FPS = 75;
     private static final long FRAME_TIME = 1_000_000_000 / TARGET_FPS; // Nanoseconds per frame
 
     private long lastFrameTime = System.nanoTime();
