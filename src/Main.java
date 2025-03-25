@@ -139,30 +139,30 @@ public class Main extends Application{
 
                 accumulatedTime += elapsedTime;
 
+                // Clear the screen
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-                // Game over menu
+                // Check if the game is over
                 if (game.isGameOver()) {
-                    gc.setFont(gitGud);
-                    gc.setFill(Color.WHITE);
-                    gc.fillText("GAME OVER >:)", 300, 300);
-
-                    // Display Game Stats
-                    game.displayStats();
-
+                    // Stop the game loop
                     this.stop();
 
-                    // Wait for Restart key to be pressed (ENTER)
+                    // Display game over stats
+                    game.displayStats(gc);
+
+                    // Wait for the restart key (ENTER)
                     stage.getScene().setOnKeyPressed(e -> {
                         if (e.getCode() == KeyCode.ENTER) {
                             restartGame(stage);
                         }
                     });
 
-
+                    // Return to prevent drawing
+                    return;
                 }
 
+                // Game logic for drawing objects (if not game over)
                 while (!pause.get() && accumulatedTime >= FRAME_TIME) {
                     game.handleKeyPress(pressedKeys);
                     game.update();
@@ -170,23 +170,25 @@ public class Main extends Application{
                     accumulatedTime -= FRAME_TIME;
                 }
 
+                // Display pause screen
                 if (pause.get()) {
-                    gc.setFont(gitGud);
+                    gc.setFont(new Font(30));
                     gc.setFill(Color.WHITE);
                     gc.fillText("PAUSED", 300, 300);
                 }
 
-                // draw fps
-                gc.setFont(fpsFont);
+                // Draw FPS (optional)
+                gc.setFont(new Font(15));
                 gc.setFill(Color.WHITE);
                 gc.setTextAlign(TextAlignment.LEFT);
                 gc.fillText(String.format("FPS: %d", fps), 10, 30);
                 gc.setTextAlign(TextAlignment.CENTER);
 
+                // Draw background stars
                 drawPixelatedStars(gc);
-                game.draw(gc);
+
+                // Update the frame counter for FPS calculation
                 frameCount++;
-                // Update FPS counter every second
                 if (now - lastFPSUpdate >= 1_000_000_000) {
                     fps = frameCount;
                     frameCount = 0;

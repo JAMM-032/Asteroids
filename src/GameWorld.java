@@ -1,6 +1,9 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.TextAlignment;
 
 import java.util.Random;
 import java.util.Arrays;
@@ -245,8 +248,56 @@ public class GameWorld {
     }
 
 
-    public void displayStats() {
-        ;
+    public void displayStats(GraphicsContext gc) {
+        // Reset canvas
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, WIDTH, HEIGHT);
+
+        double centerX = WIDTH / 2;
+        double centerY = HEIGHT / 2;
+
+        // Menu Box
+        double boxWidth = 400;
+        double boxHeight = 320;
+        double boxX = centerX -(boxWidth / 2);
+        double boxY = centerY -(boxHeight / 2);
+
+        // Display Box
+        gc.setStroke(Color.WHITE);
+        gc.setLineWidth(3);
+        gc.strokeRect(boxX, boxY, boxWidth, boxHeight);
+
+        // Header Line
+        gc.strokeLine(boxX, boxY + 50, boxX + boxWidth, boxY + 50);
+
+        // Set text parameters
+        gc.setFont(new Font(30));
+        gc.setFill(Color.WHITE);
+        gc.setTextAlign(TextAlignment.CENTER);
+
+        // Game Over Text
+        gc.fillText("GAME OVER", centerX, boxY+40);
+
+        // Statistics Text
+        gc.setFont(new Font(20));
+        gc.fillText("Statistics", centerX, boxY+80);
+
+        // Game Stats Text
+        gc.setFont(new Font(18));
+        gc.setTextAlign(TextAlignment.LEFT);
+        gc.fillText("Asteroids Destroyed " + "25", boxX+20, boxY+120);
+        gc.fillText("Spaceships Destroyed " + "12", boxX+20, boxY+150);
+        gc.fillText("Max Multiplier " + "x2.1", boxX+20, boxY+180);
+        gc.fillText("Total Score " + "1021", boxX+20, boxY+210);
+        gc.fillText("Time survived " + "02:42", boxX+20, boxY+240);
+
+
+
+        // Restart message
+        gc.strokeLine(boxX, boxY + 270, boxX + boxWidth, boxY + 270);
+        gc.setFont(new Font(16));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("Press Enter to Play Again...", centerX, boxY+300);
     }
 
 }
