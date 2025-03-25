@@ -20,8 +20,14 @@ public class Obstacle {
     /**
      * Updates the location of the obstacle based on its velocity.
      */
-    public void update(int x, int y, int w, int h) {
-        shape.translate(vel);
+    public void update(int x, int y, int w, int h, float dt) {
+
+        Vector2 newVel = vel.copy();
+        newVel.scalarMul(dt);
+
+        shape.rotate(type.getRotationSpeed() * dt);
+
+        shape.translate(newVel);
         shape.wrapAround(x, y, w, h);
         vel.vecAdd(acc);
     }

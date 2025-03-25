@@ -8,7 +8,7 @@ public class Bullet{
     private Vector2 velocity; // Current velocity of the bullet
     private int TTL = 120; // Time to live - object will disappear -
     private static final double radius = 2.0;
-    private static final int baseVel = 5;
+    private static final int baseVel = 40;
 
     private boolean alive; // If the bullet still exists or not [ True = Alive,  False = Dead ]
 
@@ -31,13 +31,12 @@ public class Bullet{
      * Increments the position of the object - decrements the TTL
      * This allows for the translation of the bullet - moving in positions
      */
-    public void update(int minX, int minY, int maxX, int maxY){
+    public void update(int minX, int minY, int maxX, int maxY, float dt) {
 
-        // Look into incorporating this into the Vector2 class(?)
-        // mmmm, yesn't
-        //####################################################\\
+        Vector2 newVel = velocity.copy();
+        newVel.scalarMul(dt);
 
-        position.vecAdd(velocity);
+        position.vecAdd(newVel);
 
         double x = position.getX();
         double y = position.getY();

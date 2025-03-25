@@ -43,14 +43,9 @@ public class Main extends Application{
     private Canvas canvas;  // The game canvas
     private GraphicsContext gc;
 
-    private static final int TARGET_FPS = 75;
-    private static final long FRAME_TIME = 1_000_000_000 / TARGET_FPS; // Nanoseconds per frame
-
-    private long lastFrameTime = System.nanoTime();
-    private long lastFPSUpdate = System.nanoTime();
-    private int frameCount = 0;
-    private int fps = 0;
-    private double accumulatedTime = 0;
+    float deltaTime;
+    private long prevTime = 0;
+    private long fps;
 
     /**
      * Starting code - once the game is run, the method is called
@@ -134,10 +129,12 @@ public class Main extends Application{
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                long elapsedTime = now - lastFrameTime;
-                lastFrameTime = now;
 
-                accumulatedTime += elapsedTime;
+                long diff = now - prevTime;
+                prevTime += diff;
+                deltaTime = diff / 1_000_000_000.0f;
+
+                fps = (int) (1 / deltaTime);
 
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -148,17 +145,15 @@ public class Main extends Application{
                     gc.fillText("GAME OVER >:)", 300, 300);
                     this.stop();
                 }
-                 while (!pause.get() && accumulatedTime >= FRAME_TIME) {
-                    game.handleKeyPress(pressedKeys);
-                    game.update();
-                    game.draw(gc);
-                    accumulatedTime -= FRAME_TIME;
-                }
 
                 if (pause.get()) {
                     gc.setFont(gitGud);
                     gc.setFill(Color.WHITE);
                     gc.fillText("PAUSED", 300, 300);
+                }
+                else {
+                    game.handleKeyPress(pressedKeys, deltaTime);
+                    game.update(deltaTime);
                 }
 
                 // draw fps
@@ -170,13 +165,6 @@ public class Main extends Application{
 
                 drawPixelatedStars(gc);
                 game.draw(gc);
-                frameCount++;
-                // Update FPS counter every second
-                if (now - lastFPSUpdate >= 1_000_000_000) {
-                    fps = frameCount;
-                    frameCount = 0;
-                    lastFPSUpdate = now;
-                }
             }
         };
         return gameLoop;

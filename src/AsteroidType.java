@@ -6,9 +6,9 @@
  */
 public enum AsteroidType {
 
-    SMALL(15, 3, Math.toRadians(2)),
-    MEDIUM(25, 1, Math.toRadians(1)),
-    LARGE(50, 0.5, Math.toRadians(0.5));
+    SMALL(15, 180, Math.toRadians(75)),
+    MEDIUM(25, 120, Math.toRadians(60)),
+    LARGE(50, 60, Math.toRadians(45));
 
     private final int size;
     private final double speed;
