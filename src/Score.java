@@ -1,6 +1,7 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 import java.awt.*;
 
@@ -12,7 +13,7 @@ public class Score {
     private static final int INITIAL_MULTIPLIER_TTL = 300;
     private static final int BAR_WIDTH = 90;
     private static final int BAR_HEIGHT = 12;
-    private static final int TEXT_OFFSET = 40;
+    private static final int TEXT_OFFSET = 30;
 
     private static final int CANVAS_WIDTH = 600;
     private static final int CANVAS_HEIGHT = 600;
@@ -126,9 +127,8 @@ public class Score {
         gc.setFont(Font.font("Courier New",20));
         gc.setFill(Color.WHITE);
         String scoreText = "Score: " + score;
-        double textWidth = gc.getFont().getSize() * scoreText.length() * 0.5;
-        //gc.fillText(String.valueOf(score), 35, 20);
-        gc.fillText(scoreText, (CANVAS_WIDTH - textWidth) / 2, 30);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText(scoreText, CANVAS_WIDTH / 2, 30);
     }
 
     /**

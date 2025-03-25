@@ -165,7 +165,7 @@ public class Main extends Application{
                 gc.setFont(fpsFont);
                 gc.setFill(Color.WHITE);
                 gc.setTextAlign(TextAlignment.LEFT);
-                gc.fillText(String.format("FPS: %d", fps), 0, 20);
+                gc.fillText(String.format("FPS: %d", fps), 10, 30);
                 gc.setTextAlign(TextAlignment.CENTER);
 
                 drawPixelatedStars(gc);
