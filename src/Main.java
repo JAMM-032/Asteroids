@@ -142,13 +142,28 @@ public class Main extends Application{
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
+                // Game over menu
                 if (game.isGameOver()) {
                     gc.setFont(gitGud);
                     gc.setFill(Color.WHITE);
                     gc.fillText("GAME OVER >:)", 300, 300);
+
+                    // Display Game Stats
+                    game.displayStats();
+
                     this.stop();
+
+                    // Wait for Restart key to be pressed (ENTER)
+                    stage.getScene().setOnKeyPressed(e -> {
+                        if (e.getCode() == KeyCode.ENTER) {
+                            restartGame(stage);
+                        }
+                    });
+
+
                 }
-                 while (!pause.get() && accumulatedTime >= FRAME_TIME) {
+
+                while (!pause.get() && accumulatedTime >= FRAME_TIME) {
                     game.handleKeyPress(pressedKeys);
                     game.update();
                     game.draw(gc);
@@ -224,5 +239,11 @@ public class Main extends Application{
             gc.setFill(starColour[rand.nextInt(starColour.length)]);
             gc.fillRect(x, y, size, size);
         }
+    }
+
+
+    private void restartGame(Stage stage){
+        Scene gameScene = getGameScene(stage);
+        stage.setScene(gameScene);
     }
 }

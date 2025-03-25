@@ -2,7 +2,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
-import javax.naming.event.EventDirContext;
 import java.util.Random;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -244,4 +243,10 @@ public class GameWorld {
 
         return pos;
     }
+
+
+    public void displayStats() {
+        ;
+    }
+
 }
