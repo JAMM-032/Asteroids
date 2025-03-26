@@ -161,6 +161,13 @@ public class GameWorld {
                     // Save Max reached multiplier
                     stats.saveMaxMultiplier(score.getMultiplier());
 
+                    // Determine type of object destroyed and increment suitable field in GameStats object
+                    if (ob instanceof AlienShip) {
+                        stats.incrementSpaceshipCount();
+                    } else {
+                        stats.incrementAsteroidCount();
+                    }
+
                     it1.remove();
                     b.setDead();
 
