@@ -276,7 +276,7 @@ public class GameWorld {
 
         // Menu Box
         double boxWidth = 400;
-        double boxHeight = 320;
+        double boxHeight = 350;
         double boxX = centerX -(boxWidth / 2);
         double boxY = centerY -(boxHeight / 2);
 
@@ -297,7 +297,7 @@ public class GameWorld {
         gc.fillText("GAME OVER", centerX, boxY+currentYOffset);
 
         // Header Line
-        currentYOffset+= 10;
+        currentYOffset+= 20;
         gc.strokeLine(boxX, boxY + currentYOffset, boxX + boxWidth, boxY + currentYOffset);
 
         // Statistics Text
@@ -315,7 +315,7 @@ public class GameWorld {
         // Display fields along with values
         for (Map.Entry<String, List<String>> entry : statsMap.entrySet()) {
             List<String> fields = entry.getValue();
-            currentYOffset += 30;
+            currentYOffset += 35;
 
             // Ensure we have both elements
             if (fields.size() >= 2) {
