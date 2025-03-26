@@ -4,12 +4,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
-import java.util.Random;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * A class to initalise the GameWorld - will create the basic canvas
@@ -24,6 +21,7 @@ public class GameWorld {
     ArrayList<Obstacle> asteroids;
     Spaceship player;
     Score score;
+    GameStats stats;
     private boolean gameOver = false;
 
     private static final int PADDING = 30;
@@ -41,6 +39,7 @@ public class GameWorld {
     private static final int MAX_ASTEROIDS = 20;
 
     private double startTime = 0.0;
+    private double gameTime;
 
     private static final String[] EDGES = {
         "LEFT", "RIGHT", "TOP", "BOTTOM"
@@ -56,8 +55,10 @@ public class GameWorld {
         score = new Score();
         bullets = new ArrayList<>();
         asteroids = new ArrayList<>();
+        stats = new GameStats();
         WIDTH = width;
         HEIGHT = height;
+        gameTime = System.currentTimeMillis();
     }
 
     /**
@@ -112,6 +113,11 @@ public class GameWorld {
         for (Obstacle ob : asteroids) {
             if (player.getShape().polygonPolygonCollision(ob.getShape())) {
                 gameOver = true;
+
+                // Record final game stats
+                stats.setScore(score.getScore());
+                stats.setTime(System.currentTimeMillis() - gameTime);
+
                 break;
             }
         }
@@ -151,6 +157,10 @@ public class GameWorld {
                     // Add score (fixed value for now) and increment multiplier
                     score.increase(ob.getScoreValue());
                     score.incrementMultiplier();
+
+                    // Save Max reached multiplier
+                    stats.saveMaxMultiplier(score.getMultiplier());
+
                     it1.remove();
                     b.setDead();
 
@@ -248,6 +258,7 @@ public class GameWorld {
     }
 
 
+
     public void displayStats(GraphicsContext gc) {
         // Reset canvas
         gc.setFill(Color.BLACK);
@@ -262,13 +273,13 @@ public class GameWorld {
         double boxX = centerX -(boxWidth / 2);
         double boxY = centerY -(boxHeight / 2);
 
+        double currentYOffset = 40;
+
         // Display Box
         gc.setStroke(Color.WHITE);
         gc.setLineWidth(3);
         gc.strokeRect(boxX, boxY, boxWidth, boxHeight);
 
-        // Header Line
-        gc.strokeLine(boxX, boxY + 50, boxX + boxWidth, boxY + 50);
 
         // Set text parameters
         gc.setFont(new Font(30));
@@ -276,28 +287,49 @@ public class GameWorld {
         gc.setTextAlign(TextAlignment.CENTER);
 
         // Game Over Text
-        gc.fillText("GAME OVER", centerX, boxY+40);
+        gc.fillText("GAME OVER", centerX, boxY+currentYOffset);
+
+        // Header Line
+        currentYOffset+= 10;
+        gc.strokeLine(boxX, boxY + currentYOffset, boxX + boxWidth, boxY + currentYOffset);
 
         // Statistics Text
+        currentYOffset+= 30;
         gc.setFont(new Font(20));
-        gc.fillText("Statistics", centerX, boxY+80);
+        gc.fillText("Statistics", centerX, boxY+currentYOffset);
+
+        // Retrieve Game Statistics
+        Map<String, List<String>> statsMap = stats.getFinalStats();
 
         // Game Stats Text
         gc.setFont(new Font(18));
-        gc.setTextAlign(TextAlignment.LEFT);
-        gc.fillText("Asteroids Destroyed " + "25", boxX+20, boxY+120);
-        gc.fillText("Spaceships Destroyed " + "12", boxX+20, boxY+150);
-        gc.fillText("Max Multiplier " + "x2.1", boxX+20, boxY+180);
-        gc.fillText("Total Score " + "1021", boxX+20, boxY+210);
-        gc.fillText("Time survived " + "02:42", boxX+20, boxY+240);
+        int xOffset = 20;
 
+        // Display fields along with values
+        for (Map.Entry<String, List<String>> entry : statsMap.entrySet()) {
+            List<String> fields = entry.getValue();
+            currentYOffset += 30;
 
+            // Ensure we have both elements
+            if (fields.size() >= 2) {
+                // Display field on the left-side
+                gc.setTextAlign(TextAlignment.LEFT);
+                gc.fillText(fields.get(0), boxX+xOffset, boxY+currentYOffset);
+
+                // Display value on the right-side
+                gc.setTextAlign(TextAlignment.RIGHT);
+                gc.fillText(fields.get(1), boxX+boxWidth-xOffset, boxY+currentYOffset);
+
+            }
+        }
 
         // Restart message
-        gc.strokeLine(boxX, boxY + 270, boxX + boxWidth, boxY + 270);
+        currentYOffset+= 30;
+        gc.strokeLine(boxX, boxY + currentYOffset, boxX + boxWidth, boxY + currentYOffset);
         gc.setFont(new Font(16));
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Press Enter to Play Again...", centerX, boxY+300);
+        currentYOffset+=30;
+        gc.fillText("Press Enter to Play Again...", centerX, boxY+currentYOffset);
     }
 
 }
