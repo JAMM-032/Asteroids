@@ -59,6 +59,7 @@ public class GameWorld {
         WIDTH = width;
         HEIGHT = height;
         gameTime = System.currentTimeMillis();
+        startTime = gameTime;
     }
 
     /**
@@ -268,8 +269,8 @@ public class GameWorld {
 
     public void displayStats(GraphicsContext gc) {
         // Reset canvas
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, WIDTH, HEIGHT);
+//        gc.setFill(Color.BLACK);
+//        gc.fillRect(0, 0, WIDTH, HEIGHT);
 
         double centerX = WIDTH / 2;
         double centerY = HEIGHT / 2;
