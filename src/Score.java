@@ -3,8 +3,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import java.awt.*;
-
 /**
  * Score class manages the player's score and multiplier system.
  */
@@ -142,10 +140,18 @@ public class Score {
         gc.fillText(String.format("%.2f", multiplier), CANVAS_WIDTH-X_OFFSET, textY);
     }
 
+    /**
+     * Returns game score.
+     * @return current game score as integer.
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Returns current game score multiplier.
+     * @return current score multiplier as double
+     */
     public double getMultiplier() {
         return multiplier;
     }
