@@ -121,8 +121,6 @@ public class Main extends Application{
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                long elapsedTime = now - lastFrameTime;
-                lastFrameTime = now;
 
                 // Clear the screen
                 gc.setFill(Color.BLACK);
