@@ -5,8 +5,8 @@ public class AlienShip extends Obstacle {
     private boolean isSpaceStation;
     private Shape playerShip;
     private double rotation;
-    private final double ACCELERATION = (new Random()).nextDouble(100.0,120.0);
-    private static final double MAX_SPEED = 100.0;
+    private static final double MAX_SPEED = 150;
+    private final double ACCELERATION = (new Random()).nextDouble(MAX_SPEED-50, MAX_SPEED+50);
 
     public AlienShip(Shape player, AsteroidType type, Vector2 velocity, Vector2 position) {
         super(type, new Vector2(0, -1), new Vector2());

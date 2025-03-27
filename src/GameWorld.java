@@ -173,7 +173,7 @@ public class GameWorld {
                     player.accelerate(75.0);
                 }
                 case DOWN, S -> {
-                    player.accelerate(-75.0);
+                    player.accelerate(-40.0);
                 }
                 case LEFT, A -> {
                     player.rotateLeft(deltaTime);

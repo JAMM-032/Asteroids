@@ -8,8 +8,8 @@ public class Spaceship {
     private double angle = Math.toRadians(-90);
     private final double ANGLE_DIFF = Math.toRadians(270); // Change of angle
 
-    private static final double MAX_ACCELERATION = 100;
-    private static final double MAX_VELOCITY = 150;
+    private static final double MAX_ACCELERATION = 750;
+    private static final double MAX_VELOCITY = 1250;
 
     /**
      * Creates a new Spaceship object at the specified position.
@@ -44,7 +44,7 @@ public class Spaceship {
         }
 
         // Apply resistance
-        velocity.scalarMul(Math.pow(0.6, dt));
+        velocity.scalarMul(Math.pow(0.1, dt));
         acceleration.scalarMul(Math.pow(0.25, dt));
         System.out.println(velocity.getMagnitude());
         // Update position
