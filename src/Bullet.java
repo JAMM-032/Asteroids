@@ -6,9 +6,11 @@ public class Bullet{
     Vector2 vector;
     private Vector2 position;
     private Vector2 velocity; // Current velocity of the bullet
-    private int TTL = 120; // Time to live - object will disappear -
+    private int TTL = 3 * 1000; // Time to live in milliseconds-
     private static final double radius = 2.0;
-    private static final int baseVel = 40;
+    private static final int baseVel = 100;
+
+    private long startTime;
 
     private boolean alive; // If the bullet still exists or not [ True = Alive,  False = Dead ]
 
@@ -25,6 +27,7 @@ public class Bullet{
         // Increases speed so that it moves faster than the player
 
         alive = true; // Initally the bullet is alive
+        startTime = System.currentTimeMillis();
     }
 
     /**
@@ -51,8 +54,7 @@ public class Bullet{
         else if (y < minY)
             position.setY(maxY);
 
-        TTL -= 1; // Decrements TTL - once it is 0, the bullet will despawn
-        if (TTL <= 0){
+        if (System.currentTimeMillis() - startTime >= TTL){
             alive = false;
         }
     }

@@ -9,7 +9,7 @@ import java.awt.*;
  */
 public class Score {
     private static final int MAX_MULTIPLIER = 3;
-    private static final int INITIAL_MULTIPLIER_TTL = 300;
+    private static final long INITIAL_MULTIPLIER_TTL = 5 * 1000;
     private static final int BAR_WIDTH = 90;
     private static final int BAR_HEIGHT = 12;
     private static final int TEXT_OFFSET = 40;
@@ -19,7 +19,9 @@ public class Score {
     private static final int X_OFFSET = 65;
     private static final int Y_OFFSET = 15;
 
-    private int multiplierTTL; // Time after which multiplier resets
+    private long prevTime;
+
+    private long multiplierTTL; // Time after which multiplier resets
     private int score;
     private double multiplier;
     private Shape multiplierBar;
@@ -29,6 +31,7 @@ public class Score {
         score = 0;
         multiplier = 1.0;
         multiplierTTL = INITIAL_MULTIPLIER_TTL;
+        prevTime = System.currentTimeMillis();
 
         initializeMultiplierBar();
     }
@@ -88,7 +91,10 @@ public class Score {
      */
     public void update() {
         if (multiplierTTL > 0) {
-            --multiplierTTL;
+            long currTime = System.currentTimeMillis();
+            long diff = currTime - prevTime;
+            prevTime = currTime;
+            multiplierTTL -= diff;
             if (multiplierTTL <= 0) {
                 resetMultiplier();
             }
@@ -123,7 +129,7 @@ public class Score {
         drawMultiplierLabel(gc);
 
         // Draw Score
-        gc.setFont(Font.font("Courier New",20));
+        gc.setFont(Font.font(20));
         gc.setFill(Color.WHITE);
         String scoreText = "Score: " + score;
         double textWidth = gc.getFont().getSize() * scoreText.length() * 0.5;
@@ -138,7 +144,7 @@ public class Score {
         double textY = Y_OFFSET + BAR_HEIGHT + TEXT_OFFSET; // Position below the bar
 
         gc.setFill(Color.WHITE);
-        gc.setFont(Font.font("Courier New", 15));
+        gc.setFont(Font.font( 15));
         gc.fillText(String.format("%.2f", multiplier), CANVAS_WIDTH-X_OFFSET, textY);
     }
 
