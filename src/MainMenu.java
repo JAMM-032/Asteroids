@@ -11,7 +11,12 @@ import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-
+/**
+ * The main menu class aims to initalise the menu which
+ * greets the user upon starting the game.
+ * It has a simple GUI display, and will shift the scene once start is
+ * initiated
+ */
 public class MainMenu extends VBox {
 
     private Stage stage;

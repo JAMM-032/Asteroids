@@ -213,6 +213,13 @@ public class Main extends Application{
         return stars;
     }
 
+    /**
+     * Draws the background stars
+     * The stars will oscillate between a fixed pattern - colours listed below
+     * Allows for the illusion of 'twinkling'
+     * @param gc - Graphics Context parsed in, allowing for the effective rendering
+     *           ...of the stars
+     */
     private void drawPixelatedStars(GraphicsContext gc){
         Color[] starColour = {
                 Color.rgb(255, 255, 255),
@@ -232,7 +239,10 @@ public class Main extends Application{
         }
     }
 
-
+    /**
+     * Restarts the game - equivalent to pressing start
+     * @param stage - Stage parsed in
+     */
     private void restartGame(Stage stage){
         Scene gameScene = getGameScene(stage);
         stage.setScene(gameScene);

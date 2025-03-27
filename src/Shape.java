@@ -3,6 +3,12 @@ import javafx.scene.paint.Color;
 
 import java.util.Random;
 
+/**
+ * This class handles the definitions of the shapes of each entity
+ * It also has the definitions in place for collisions AABB hitbox
+ * Draws a virtual box around a complicated shape - allowing for
+ * ... better hit detection
+ */
 public class Shape {
 
     private double[] xPoints;
@@ -51,6 +57,15 @@ public class Shape {
         aabb.updateAABB(xPoints, yPoints);
     }
 
+    /**
+     * Checks if the centre of the shape is outside of the padded region
+     * Allows for the wrap-around of the shape's position
+     * Good way to allow for seamless transition from sides of the page
+     * @param minX - Minimum x value allowed - for padding
+     * @param minY - Minimum y value allowed - for padding
+     * @param maxX - Maximum x value allowed - for padding
+     * @param maxY - Minimum y value allowed - for padding
+     */
     public void wrapAround(int minX, int minY, int maxX, int maxY) {
         double x = translation.getX();
         double y = translation.getY();
@@ -73,6 +88,10 @@ public class Shape {
         }
     }
 
+    /**
+     * Prints the position of the translation of the object - relative to the canvas
+     * ... and the padded constraints
+     */
     public void printPos() {
         System.out.println(translation.getX() + " " + translation.getY());
     }
@@ -174,6 +193,12 @@ public class Shape {
         return intersections % 2 != 0;
     }
 
+    /**
+     * A boolean to handle polygon collision - checks if the hitboxes of the two given
+     *  ... entities are in contact.
+     * @param shape -
+     * @return -
+     */
     public boolean polygonPolygonCollision(Shape shape) {
 
         if (!aabb.checkAABBCollision(shape.getAABB())) {
@@ -183,11 +208,21 @@ public class Shape {
         return true;
     }
 
+    /**
+     * Fills the screen with the desired shape of the polygon { SOLID shape }
+     * @param gc - Graphics context of the shape parsed in
+     * @param col - Colour of the given object
+     */
     public void drawFill(GraphicsContext gc, Color col) {
         gc.setFill(col);
         gc.fillPolygon(xPoints, yPoints, xPoints.length);
     }
 
+    /**
+     * Fills the screen with the desired shape of the polygon { Hollow shape }
+     * @param gc - Graphics context of the shape parsed in
+     * @param col - Colour of the given object
+     */
     public void drawStroke(GraphicsContext gc, Color col) {
         gc.setStroke(col);
         gc.strokePolygon(xPoints, yPoints, xPoints.length);
