@@ -8,7 +8,7 @@ public class Obstacle {
     protected Vector2 vel;
     protected Shape shape;
     protected AsteroidType type;
-    protected double scoreValue;
+    protected int scoreValue;
 
     public Obstacle(AsteroidType type, Vector2 velocity, Vector2 position) {
         acc = new Vector2();

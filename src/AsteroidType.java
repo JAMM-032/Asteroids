@@ -13,9 +13,9 @@ public enum AsteroidType {
     private final int size;
     private final double speed;
     private final double rotationSpeed;
-    private final double scoreValue;
+    private final int scoreValue;
 
-    AsteroidType(int size, double speed, double rotationSpeed, double scoreValue) {
+    AsteroidType(int size, double speed, double rotationSpeed, int scoreValue) {
         this.size = size;
         this.speed = speed;
         this.rotationSpeed = rotationSpeed;
@@ -34,7 +34,7 @@ public enum AsteroidType {
         return rotationSpeed;
     }
 
-    public double getScoreValue() {
+    public int getScoreValue() {
         return scoreValue;
     }
 }

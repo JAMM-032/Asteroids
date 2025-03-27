@@ -7,7 +7,7 @@ public class Bullet{
     private Vector2 position;
     private Vector2 velocity; // Current velocity of the bullet
     private int TTL = 120; // Time to live - object will disappear -
-    private static final double radius = 2.0;
+    private static final double radius = 4.0;
     private static final int baseVel = 5;
 
     private boolean alive; // If the bullet still exists or not [ True = Alive,  False = Dead ]

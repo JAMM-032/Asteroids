@@ -13,7 +13,7 @@ public class Score {
     private static final int INITIAL_MULTIPLIER_TTL = 300;
     private static final int BAR_WIDTH = 90;
     private static final int BAR_HEIGHT = 12;
-    private static final int TEXT_OFFSET = 30;
+    private static final int TEXT_OFFSET = 25;
 
     private static final int CANVAS_WIDTH = 600;
     private static final int CANVAS_HEIGHT = 600;
@@ -124,7 +124,7 @@ public class Score {
         drawMultiplierLabel(gc);
 
         // Draw Score
-        gc.setFont(Font.font("Courier New",20));
+        gc.setFont(Font.font("Verdana", 20));
         gc.setFill(Color.WHITE);
         String scoreText = "Score: " + score;
         gc.setTextAlign(TextAlignment.CENTER);
@@ -138,7 +138,7 @@ public class Score {
         double textY = Y_OFFSET + BAR_HEIGHT + TEXT_OFFSET; // Position below the bar
 
         gc.setFill(Color.WHITE);
-        gc.setFont(Font.font("Courier New", 15));
+        gc.setFont(Font.font("Verdana", 12));
         gc.fillText(String.format("%.2f", multiplier), CANVAS_WIDTH-X_OFFSET, textY);
     }
 
