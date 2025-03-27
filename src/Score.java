@@ -8,7 +8,7 @@ import javafx.scene.text.TextAlignment;
  */
 public class Score {
     private static final int MAX_MULTIPLIER = 3;
-    private static final int INITIAL_MULTIPLIER_TTL = 300;
+    private static final long INITIAL_MULTIPLIER_TTL = 5 * 1000;
     private static final int BAR_WIDTH = 90;
     private static final int BAR_HEIGHT = 12;
     private static final int TEXT_OFFSET = 25;
@@ -18,7 +18,9 @@ public class Score {
     private static final int X_OFFSET = 65;
     private static final int Y_OFFSET = 15;
 
-    private int multiplierTTL; // Time after which multiplier resets
+    private long prevTime;
+
+    private long multiplierTTL; // Time after which multiplier resets
     private int score;
     private double multiplier;
     private Shape multiplierBar;
@@ -28,6 +30,7 @@ public class Score {
         score = 0;
         multiplier = 1.0;
         multiplierTTL = INITIAL_MULTIPLIER_TTL;
+        prevTime = System.currentTimeMillis();
 
         initializeMultiplierBar();
     }
@@ -87,7 +90,10 @@ public class Score {
      */
     public void update() {
         if (multiplierTTL > 0) {
-            --multiplierTTL;
+            long currTime = System.currentTimeMillis();
+            long diff = currTime - prevTime;
+            prevTime = currTime;
+            multiplierTTL -= diff;
             if (multiplierTTL <= 0) {
                 resetMultiplier();
             }

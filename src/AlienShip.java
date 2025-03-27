@@ -11,8 +11,8 @@ public class AlienShip extends Obstacle {
     private boolean isSpaceStation;
     private Shape playerShip;
     private double rotation;
-    private final double ACCELERATION = (new Random()).nextDouble(0.05,0.2);
-    private static final double MAX_SPEED = 1.2;
+    private static final double MAX_SPEED = 150;
+    private final double ACCELERATION = (new Random()).nextDouble(MAX_SPEED-50, MAX_SPEED+50);
 
     /**
      * Constructor Method  { Mothership Class Spaceship }
@@ -60,12 +60,12 @@ public class AlienShip extends Obstacle {
      * @param h - Height of a canvas - padding accounted
      */
     @Override
-    public void update(int x, int y, int w, int h) {
+    public void update(int x, int y, int w, int h, float dt) {
 
         Vector2 diff = shape.getPositionCopy().negate();
         diff.vecAdd(playerShip.getPositionCopy());
         diff.normalise();
-        diff.scalarMul(ACCELERATION);
+        diff.scalarMul(ACCELERATION * dt);
 
         vel.vecAdd(diff);
 
@@ -79,7 +79,10 @@ public class AlienShip extends Obstacle {
         rotation += angleDiff;
         shape.rotate(angleDiff);
 
-        shape.translate(vel);
+        Vector2 newVel = vel.copy();
+        newVel.scalarMul(dt);
+
+        shape.translate(newVel);
         shape.wrapAround(x, y, w, h);
     }
 
@@ -112,7 +115,7 @@ public class AlienShip extends Obstacle {
         Vector2 vel = bulletVel.copy();
         vel.rotate(Math.PI * 0.5);
         vel.normalise();
-        vel.scalarMul(5);
+        vel.scalarMul(MAX_SPEED);
 
         if (isSpaceStation) {
             return new Obstacle[] {

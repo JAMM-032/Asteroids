@@ -13,13 +13,10 @@ public class Spaceship {
     private final Vector2 velocity = new Vector2(0, 0);
     private final Vector2 acceleration = new Vector2(0, 0);
     private double angle = Math.toRadians(-90);
-    private final double angle_diff = Math.toRadians(5); // Change of angle
+    private final double ANGLE_DIFF = Math.toRadians(270); // Change of angle
 
-
-    private static final double MAX_ACCELERATION = 1;
-    private static final double MAX_VELOCITY = 3;
-
-
+    private static final double MAX_ACCELERATION = 750;
+    private static final double MAX_VELOCITY = 1250;
 
     /**
      * Creates a new Spaceship object at the specified position.
@@ -40,8 +37,12 @@ public class Spaceship {
      * Applies resistance to the velocity and acceleration.
      * Updates the position of the spaceship by translating using velocity vector .
      */
-    public void move(int x, int y, int w, int h) {
-        velocity.vecAdd(acceleration);
+    public void move(int x, int y, int w, int h, float dt) {
+
+        Vector2 newAcc = acceleration.copy();
+        newAcc.scalarMul(dt);
+
+        velocity.vecAdd(newAcc);
 
         // Check if current velocity exceeds max velocity
         if (velocity.getMagnitude() > MAX_VELOCITY) {
@@ -50,11 +51,15 @@ public class Spaceship {
         }
 
         // Apply resistance
-        velocity.scalarMul(0.99);
-        acceleration.scalarMul(0.85);
-
+        velocity.scalarMul(Math.pow(0.1, dt));
+        acceleration.scalarMul(Math.pow(0.25, dt));
+        System.out.println(velocity.getMagnitude());
         // Update position
-        spaceship.translate(velocity);
+
+        Vector2 newVel = velocity.copy();
+        newVel.scalarMul(dt);
+
+        spaceship.translate(newVel);
         spaceship.wrapAround(x, y, w, h);
     }
 
@@ -90,9 +95,9 @@ public class Spaceship {
      * Rotates the points that spaceship consists of by angle_diff
      * using the rotate() method of Polygon class
      */
-    public void rotateRight() {
-        angle += angle_diff;
-        spaceship.rotate(angle_diff);
+    public void rotateRight(float dt) {
+        angle += ANGLE_DIFF * dt;
+        spaceship.rotate(ANGLE_DIFF * dt);
     }
 
     /**
@@ -100,13 +105,13 @@ public class Spaceship {
      * Rotates the points that spaceship consists of by -angle_diff
      * using the rotate() method of Polygon class
      */
-    public void rotateLeft() {
-        angle -= angle_diff;
-        spaceship.rotate(-angle_diff);
+    public void rotateLeft(float dt) {
+        angle -= ANGLE_DIFF * dt;
+        spaceship.rotate(-ANGLE_DIFF * dt);
     }
 
     public double getVelocity() {
-        return MAX_VELOCITY;
+        return velocity.getMagnitude();
     }
 
     /**

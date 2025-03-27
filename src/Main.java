@@ -43,6 +43,10 @@ public class Main extends Application{
     private Canvas canvas;  // The game canvas
     private GraphicsContext gc;
 
+    float deltaTime;
+    private long prevTime = 0;
+    private long fps;
+
     /**
      * Starting code - once the game is run, the method is called
      */
@@ -122,6 +126,12 @@ public class Main extends Application{
             @Override
             public void handle(long now) {
 
+                long diff = now - prevTime;
+                prevTime += diff;
+                deltaTime = diff / 1_000_000_000.0f;
+
+                fps = (int) (1 / deltaTime);
+
                 // Clear the screen
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -130,7 +140,6 @@ public class Main extends Application{
                 if (game.isGameOver()) {
                     // Stop the game loop
                     this.stop();
-
                     // Display game over stats
                     game.displayStats(gc);
 
@@ -154,13 +163,13 @@ public class Main extends Application{
                     gc.fillText("PAUSED", 300, 300);
                 }
                 else {
-                    game.handleKeyPress(pressedKeys);
-                    game.update();
-                    game.draw(gc);
+                    game.handleKeyPress(pressedKeys, deltaTime);
+                    game.update(deltaTime);
                 }
 
                 // Draw background stars
                 drawPixelatedStars(gc);
+                game.draw(gc);
             }
         };
         return gameLoop;

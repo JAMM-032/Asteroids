@@ -87,22 +87,22 @@ public class GameWorld {
      * Calls for the updating of the display
      * Changes the current scenery, updating to the (new) positions
      */
-    public void update() {
+    public void update(float dt) {
 
         for (Bullet b : bullets) {
-            b.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING);
+            b.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING, dt);
         }
 
         // Remove 'dead' bullets
         bullets.removeIf(bullet -> !bullet.isAlive());
 
         for (Obstacle ob : asteroids) {
-            ob.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING);
+            ob.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING, dt);
         }
 
-        player.move(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING);
+        player.move(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING, dt);
 
-        collisionResolution();
+         collisionResolution();
 
         score.update(); // resets multiplier after some time
 
@@ -186,20 +186,20 @@ public class GameWorld {
      * Will handle user input smoothly
      * @param keys - the current input of the user
      */
-    public void handleKeyPress(Set<KeyCode> keys) {
+    public void handleKeyPress(Set<KeyCode> keys, float deltaTime) {
         for (KeyCode code : keys) {
             switch (code) {
                 case UP, W -> {
-                    player.accelerate(0.01);
+                    player.accelerate(75.0);
                 }
                 case DOWN, S -> {
-                    player.accelerate(-0.01);
+                    player.accelerate(-40.0);
                 }
                 case LEFT, A -> {
-                    player.rotateLeft();
+                    player.rotateLeft(deltaTime);
                 }
                 case RIGHT, D -> {
-                    player.rotateRight();
+                    player.rotateRight(deltaTime);
                 }
                 case SPACE -> {
 
