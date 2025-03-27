@@ -137,8 +137,6 @@ public class Main extends Application{
                 long elapsedTime = now - lastFrameTime;
                 lastFrameTime = now;
 
-                accumulatedTime += elapsedTime;
-
                 // Clear the screen
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -163,18 +161,17 @@ public class Main extends Application{
                 }
 
                 // Game logic for drawing objects (if not game over)
-                while (!pause.get() && accumulatedTime >= FRAME_TIME) {
-                    game.handleKeyPress(pressedKeys);
-                    game.update();
-                    game.draw(gc);
-                    accumulatedTime -= FRAME_TIME;
-                }
 
                 // Display pause screen
                 if (pause.get()) {
                     gc.setFont(new Font(30));
                     gc.setFill(Color.WHITE);
                     gc.fillText("PAUSED", 300, 300);
+                }
+                else {
+                    game.handleKeyPress(pressedKeys);
+                    game.update();
+                    game.draw(gc);
                 }
 
                 // Draw FPS (optional)
@@ -186,14 +183,6 @@ public class Main extends Application{
 
                 // Draw background stars
                 drawPixelatedStars(gc);
-
-                // Update the frame counter for FPS calculation
-                frameCount++;
-                if (now - lastFPSUpdate >= 1_000_000_000) {
-                    fps = frameCount;
-                    frameCount = 0;
-                    lastFPSUpdate = now;
-                }
             }
         };
         return gameLoop;
