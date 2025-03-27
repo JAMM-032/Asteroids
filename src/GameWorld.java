@@ -3,7 +3,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
 import java.util.*;
 
@@ -17,7 +16,7 @@ import java.util.*;
 public class GameWorld {
 
     ArrayList<Bullet> bullets;
-    ArrayList<Obstacle> asteroids;
+    ArrayList<Entity> asteroids;
     Spaceship player;
     Score score;
     GameStats stats;
@@ -65,7 +64,6 @@ public class GameWorld {
      * A method to draw the active items - items which have animations / move in the game
      * Of these involve the bullet - fired by the player
      * the asteroids - spawn as an antagonist to the player
-     *
      * Collision resolution is also called from this class
      *
      * @param gc - graphics context of the current (given) scene
@@ -75,7 +73,7 @@ public class GameWorld {
             b.draw(gc);
         }
 
-        for (Obstacle ob : asteroids) {
+        for (Entity ob : asteroids) {
             ob.draw(gc, Color.WHITE);
         }
 
@@ -96,13 +94,13 @@ public class GameWorld {
         // Remove 'dead' bullets
         bullets.removeIf(bullet -> !bullet.isAlive());
 
-        for (Obstacle ob : asteroids) {
+        for (Entity ob : asteroids) {
             ob.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING, dt);
         }
 
         player.move(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING, dt);
 
-         collisionResolution();
+        collisionResolution();
 
         score.update(); // resets multiplier after some time
 
@@ -110,7 +108,7 @@ public class GameWorld {
         Player collision is handled here
         If a collision occurs, the player will be hurt
          */
-        for (Obstacle ob : asteroids) {
+        for (Entity ob : asteroids) {
             if (player.getShape().polygonPolygonCollision(ob.getShape())) {
                 gameOver = true;
 
@@ -139,22 +137,22 @@ public class GameWorld {
      */
     public void collisionResolution() {
 
-        ArrayList<Obstacle> newAsteroids = new ArrayList<>();
+        ArrayList<Entity> newAsteroids = new ArrayList<>();
 
         for (Iterator<Bullet> it = bullets.iterator(); it.hasNext();) {
             Bullet b = it.next();
             Vector2 bulletPos = b.getPos();
             Vector2 bulletVel = b.getVel();
 
-            for (Iterator<Obstacle> it1 = asteroids.iterator(); it1.hasNext();) {
-                Obstacle ob = it1.next();
+            for (Iterator<Entity> it1 = asteroids.iterator(); it1.hasNext();) {
+                Entity ob = it1.next();
 
-                if (ob.bulletCollision(bulletPos)) {
-                    Obstacle[] newObjects = ob.spawnAsteroids(bulletVel);
+                if (ob.pointCollision(bulletPos)) {
+                    Entity[] newObjects = ob.spawnObstacles(bulletVel);
                     if (newObjects != null)
                         newAsteroids.addAll(Arrays.asList(newObjects));
 
-                    // Add score (fixed value for now) and increment multiplier
+                    // Add score and increment multiplier
                     score.increase(ob.getScoreValue());
                     score.incrementMultiplier();
 
@@ -170,7 +168,6 @@ public class GameWorld {
 
                     it1.remove();
                     b.setDead();
-
 
                     break;
                 }
@@ -205,8 +202,7 @@ public class GameWorld {
 
                     if (!shotsFired) {
                         shotsFired = true;
-                        Vector2 pos = player.getShape().getPositionCopy();
-                        bullets.add(new Bullet(pos, player.getVelocity(), player.getRotation()));
+                        bullets.add(player.fire());
                     }
                 }
             }
@@ -335,8 +331,8 @@ public class GameWorld {
         gc.strokeLine(boxX, boxY + currentYOffset, boxX + boxWidth, boxY + currentYOffset);
         gc.setFont(new Font("Impact", 16));
         gc.setTextAlign(TextAlignment.CENTER);
-        currentYOffset+=30;
-        gc.fillText("Press Enter to Play Again...", centerX, boxY+currentYOffset);
+        currentYOffset+=25;
+        gc.fillText("Press Enter to Play Again...\nCtrl+Q to Quit!", centerX, boxY+currentYOffset);
     }
 
 }

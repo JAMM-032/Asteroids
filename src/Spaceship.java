@@ -53,26 +53,13 @@ public class Spaceship {
         // Apply resistance
         velocity.scalarMul(Math.pow(0.1, dt));
         acceleration.scalarMul(Math.pow(0.25, dt));
-        System.out.println(velocity.getMagnitude());
-        // Update position
 
+        // Update position
         Vector2 newVel = velocity.copy();
         newVel.scalarMul(dt);
 
         spaceship.translate(newVel);
         spaceship.wrapAround(x, y, w, h);
-    }
-
-    public void printPos() {
-        spaceship.printPos();
-    }
-
-    public Shape getShape() {
-        return spaceship;
-    }
-
-    public double getRotation() {
-        return angle;
     }
 
     /**
@@ -110,10 +97,6 @@ public class Spaceship {
         spaceship.rotate(-ANGLE_DIFF * dt);
     }
 
-    public double getVelocity() {
-        return velocity.getMagnitude();
-    }
-
     /**
      * Draws the spaceship on the given GraphicsContext with a blue stroke color.
      *
@@ -121,5 +104,30 @@ public class Spaceship {
      */
     public void draw(GraphicsContext gc) {
         spaceship.drawFill(gc, Color.WHITE);
+    }
+
+    public void printPos() {
+        spaceship.printPos();
+    }
+
+    public Shape getShape() {
+        return spaceship;
+    }
+
+    public double getRotation() {
+        return angle;
+    }
+
+    public double getVelocity() {
+        return velocity.getMagnitude();
+    }
+
+    /**
+     * Fire a bullet from the player spaceship.
+     * @return A new bullet object which has just been fired.
+     */
+    public Bullet fire() {
+        Vector2 pos = spaceship.getPositionCopy();
+        return new Bullet(pos, getVelocity(), getRotation());
     }
 }

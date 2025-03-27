@@ -2,21 +2,23 @@ import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.paint.Color;
 
-public class Obstacle {
+public class Obstacle extends Entity {
 
     protected Vector2 acc;
     protected Vector2 vel;
-    protected Shape shape;
     protected AsteroidType type;
-    protected int scoreValue;
 
     public Obstacle(AsteroidType type, Vector2 velocity, Vector2 position) {
+        this.type = type;
         acc = new Vector2();
         vel = velocity;
-        shape = new Shape(7, type.getSizeRange());
+        createShape();
         shape.translate(position);
-        this.type = type;
-        scoreValue = type.getScoreValue();
+    }
+
+    @Override
+    protected void createShape() {
+        shape = new Shape(7, type.getSizeRange());
     }
 
     /**
@@ -43,19 +45,17 @@ public class Obstacle {
         shape.drawStroke(gc, col);
     }
 
-    public boolean bulletCollision(Vector2 point) {
-        return shape.collides(point);
-    }
-
     public Shape getShape() {
         return this.shape;
     }
 
-    public double getScoreValue() {
-        return scoreValue;
+    @Override
+    public int getScoreValue() {
+        return type.getScoreValue();
     }
 
-    public Obstacle[] spawnAsteroids(Vector2 bulletVel) {
+    @Override
+    public Obstacle[] spawnObstacles(Vector2 bulletVel) {
 
         Obstacle[] obstacles = new Obstacle[2];
 

@@ -6,7 +6,7 @@ public class Bullet{
     Vector2 vector;
     private Vector2 position;
     private Vector2 velocity; // Current velocity of the bullet
-    private int TTL = 3 * 1000; // Time to live in milliseconds-
+    private static final long TTL = 2 * 1000; // Time to live in milliseconds-
     private static final double radius = 4.0;
     private static final int baseVel = 200;
 

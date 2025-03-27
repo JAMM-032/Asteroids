@@ -29,7 +29,7 @@ public class Score {
     public Score() {
         score = 0;
         multiplier = 1.0;
-        multiplierTTL = INITIAL_MULTIPLIER_TTL;
+        multiplierTTL = 0;
         prevTime = System.currentTimeMillis();
 
         initializeMultiplierBar();
@@ -89,10 +89,11 @@ public class Score {
      * If TTL expires, resets the multiplier.
      */
     public void update() {
+        long currTime = System.currentTimeMillis();
+        long diff = currTime - prevTime;
+        prevTime = currTime;
+
         if (multiplierTTL > 0) {
-            long currTime = System.currentTimeMillis();
-            long diff = currTime - prevTime;
-            prevTime = currTime;
             multiplierTTL -= diff;
             if (multiplierTTL <= 0) {
                 resetMultiplier();

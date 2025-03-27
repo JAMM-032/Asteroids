@@ -6,13 +6,16 @@ import java.util.Random;
  * However, the alienship possesses a unique property, being able
  * to track and follow the player at any given moment.
  */
-public class AlienShip extends Obstacle {
+public class AlienShip extends Entity {
 
     private boolean isSpaceStation;
     private Shape playerShip;
     private double rotation;
     private static final double MAX_SPEED = 150;
     private final double ACCELERATION = (new Random()).nextDouble(MAX_SPEED-50, MAX_SPEED+50);
+
+    private Vector2 vel = new Vector2(0, 0);
+    private int scoreValue;
 
     /**
      * Constructor Method  { Mothership Class Spaceship }
@@ -22,10 +25,9 @@ public class AlienShip extends Obstacle {
      * @param position - Position of the alienship when spawning into the world
      */
     public AlienShip(Shape player, AsteroidType type, Vector2 position) {
-        super(type, new Vector2(0, -1), new Vector2());
         playerShip = player;
         isSpaceStation = true;
-        setSpaceStationShape();
+        createShape();
         shape.translate(position);
         rotation = 0.0;
         scoreValue = 50;
@@ -41,15 +43,19 @@ public class AlienShip extends Obstacle {
      * @param position - Position of the alienship when spawning into the world
      */
     private AlienShip(Shape player, Vector2 velocity, Vector2 position) {
-        super(AsteroidType.LARGE, velocity, new Vector2());
+        vel = velocity;
         playerShip = player;
         isSpaceStation = false;
-        setAlienShipShape();
+        createShape();
         shape.translate(position);
         rotation = 0.0;
         scoreValue = 20;
     }
 
+    @Override
+    public int getScoreValue() {
+        return scoreValue;
+    }
 
     /**
      * Updates the drawing of the spaceship at any given moment
@@ -86,31 +92,24 @@ public class AlienShip extends Obstacle {
         shape.wrapAround(x, y, w, h);
     }
 
-    /**
-     * Sets the spaceship shape - new points defined as a rhombus - Mothership class spaceship
-     */
-    private void setSpaceStationShape() {
-        shape = new Shape(
-                new double[] {-20, 0, 20, 0, -20},
-                new double[] {0, -10, 0, 10, 0});
-    }
-
-    /**
-     * Sets the spaceship shape - new points defined as an arrow akin to the player's shape
-     */
-    private void setAlienShipShape() {
-        shape = new Shape(
-                new double[] {-5, -10, 10, -10, -5},
-                new double[] {0, -10, 0, 10, 0});
-    }
-
-    /**
-     * Spawns the asteroids - adding them to a list
-     * @param bulletVel - Bullet velocity defined
-     * @return - Returns the current information of the new Obstacle[] array
-     */
     @Override
-    public Obstacle[] spawnAsteroids(Vector2 bulletVel) {
+    protected void createShape() {
+        // new points defined as a rhombus - Mothership type spaceship
+        if (isSpaceStation) {
+            shape = new Shape(
+                    new double[] {-20, 0, 20, 0, -20},
+                    new double[] {0, -10, 0, 10, 0});
+        }
+        // new points defined as an arrow akin to the player's shape
+        else {
+            shape = new Shape(
+                    new double[] {-5, -10, 10, -10, -5},
+                    new double[] {0, -10, 0, 10, 0});
+        }
+    }
+
+    @Override
+    public Entity[] spawnObstacles(Vector2 bulletVel) {
 
         Vector2 vel = bulletVel.copy();
         vel.rotate(Math.PI * 0.5);
@@ -118,11 +117,11 @@ public class AlienShip extends Obstacle {
         vel.scalarMul(MAX_SPEED);
 
         if (isSpaceStation) {
-            return new Obstacle[] {
+            return new Entity[] {
                 new AlienShip(playerShip, vel, shape.getPositionCopy()),
                 new AlienShip(playerShip, vel.negate(), shape.getPositionCopy())
             };
         }
-        return new Obstacle[0];
+        return null;
     }
 }
