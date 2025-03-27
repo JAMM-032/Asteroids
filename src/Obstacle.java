@@ -8,6 +8,7 @@ public class Obstacle {
     protected Vector2 vel;
     protected Shape shape;
     protected AsteroidType type;
+    protected int scoreValue;
 
     public Obstacle(AsteroidType type, Vector2 velocity, Vector2 position) {
         acc = new Vector2();
@@ -15,6 +16,7 @@ public class Obstacle {
         shape = new Shape(7, type.getSizeRange());
         shape.translate(position);
         this.type = type;
+        scoreValue = type.getScoreValue();
     }
 
     /**
@@ -47,6 +49,10 @@ public class Obstacle {
 
     public Shape getShape() {
         return this.shape;
+    }
+
+    public double getScoreValue() {
+        return scoreValue;
     }
 
     public Obstacle[] spawnAsteroids(Vector2 bulletVel) {

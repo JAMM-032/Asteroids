@@ -120,10 +120,6 @@ public class Main extends Application{
     private AnimationTimer getAnimationTimer(Canvas canvas, GraphicsContext gc) {
         GameWorld game = new GameWorld(canvas.getWidth(), canvas.getHeight());
 
-        Font gitGud = new Font(30);
-
-        Font fpsFont = new Font(15);
-
         gc.setTextAlign(TextAlignment.CENTER);
 
         AnimationTimer gameLoop = new AnimationTimer() {
@@ -136,18 +132,33 @@ public class Main extends Application{
 
                 fps = (int) (1 / deltaTime);
 
+                // Clear the screen
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
+                // Check if the game is over
                 if (game.isGameOver()) {
-                    gc.setFont(gitGud);
-                    gc.setFill(Color.WHITE);
-                    gc.fillText("GAME OVER >:)", 300, 300);
+                    // Stop the game loop
                     this.stop();
+                    // Display game over stats
+                    game.displayStats(gc);
+
+                    // Wait for the restart key (ENTER)
+                    stage.getScene().setOnKeyPressed(e -> {
+                        if (e.getCode() == KeyCode.ENTER) {
+                            restartGame(stage);
+                        }
+                    });
+
+                    // Return to prevent drawing
+                    return;
                 }
 
+                // Game logic for drawing objects (if not game over)
+
+                // Display pause screen
                 if (pause.get()) {
-                    gc.setFont(gitGud);
+                    gc.setFont(new Font(30));
                     gc.setFill(Color.WHITE);
                     gc.fillText("PAUSED", 300, 300);
                 }
@@ -156,13 +167,7 @@ public class Main extends Application{
                     game.update(deltaTime);
                 }
 
-                // draw fps
-                gc.setFont(fpsFont);
-                gc.setFill(Color.WHITE);
-                gc.setTextAlign(TextAlignment.LEFT);
-                gc.fillText(String.format("FPS: %d", fps), 0, 20);
-                gc.setTextAlign(TextAlignment.CENTER);
-
+                // Draw background stars
                 drawPixelatedStars(gc);
                 game.draw(gc);
             }
@@ -195,6 +200,13 @@ public class Main extends Application{
         return stars;
     }
 
+    /**
+     * Draws the background stars
+     * The stars will oscillate between a fixed pattern - colours listed below
+     * Allows for the illusion of 'twinkling'
+     * @param gc - Graphics Context parsed in, allowing for the effective rendering
+     *           ...of the stars
+     */
     private void drawPixelatedStars(GraphicsContext gc){
         Color[] starColour = {
                 Color.rgb(255, 255, 255),
@@ -212,5 +224,14 @@ public class Main extends Application{
             gc.setFill(starColour[rand.nextInt(starColour.length)]);
             gc.fillRect(x, y, size, size);
         }
+    }
+
+    /**
+     * Restarts the game - equivalent to pressing start
+     * @param stage - Stage parsed in
+     */
+    private void restartGame(Stage stage){
+        Scene gameScene = getGameScene(stage);
+        stage.setScene(gameScene);
     }
 }

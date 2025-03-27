@@ -1,6 +1,13 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * This is the player spaceship class
+ * All the necessary attributes of the player are listed here
+ * The spaceship is controlled directly by the player and can
+ * fire projectiles at enemies.
+ * The player, like other entities, can be destroyed in one shot.
+ */
 public class Spaceship {
     private final Shape spaceship;
     private final Vector2 velocity = new Vector2(0, 0);

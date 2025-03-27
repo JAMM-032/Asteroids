@@ -6,18 +6,20 @@
  */
 public enum AsteroidType {
 
-    SMALL(15, 180, Math.toRadians(75)),
-    MEDIUM(25, 120, Math.toRadians(60)),
-    LARGE(50, 60, Math.toRadians(45));
+    SMALL(15, 180, Math.toRadians(75), 5),
+    MEDIUM(25, 120, Math.toRadians(60), 10),
+    LARGE(50, 60, Math.toRadians(45), 15);
 
     private final int size;
     private final double speed;
     private final double rotationSpeed;
+    private final int scoreValue;
 
-    AsteroidType(int size, double speed, double rotationSpeed) {
+    AsteroidType(int size, double speed, double rotationSpeed, int scoreValue) {
         this.size = size;
         this.speed = speed;
         this.rotationSpeed = rotationSpeed;
+        this.scoreValue = scoreValue;
     }
 
     public int getSizeRange() {
@@ -30,5 +32,9 @@ public enum AsteroidType {
 
     public double getRotationSpeed() {
         return rotationSpeed;
+    }
+
+    public int getScoreValue() {
+        return scoreValue;
     }
 }

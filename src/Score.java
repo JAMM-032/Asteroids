@@ -1,8 +1,7 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-
-import java.awt.*;
+import javafx.scene.text.TextAlignment;
 
 /**
  * Score class manages the player's score and multiplier system.
@@ -12,7 +11,7 @@ public class Score {
     private static final long INITIAL_MULTIPLIER_TTL = 5 * 1000;
     private static final int BAR_WIDTH = 90;
     private static final int BAR_HEIGHT = 12;
-    private static final int TEXT_OFFSET = 40;
+    private static final int TEXT_OFFSET = 25;
 
     private static final int CANVAS_WIDTH = 600;
     private static final int CANVAS_HEIGHT = 600;
@@ -63,7 +62,7 @@ public class Score {
      *
      * @param scoreIncrease Base score to increase
      */
-    public void increase(int scoreIncrease) {
+    public void increase(double scoreIncrease) {
         score += (int) (scoreIncrease * multiplier);
     }
 
@@ -129,12 +128,11 @@ public class Score {
         drawMultiplierLabel(gc);
 
         // Draw Score
-        gc.setFont(Font.font(20));
+        gc.setFont(Font.font("Verdana", 20));
         gc.setFill(Color.WHITE);
         String scoreText = "Score: " + score;
-        double textWidth = gc.getFont().getSize() * scoreText.length() * 0.5;
-        //gc.fillText(String.valueOf(score), 35, 20);
-        gc.fillText(scoreText, (CANVAS_WIDTH - textWidth) / 2, 30);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText(scoreText, CANVAS_WIDTH / 2, 30);
     }
 
     /**
@@ -144,14 +142,22 @@ public class Score {
         double textY = Y_OFFSET + BAR_HEIGHT + TEXT_OFFSET; // Position below the bar
 
         gc.setFill(Color.WHITE);
-        gc.setFont(Font.font( 15));
+        gc.setFont(Font.font("Verdana", 12));
         gc.fillText(String.format("%.2f", multiplier), CANVAS_WIDTH-X_OFFSET, textY);
     }
 
+    /**
+     * Returns game score.
+     * @return current game score as integer.
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Returns current game score multiplier.
+     * @return current score multiplier as double
+     */
     public double getMultiplier() {
         return multiplier;
     }

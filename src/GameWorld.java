@@ -1,13 +1,11 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
-import javax.naming.event.EventDirContext;
-import java.util.Random;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * A class to initalise the GameWorld - will create the basic canvas
@@ -22,6 +20,7 @@ public class GameWorld {
     ArrayList<Obstacle> asteroids;
     Spaceship player;
     Score score;
+    GameStats stats;
     private boolean gameOver = false;
 
     private static final int PADDING = 30;
@@ -39,6 +38,7 @@ public class GameWorld {
     private static final int MAX_ASTEROIDS = 20;
 
     private double startTime = 0.0;
+    private double gameTime;
 
     private static final String[] EDGES = {
         "LEFT", "RIGHT", "TOP", "BOTTOM"
@@ -54,8 +54,11 @@ public class GameWorld {
         score = new Score();
         bullets = new ArrayList<>();
         asteroids = new ArrayList<>();
+        stats = new GameStats();
         WIDTH = width;
         HEIGHT = height;
+        gameTime = System.currentTimeMillis();
+        startTime = gameTime;
     }
 
     /**
@@ -110,6 +113,11 @@ public class GameWorld {
         for (Obstacle ob : asteroids) {
             if (player.getShape().polygonPolygonCollision(ob.getShape())) {
                 gameOver = true;
+
+                // Record final game stats
+                stats.setScore(score.getScore());
+                stats.setTime(System.currentTimeMillis() - gameTime);
+
                 break;
             }
         }
@@ -145,12 +153,24 @@ public class GameWorld {
                     Obstacle[] newObjects = ob.spawnAsteroids(bulletVel);
                     if (newObjects != null)
                         newAsteroids.addAll(Arrays.asList(newObjects));
+
+                    // Add score (fixed value for now) and increment multiplier
+                    score.increase(ob.getScoreValue());
+                    score.incrementMultiplier();
+
+                    // Save Max reached multiplier
+                    stats.saveMaxMultiplier(score.getMultiplier());
+
+                    // Determine type of object destroyed and increment suitable field in GameStats object
+                    if (ob instanceof AlienShip) {
+                        stats.incrementSpaceshipCount();
+                    } else {
+                        stats.incrementAsteroidCount();
+                    }
+
                     it1.remove();
                     b.setDead();
 
-                    // Add score (fixed value for now) and increment multiplier
-                    score.increase(20);
-                    score.incrementMultiplier();
 
                     break;
                 }
@@ -208,7 +228,7 @@ public class GameWorld {
             double prob = rand.nextDouble();
             Vector2 pos = generateRandomPos();
             if (prob <= SHIP_PROB) {
-                asteroids.add(new AlienShip(player.getShape(), AsteroidType.LARGE, new Vector2(), pos));
+                asteroids.add(new AlienShip(player.getShape(), AsteroidType.LARGE, pos));
             }
             else if (prob <= ASTEROID_PROB) {
                 Vector2 vel = Vector2.fromPolar(AsteroidType.LARGE.getSpeed(), rand.nextDouble(0.0, 2*Math.PI));
@@ -243,4 +263,80 @@ public class GameWorld {
 
         return pos;
     }
+
+
+
+    public void displayStats(GraphicsContext gc) {
+        // Reset canvas
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, WIDTH, HEIGHT);
+
+        double centerX = WIDTH / 2;
+        double centerY = HEIGHT / 2;
+
+        // Menu Box
+        double boxWidth = 400;
+        double boxHeight = 350;
+        double boxX = centerX -(boxWidth / 2);
+        double boxY = centerY -(boxHeight / 2);
+
+        double currentYOffset = 40;
+
+        // Display Box
+        gc.setStroke(Color.WHITE);
+        gc.setLineWidth(3);
+        gc.strokeRect(boxX, boxY, boxWidth, boxHeight);
+
+
+        // Set text parameters
+        gc.setFont(new Font("Impact", 30));
+        gc.setFill(Color.WHITE);
+        gc.setTextAlign(TextAlignment.CENTER);
+
+        // Game Over Text
+        gc.fillText("GAME OVER", centerX, boxY+currentYOffset);
+
+        // Header Line
+        currentYOffset+= 20;
+        gc.strokeLine(boxX, boxY + currentYOffset, boxX + boxWidth, boxY + currentYOffset);
+
+        // Statistics Text
+        currentYOffset+= 30;
+        gc.setFont(new Font("Impact", 20));
+        gc.fillText("Statistics", centerX, boxY+currentYOffset);
+
+        // Retrieve Game Statistics
+        Map<String, List<String>> statsMap = stats.getFinalStats();
+
+        // Game Stats Text
+        gc.setFont(new Font("Impact", 18));
+        int xOffset = 20;
+
+        // Display fields along with values
+        for (Map.Entry<String, List<String>> entry : statsMap.entrySet()) {
+            List<String> fields = entry.getValue();
+            currentYOffset += 35;
+
+            // Ensure we have both elements
+            if (fields.size() >= 2) {
+                // Display field on the left-side
+                gc.setTextAlign(TextAlignment.LEFT);
+                gc.fillText(fields.get(0), boxX+xOffset, boxY+currentYOffset);
+
+                // Display value on the right-side
+                gc.setTextAlign(TextAlignment.RIGHT);
+                gc.fillText(fields.get(1), boxX+boxWidth-xOffset, boxY+currentYOffset);
+
+            }
+        }
+
+        // Restart message
+        currentYOffset+= 30;
+        gc.strokeLine(boxX, boxY + currentYOffset, boxX + boxWidth, boxY + currentYOffset);
+        gc.setFont(new Font("Impact", 16));
+        gc.setTextAlign(TextAlignment.CENTER);
+        currentYOffset+=30;
+        gc.fillText("Press Enter to Play Again...", centerX, boxY+currentYOffset);
+    }
+
 }
