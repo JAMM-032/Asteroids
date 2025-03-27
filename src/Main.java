@@ -43,15 +43,6 @@ public class Main extends Application{
     private Canvas canvas;  // The game canvas
     private GraphicsContext gc;
 
-    private static final int TARGET_FPS = 75;
-    private static final long FRAME_TIME = 1_000_000_000 / TARGET_FPS; // Nanoseconds per frame
-
-    private long lastFrameTime = System.nanoTime();
-    private long lastFPSUpdate = System.nanoTime();
-    private int frameCount = 0;
-    private int fps = 0;
-    private double accumulatedTime = 0;
-
     /**
      * Starting code - once the game is run, the method is called
      */
@@ -125,17 +116,11 @@ public class Main extends Application{
     private AnimationTimer getAnimationTimer(Canvas canvas, GraphicsContext gc) {
         GameWorld game = new GameWorld(canvas.getWidth(), canvas.getHeight());
 
-        Font gitGud = new Font(30);
-
-        Font fpsFont = new Font(15);
-
         gc.setTextAlign(TextAlignment.CENTER);
 
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                long elapsedTime = now - lastFrameTime;
-                lastFrameTime = now;
 
                 // Clear the screen
                 gc.setFill(Color.BLACK);
@@ -173,13 +158,6 @@ public class Main extends Application{
                     game.update();
                     game.draw(gc);
                 }
-
-                // Draw FPS (optional)
-                gc.setFont(new Font(15));
-                gc.setFill(Color.WHITE);
-                gc.setTextAlign(TextAlignment.LEFT);
-                gc.fillText(String.format("FPS: %d", fps), 10, 30);
-                gc.setTextAlign(TextAlignment.CENTER);
 
                 // Draw background stars
                 drawPixelatedStars(gc);
