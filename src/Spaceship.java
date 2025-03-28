@@ -106,21 +106,33 @@ public class Spaceship {
         spaceship.drawFill(gc, Color.WHITE);
     }
 
-    public void printPos() {
-        spaceship.printPos();
-    }
-
+    /**
+     * Returns the shape of the spaceship.
+     *
+     * @return Shape object representing the spaceship.
+     */
     public Shape getShape() {
         return spaceship;
     }
 
+    /**
+     * Returns the current rotation angle of the spaceship.
+     *
+     * @return The rotation angle in radians.
+     */
     public double getRotation() {
         return angle;
     }
 
+    /**
+     * Returns the current velocity magnitude of the spaceship.
+     *
+     * @return The speed of the spaceship as a double.
+     */
     public double getVelocity() {
         return velocity.getMagnitude();
     }
+
 
     /**
      * Fire a bullet from the player spaceship.

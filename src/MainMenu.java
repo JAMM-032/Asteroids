@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
- * The main menu class aims to initalise the menu which
+ * The main menu class aims to initialise the menu which
  * greets the user upon starting the game.
  * It has a simple GUI display, and will shift the scene once start is
  * initiated
@@ -30,7 +30,7 @@ public class MainMenu extends VBox {
     private VBox MaxPayne;
 
     /**
-     * Main menu of the game - starting menu - initalised
+     * Main menu of the game - starting menu - initialised
      *
      * @param stage - the current Stage
      * @param parent - the Parent of the Main class
@@ -102,10 +102,9 @@ public class MainMenu extends VBox {
         fade.play();
     }
 
-
     /**
      * Creates the scene of the game
-     * has an animation timeline should the game be started
+     * has an animation timeline should the game be started.
      *
      * @return - returns the Scene of the game after starting
      */
@@ -131,7 +130,7 @@ public class MainMenu extends VBox {
     }
 
     /**
-     * Calls for the animation methods upon the starting method being called
+     * Calls for the animation methods upon the call of start method
      */
     private void animateTitleAndStartGame(){
         TranslateTransition spaceshipAnimation = new TranslateTransition(Duration.millis(2000), MaxPayne);

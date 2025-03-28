@@ -8,14 +8,18 @@ import javafx.scene.layout.Pane;
 
 /**
  * The menuBar class aims to create a top-menu bar once the game has
- * initalised.
+ * initialised.
  * The menu bar will contain the option to quit (File button), and general information
  * about the game (Help button)
  */
 public class menuBar {
 
-    private String VERSION;
+    private final String VERSION;
 
+    /**
+     * Constructor of menuBar class.
+     * @param VERSION - current game version
+     */
     public menuBar(String VERSION){
         this.VERSION = VERSION;
     }
@@ -35,11 +39,7 @@ public class menuBar {
         MenuItem quitItem = new MenuItem("Quit");
         quitItem.setOnAction(this::quitAction);
         quitItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
-
         fileMenu.getItems().addAll(quitItem);
-
-        /// //// //// //// ////
-        Menu helpMenu = new Menu("Help");
 
         MenuItem aboutItem = new MenuItem("About Game");
         aboutItem.setOnAction(this::aboutAction);
@@ -47,6 +47,7 @@ public class menuBar {
         MenuItem controlItem = new MenuItem("Controls");
         controlItem.setOnAction(this::controlAction);
 
+        Menu helpMenu = new Menu("Help");
         helpMenu.getItems().addAll(aboutItem, controlItem);
         menubar.getMenus().addAll(fileMenu, helpMenu);
 
@@ -70,14 +71,14 @@ public class menuBar {
         alert.setTitle("About Software");
         alert.setHeaderText("Asteroidz");
 
-        alert.setContentText(VERSION + " A game based on the Atari Classic \n" +
-                " created by : Aria\t\tDmitrij\t\tJanit");
+        alert.setContentText(VERSION + " A game based on the Atari Classic \n " +
+                "created by : Aria\t\tDmitrij\t\tJanit");
 
         alert.showAndWait();
     }
 
     /**
-     * Will display a GUI which has the controls of the game listed
+     * Displays a GUI which has the controls of the game listed
      * @param event - event which would trigger the alert
      */
     private void controlAction(ActionEvent event){

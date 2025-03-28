@@ -7,14 +7,13 @@ import java.util.Random;
  * This class handles the definitions of the shapes of each entity
  * It also has the definitions in place for collisions AABB hitbox
  * Draws a virtual box around a complicated shape - allowing for
- * ... better hit detection
+ * better hit detection
  */
 public class Shape {
 
     private double[] xPoints;
     private double[] yPoints;
     private AABB aabb; // Axis aligned bounding box - max & min x,y [ border of vector graphic ]
-    // Used for collisions - Hitbox essentially
 
     private Vector2 translation;
     private Random rand = new Random();
@@ -34,7 +33,8 @@ public class Shape {
     }
 
     /**
-     * Constructor Method - alternative method to draw shapes
+     * Alternative constructor for defining custom shapes (using coordinates).
+     *
      * @param xPoints - Position of X points of the shape
      * @param yPoints - Position of Y points of the shape
      */
@@ -63,9 +63,9 @@ public class Shape {
     }
 
     /**
-     * Checks if the centre of the shape is outside of the padded region
-     * Allows for the wrap-around of the shape's position
-     * Good way to allow for seamless transition from sides of the page
+     * Checks if the shape's center has moved outside the defined boundaries
+     * wraps it around for seamless screen transition.
+     *
      * @param minX - Minimum x value allowed - for padding
      * @param minY - Minimum y value allowed - for padding
      * @param maxX - Maximum x value allowed - for padding
@@ -95,7 +95,7 @@ public class Shape {
 
     /**
      * Prints the position of the translation of the object - relative to the canvas
-     * ... and the padded constraints
+     * and the padded constraints
      */
     public void printPos() {
         System.out.println(translation.getX() + " " + translation.getY());
@@ -200,17 +200,13 @@ public class Shape {
 
     /**
      * A boolean to handle polygon collision - checks if the hitboxes of the two given
-     *  ... entities are in contact.
-     * @param shape -
-     * @return -
+     * entities are in contact.
+     * @param shape - shape of another object that is tested for collision
+     * @return - true if polygons collided, otherwise false
      */
     public boolean polygonPolygonCollision(Shape shape) {
 
-        if (!aabb.checkAABBCollision(shape.getAABB())) {
-            return false;
-        }
-
-        return true;
+        return aabb.checkAABBCollision(shape.getAABB());
     }
 
     /**
@@ -243,6 +239,10 @@ public class Shape {
         return translation.copy();
     }
 
+    /**
+     * Returns the AABB object of this shape.
+     * @return AABB
+     */
     public AABB getAABB() {
         return aabb;
     }

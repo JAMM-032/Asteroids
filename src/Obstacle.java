@@ -1,7 +1,14 @@
 import javafx.scene.canvas.GraphicsContext;
-
 import javafx.scene.paint.Color;
 
+
+/**
+ * Represents an obstacle (e.g. asteroid) in the game.
+ *
+ * The obstacle has a type, velocity, and position. It has ability to move,
+ * rotate, and draw itself on a canvas. The class also handles the spawning
+ * of smaller obstacles when it is destroyed.
+ */
 public class Obstacle extends Entity {
 
     protected Vector2 acc;
@@ -21,8 +28,15 @@ public class Obstacle extends Entity {
         shape = new Shape(7, type.getSizeRange());
     }
 
+
     /**
      * Updates the location of the obstacle based on its velocity.
+     *
+     * @param x Position in x
+     * @param y Position in y
+     * @param w Width of a canvas - padding accounted
+     * @param h Height of a canvas - padding accounted
+     * @param dt The deltaTime to ensure frame independent movement.
      */
     public void update(int x, int y, int w, int h, float dt) {
 
@@ -45,6 +59,10 @@ public class Obstacle extends Entity {
         shape.drawStroke(gc, col);
     }
 
+    /**
+     * Returns the Shape of the Obstacle object.
+     * @return -
+     */
     public Shape getShape() {
         return this.shape;
     }
