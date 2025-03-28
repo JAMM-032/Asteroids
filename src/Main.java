@@ -7,7 +7,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.*;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.VBox;
@@ -26,7 +25,6 @@ public class Main extends Application{
     // THIS IS FOR DEBUG ONLY - CHANGE AS YOU UPDATE, ie: 0.10V -> 0.11V
     // Please update the GitHub readme once you change it
     private static final String VERSION = "0.12V"; //
-    private Label statusLabel;
     private Stage stage;
 
     // Background Attributes
@@ -78,8 +76,6 @@ public class Main extends Application{
 
         pause = new AtomicBoolean(false);
 
-        statusLabel = new Label(VERSION);
-
         Pane contentPane = new BorderPane(null, null, null, null, null);
         root.getChildren().add(contentPane);
         Canvas canvas = new Canvas(600,600);
@@ -129,7 +125,7 @@ public class Main extends Application{
 
                 long diff = now - prevTime;
                 prevTime = now;
-                // converts from nano-seconds to seconds.
+                // converts from nanoseconds to seconds.
                 deltaTime = diff / 1_000_000_000.0f;
 
                 // get milliseconds
@@ -221,10 +217,10 @@ public class Main extends Application{
                 Color.rgb(180, 190, 175)
         };
 
-        for (int i = 0; i < stars.length; i++){
-            double x = stars[i][0];
-            double y = stars[i][1];
-            double size = stars[i][2];
+        for (double[] star : stars) {
+            double x = star[0];
+            double y = star[1];
+            double size = star[2];
 
             gc.setFill(starColour[rand.nextInt(starColour.length)]);
             gc.fillRect(x, y, size, size);

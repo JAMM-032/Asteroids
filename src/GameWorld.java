@@ -117,7 +117,6 @@ public class GameWorld {
 
                 // Record final game stats
                 stats.setScore(score.getScore());
-                System.out.println(totalTime);
                 stats.setTime(totalTime);
 
                 break;
