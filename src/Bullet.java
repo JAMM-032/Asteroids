@@ -1,6 +1,12 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * Class defining the projectile which can be fired by the player
+ * and other entities alike
+ * The bullet will fundamentally be a lethal projectile which can 'kill' the
+ * object it impacts
+ */
 public class Bullet{
 
     Vector2 vector;
@@ -76,10 +82,18 @@ public class Bullet{
         gc.fillOval(position.getX() - radius, position.getY() - radius, radius, radius);
     }
 
+    /**
+     * Sets the valie of the bullet to 'dead'
+     * - bullet no longer has any effect and will not move
+     */
     public void setDead() {
         alive = false;
     }
 
+    /**
+     * Queries the status of the bullet - if alive / dead
+     * ...@return the boolean true / false respectively
+     */
     public boolean isAlive() {
         return alive;
     }
