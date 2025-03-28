@@ -92,6 +92,7 @@ public class AlienShip extends Entity {
         shape.wrapAround(x, y, w, h);
     }
 
+    // Commented on abstract (parent) superclass
     @Override
     protected void createShape() {
         // new points defined as a rhombus - Mothership type spaceship

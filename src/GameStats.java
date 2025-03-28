@@ -3,6 +3,10 @@ import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
 
+/**
+ * A class which manaages the game performance of the player's
+ * ... current session - upon losing, the player's statistics will be displayed
+ */
 public class GameStats {
     private int totalScore;
     private double totalTime;

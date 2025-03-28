@@ -86,6 +86,8 @@ public class GameWorld {
     /**
      * Calls for the updating of the display
      * Changes the current scenery, updating to the (new) positions
+     * @param timeDiff - Time in (1x10^-9) nanoseconds, between the current & last
+     *               ... frame finishing & starting {respectively}
      */
     public void update(float dt, long timeDiff) {
 
@@ -216,8 +218,14 @@ public class GameWorld {
         }
     }
 
+    /**
+     * Spawns the obstaclesof whic hthe player would face, these involve
+     * ... - Asteroids [ Small, Medium & Large ]
+     *     - Spaceships [ Drone Class, Mothership Class Spaceships ]
+     * @param timeDiff - Time in (1x10^-9) nanoseconds, between the current & last
+     *               ... frame finishing & starting {respectively}
+     */
     private void spawnObstacles(long timeDiff) {
-
         timeDur += timeDiff;
 
         if (timeDur < MAX_DURATION || asteroids.size() >= MAX_ASTEROIDS)
@@ -237,6 +245,12 @@ public class GameWorld {
         }
     }
 
+    /**
+     * Generates a random position in the map
+     * The padding allows for the object to be spawned
+     * ... within the constraints of the world
+     * @return - Returns the corrected position in the game space
+     */
     private Vector2 generateRandomPos() {
 
         Vector2 pos = new Vector2();
@@ -265,7 +279,11 @@ public class GameWorld {
     }
 
 
-
+    /**
+     * Triggers the displaying of the statistics menu at the
+     * ... end of the player's session
+     * @param gc - Graphics Context of the user parsed in
+     */
     public void displayStats(GraphicsContext gc) {
         // Reset canvas
         gc.setFill(Color.BLACK);

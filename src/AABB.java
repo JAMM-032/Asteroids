@@ -7,6 +7,9 @@ public class AABB {
     private Vector2 minPoint;
     private Vector2 maxPoint;
 
+    /**
+     * Constructor method - initalises the min and max points of the hitbox ( minimum & maximum )
+     */
     public AABB() {
         minPoint = new Vector2();
         maxPoint = new Vector2();
@@ -71,10 +74,12 @@ public class AABB {
         maxPoint.setY(yMax);
     }
 
+    /** Calls for the minimum point of the hitbox **/
     public Vector2 getMin() {
         return minPoint;
     }
 
+    /** Calls for the maximum point of the hitbox **/
     public Vector2 getMax() {
         return maxPoint;
     }

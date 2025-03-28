@@ -5,6 +5,8 @@ import javafx.scene.text.TextAlignment;
 
 /**
  * Score class manages the player's score and multiplier system.
+ * The player can increase their score by playing the game and destroying
+ *  ... enemies.
  */
 public class Score {
     private static final int MAX_MULTIPLIER = 3;
@@ -26,6 +28,10 @@ public class Score {
     private Shape multiplierBar;
     private Shape multiplierOutline;
 
+    /**
+     * Score constructor method
+     * Initialise values to default
+     */
     public Score() {
         score = 0;
         multiplier = 1.0;
