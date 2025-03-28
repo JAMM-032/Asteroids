@@ -14,17 +14,16 @@ public class AlienShip extends Entity {
     private static final double MAX_SPEED = 150;
     private final double ACCELERATION = (new Random()).nextDouble(MAX_SPEED-50, MAX_SPEED+50);
 
-    private Vector2 vel = new Vector2(0, 0);
+    private Vector2 vel;
     private int scoreValue;
 
     /**
      * Constructor Method  { Mothership Class Spaceship }
      * @param player - Given shape of the spaceship
-     * @param type - Asteroid type - similar property to asteroid in score, health, etc...
-     *             ... Defines that it will split into two smaller ships when broken
      * @param position - Position of the alienship when spawning into the world
      */
-    public AlienShip(Shape player, AsteroidType type, Vector2 position) {
+    public AlienShip(Shape player, Vector2 position) {
+        vel = new Vector2(0, 0);
         playerShip = player;
         isSpaceStation = true;
         createShape();
@@ -77,7 +76,8 @@ public class AlienShip extends Entity {
 
         double mag = vel.getMagnitude();
         if (mag > MAX_SPEED) {
-            vel.scalarMul(MAX_SPEED / mag);
+            vel.normalise();
+            vel.scalarMul(MAX_SPEED);
         }
 
         double angleDiff = vel.getRotation() - rotation;

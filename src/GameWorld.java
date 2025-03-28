@@ -21,11 +21,11 @@ import java.util.Map;
  */
 public class GameWorld {
 
-    ArrayList<Bullet> bullets;
-    ArrayList<Entity> asteroids;
-    Spaceship player;
-    Score score;
-    GameStats stats;
+    private ArrayList<Bullet> bullets;
+    private ArrayList<Entity> asteroids;
+    private Spaceship player;
+    private Score score;
+    private GameStats stats;
     private boolean gameOver = false;
 
     private static final int PADDING = 30;
@@ -211,7 +211,6 @@ public class GameWorld {
                     player.rotateRight(deltaTime);
                 }
                 case SPACE -> {
-
                     if (!shotsFired && bullets.size() < MAX_BULLETS) {
                         shotsFired = true;
                         bullets.add(player.fire());
@@ -242,7 +241,7 @@ public class GameWorld {
             double prob = rand.nextDouble();
             Vector2 pos = generateRandomPos();
             if (prob <= SHIP_PROB) {
-                asteroids.add(new AlienShip(player.getShape(), AsteroidType.LARGE, pos));
+                asteroids.add(new AlienShip(player.getShape(), pos));
             }
             else if (prob-SHIP_PROB <= ASTEROID_PROB) {
                 Vector2 vel = Vector2.fromPolar(AsteroidType.LARGE.getSpeed(), rand.nextDouble(0.0, 2*Math.PI));
@@ -362,5 +361,4 @@ public class GameWorld {
         currentYOffset+=25;
         gc.fillText("Press Enter to Play Again...\nCtrl+Q to Quit!", centerX, boxY+currentYOffset);
     }
-
 }

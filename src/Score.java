@@ -16,11 +16,8 @@ public class Score {
     private static final int TEXT_OFFSET = 25;
 
     private static final int CANVAS_WIDTH = 600;
-    private static final int CANVAS_HEIGHT = 600;
     private static final int X_OFFSET = 65;
     private static final int Y_OFFSET = 15;
-
-    private long prevTime;
 
     private long multiplierTTL; // Time after which multiplier resets
     private int score;
@@ -36,7 +33,6 @@ public class Score {
         score = 0;
         multiplier = 1.0;
         multiplierTTL = 0;
-        prevTime = System.currentTimeMillis();
 
         initializeMultiplierBar();
     }
@@ -60,8 +56,6 @@ public class Score {
         );
         multiplierBar.translate(new Vector2(CANVAS_WIDTH-X_OFFSET - BAR_WIDTH / 2, Y_OFFSET + BAR_HEIGHT));
     }
-
-
 
     /**
      * Increases the score with the current multiplier.
@@ -112,7 +106,7 @@ public class Score {
         double[] yPoints = {BAR_HEIGHT / 2, -BAR_HEIGHT / 2, -BAR_HEIGHT / 2, BAR_HEIGHT / 2};
 
         multiplierBar = new Shape(xPoints, yPoints);
-        multiplierBar.translate(new Vector2(CANVAS_WIDTH-X_OFFSET - BAR_WIDTH / 2, Y_OFFSET + BAR_HEIGHT));
+        multiplierBar.translate(new Vector2(CANVAS_WIDTH-X_OFFSET - (double) BAR_WIDTH / 2, Y_OFFSET + BAR_HEIGHT));
     }
 
     /**
@@ -135,7 +129,7 @@ public class Score {
         gc.setFill(Color.WHITE);
         String scoreText = "Score: " + score;
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText(scoreText, CANVAS_WIDTH / 2, 30);
+        gc.fillText(scoreText, (double) CANVAS_WIDTH / 2, 30);
     }
 
     /**

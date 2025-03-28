@@ -26,8 +26,8 @@ public class Bullet{
     public Bullet(Vector2 position, double velocity, double angle){
         this.position = position;
 
-        this.velocity = Vector2.fromPolar(velocity + baseVel, angle);
         // Increases speed so that it moves faster than the player
+        this.velocity = Vector2.fromPolar(velocity + baseVel, angle);
 
         TTL = 3 * 1000;
 

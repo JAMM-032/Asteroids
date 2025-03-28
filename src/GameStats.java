@@ -20,7 +20,7 @@ public class GameStats {
     /**
      * Class constructor. Initializes counters for destroyed spaceships and asteroids.
      */
-    GameStats() {
+    public GameStats() {
         this.asteroidsDestroyed = 0;
         this.spaceshipsDestroyed = 0;
     }

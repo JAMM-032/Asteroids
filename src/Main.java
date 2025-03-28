@@ -22,16 +22,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Main extends Application{
 
-    // THIS IS FOR DEBUG ONLY - CHANGE AS YOU UPDATE, ie: 0.10V -> 0.11V
-    // Please update the GitHub readme once you change it
-
-  private static final String VERSION = "0.13V"; //
     private Stage stage;
 
     // Background Attributes
     private int backgroundDetail;
     private Random rand = new Random();
-    private int mapSeed; // Random map seed
     private double[][] stars;
 
     private menuBar menuBar;
@@ -41,7 +36,6 @@ public class Main extends Application{
 
     float deltaTime;
     private long prevTime = 0;
-    private long fps;
 
     /**
      * Starting code - once the game is run, the method is called
@@ -50,11 +44,10 @@ public class Main extends Application{
     public void start(Stage stage){
         this.stage = stage;
         MainMenu mainMenu = new MainMenu(stage, this);
-        menuBar = new menuBar(VERSION);
+        menuBar = new menuBar();
 
         // Handling of the background
         backgroundDetail = 50; // The number of stars in the background
-        mapSeed = rand.nextInt(1,50); // Generates a Background Seed
 
         Scene menuScene = mainMenu.createScene();
 
@@ -84,7 +77,7 @@ public class Main extends Application{
         GraphicsContext gc = canvas.getGraphicsContext2D();
         contentPane.getChildren().add(canvas);
 
-        stars = generateStars(canvas.getWidth(), canvas.getHeight(), mapSeed);
+        stars = generateStars(canvas.getWidth(), canvas.getHeight());
 
         Scene scene = new Scene(root, 600, 600);
         stage.setTitle("Asteroidz - Game Session Active");
@@ -129,10 +122,8 @@ public class Main extends Application{
                 // converts from nanoseconds to seconds.
                 deltaTime = diff / 1_000_000_000.0f;
 
-                // get milliseconds
+                // get milliseconds between last and current frame
                 long timeDiff = diff / 1_000_000;
-
-                fps = (int) (1 / deltaTime);
 
                 // Clear the screen
                 gc.setFill(Color.BLACK);
@@ -183,10 +174,9 @@ public class Main extends Application{
      *
      * @param width - Width of the current canvas
      * @param height - Height of the current canvas
-     * @param mapSeed - Random seed - altering positioning of the stars
      * @return - returns a 2D array (type Double) - has the positions of the stars
      */
-    private double[][] generateStars(double width, double height, int mapSeed) {
+    private double[][] generateStars(double width, double height) {
 
         double[][] stars = new double[backgroundDetail][3]; // x, y, seed retrieved
 

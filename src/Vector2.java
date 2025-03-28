@@ -60,17 +60,6 @@ public class Vector2 {
     }
 
     /**
-     * Translate the x & y of an object to the given (double) parameters.
-     *
-     * @param x - x coordinate given
-     * @param y - y coordinate given
-     */
-    public void vecAdd(double x, double y) {
-        this.x += x;
-        this.y += y;
-    }
-
-    /**
      * Multiplies the current vector by a given scalar.
      *
      * @param scalar - the amount that will multiply the current vector
@@ -137,17 +126,6 @@ public class Vector2 {
 
         Vector2 vec = (Vector2) obj;
         return (Math.abs(this.x - vec.getX()) <= THRESHOLD) && (Math.abs(this.y - vec.getY()) <= THRESHOLD);
-    }
-
-    /**
-     * Calculates the dot product of two vectors.
-     *
-     * @param v1 - the first vector
-     * @param v2 - the second vector
-     * @return The dot product of the two vectors
-     */
-    public static double dotProduct(Vector2 v1, Vector2 v2) {
-        return v1.x * v2.x + v1.y * v2.y;
     }
 
     /**

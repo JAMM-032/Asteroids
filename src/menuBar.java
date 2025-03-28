@@ -14,16 +14,6 @@ import javafx.scene.layout.Pane;
  */
 public class menuBar {
 
-    private final String VERSION;
-
-    /**
-     * Constructor of menuBar class.
-     * @param VERSION - current game version
-     */
-    public menuBar(String VERSION){
-        this.VERSION = VERSION;
-    }
-
     /**
      * Generates a menu bar for the player
      * This is executed upon the starting of the game
@@ -71,8 +61,8 @@ public class menuBar {
         alert.setTitle("About Software");
         alert.setHeaderText("Asteroidz");
 
-        alert.setContentText(VERSION + " A game based on the Atari Classic \n " +
-                "created by : Aria\t\tDmitrij\t\tJanit");
+        alert.setContentText(" A game based on the Atari Classic \n" +
+                " created by : Aria\t\tDmitrij\t\tJanit");
 
         alert.showAndWait();
     }
@@ -90,5 +80,4 @@ public class menuBar {
                 "P : to Pause the game ");
         alert.showAndWait();
     }
-
 }

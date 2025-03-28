@@ -59,14 +59,6 @@ public class Obstacle extends Entity {
         shape.drawStroke(gc, col);
     }
 
-    /**
-     * Returns the Shape of the Obstacle object.
-     * @return -
-     */
-    public Shape getShape() {
-        return this.shape;
-    }
-
     @Override
     public int getScoreValue() {
         return type.getScoreValue();
