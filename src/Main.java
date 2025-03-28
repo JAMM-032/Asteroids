@@ -122,6 +122,8 @@ public class Main extends Application{
 
         gc.setTextAlign(TextAlignment.CENTER);
 
+        Font pauseFont = new Font(30);
+
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -158,9 +160,9 @@ public class Main extends Application{
 
                 // Display pause screen
                 if (pause.get()) {
-                    gc.setFont(new Font(30));
+                    gc.setFont(pauseFont);
                     gc.setFill(Color.WHITE);
-                    gc.fillText("PAUSED", 300, 300);
+                    gc.fillText("PAUSED", canvas.getWidth()/2, canvas.getHeight()/2);
                 }
                 else {
                     game.handleKeyPress(pressedKeys, deltaTime);

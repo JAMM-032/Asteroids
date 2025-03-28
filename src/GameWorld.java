@@ -285,7 +285,7 @@ public class GameWorld {
 
 
         // Set text parameters
-        gc.setFont(new Font("Impact", 30));
+        gc.setFont(new Font("Verdana", 30));
         gc.setFill(Color.WHITE);
         gc.setTextAlign(TextAlignment.CENTER);
 
@@ -298,14 +298,14 @@ public class GameWorld {
 
         // Statistics Text
         currentYOffset+= 30;
-        gc.setFont(new Font("Impact", 20));
+        gc.setFont(new Font("Verdana", 20));
         gc.fillText("Statistics", centerX, boxY+currentYOffset);
 
         // Retrieve Game Statistics
         Map<String, List<String>> statsMap = stats.getFinalStats();
 
         // Game Stats Text
-        gc.setFont(new Font("Impact", 18));
+        gc.setFont(new Font("Verdana", 18));
         int xOffset = 20;
 
         // Display fields along with values
@@ -329,7 +329,7 @@ public class GameWorld {
         // Restart message
         currentYOffset+= 30;
         gc.strokeLine(boxX, boxY + currentYOffset, boxX + boxWidth, boxY + currentYOffset);
-        gc.setFont(new Font("Impact", 16));
+        gc.setFont(new Font("Verdana", 16));
         gc.setTextAlign(TextAlignment.CENTER);
         currentYOffset+=25;
         gc.fillText("Press Enter to Play Again...\nCtrl+Q to Quit!", centerX, boxY+currentYOffset);
