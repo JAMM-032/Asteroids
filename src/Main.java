@@ -40,9 +40,6 @@ public class Main extends Application{
 
     private final Set<KeyCode> pressedKeys = new HashSet<>();
 
-    private Canvas canvas;  // The game canvas
-    private GraphicsContext gc;
-
     float deltaTime;
     private long prevTime = 0;
     private long fps;
@@ -129,8 +126,6 @@ public class Main extends Application{
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                System.out.println(now);
-                System.out.println(prevTime);
 
                 long diff = now - prevTime;
                 prevTime = now;
@@ -139,7 +134,6 @@ public class Main extends Application{
 
                 // get milliseconds
                 long timeDiff = diff / 1_000_000;
-                System.out.println(timeDiff);
 
                 fps = (int) (1 / deltaTime);
 

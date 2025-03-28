@@ -89,7 +89,6 @@ public class GameWorld {
     public void update(float dt, long timeDiff) {
 
         totalTime += timeDiff;
-//        System.out.println(totalTime / 1000.0f);
 
         for (Bullet b : bullets) {
             b.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING, dt, timeDiff);
