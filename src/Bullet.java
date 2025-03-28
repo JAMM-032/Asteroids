@@ -64,25 +64,24 @@ public class Bullet{
             setDead();
     }
 
-    /**
-     * Collision checking method
-     */
-    // Collision checking method
+    /** Retrieves the position of the bullet **/
     public Vector2 getPos() {
         return position.copy();
     }
 
+    /** Gets the velocity of the bullet **/
     public Vector2 getVel() {
         return velocity.copy();
     }
 
+    /** Draws the bullet - the shape drawn is an oval  **/
     public void draw(GraphicsContext gc) {
         gc.setFill(Color.WHITE);
         gc.fillOval(position.getX() - radius, position.getY() - radius, radius, radius);
     }
 
     /**
-     * Sets the valie of the bullet to 'dead'
+     * Sets the value of the bullet to 'dead'
      * - bullet no longer has any effect and will not move
      */
     public void setDead() {

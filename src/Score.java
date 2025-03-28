@@ -4,12 +4,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 /**
- * Score class that manages the player's score and multiplier system.
- *
- * Controls the visual representation of the multiplier -
- * a bar that shrinks with time and resets the multiplier to 1.0;
- * displays the Score text.
- *
+ * Score class manages the player's score and multiplier system.
+ * The player can increase their score by playing the game and destroying
+ *  ... enemies.
  */
 public class Score {
     private static final int MAX_MULTIPLIER = 3;
@@ -23,19 +20,27 @@ public class Score {
     private static final int X_OFFSET = 65;
     private static final int Y_OFFSET = 15;
 
+    private long prevTime;
+
     private long multiplierTTL; // Time after which multiplier resets
     private int score;
     private double multiplier;
     private Shape multiplierBar;
     private Shape multiplierOutline;
 
+    /**
+     * Score constructor method
+     * Initialise values to default
+     */
     public Score() {
         score = 0;
         multiplier = 1.0;
         multiplierTTL = 0;
+        prevTime = System.currentTimeMillis();
 
         initializeMultiplierBar();
     }
+
 
     /**
      * Initializes the multiplier time bar and outline.
@@ -55,6 +60,8 @@ public class Score {
         );
         multiplierBar.translate(new Vector2(CANVAS_WIDTH-X_OFFSET - BAR_WIDTH / 2, Y_OFFSET + BAR_HEIGHT));
     }
+
+
 
     /**
      * Increases the score with the current multiplier.

@@ -1,6 +1,10 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * Abstract class for the base definitions of the entities
+ * All methods are primary methods are paved here.
+ */
 public abstract class Entity {
 
     protected Shape shape;
