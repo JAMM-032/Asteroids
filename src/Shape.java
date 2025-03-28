@@ -33,6 +33,11 @@ public class Shape {
         translation = new Vector2();
     }
 
+    /**
+     * Constructor Method - alternative method to draw shapes
+     * @param xPoints - Position of X points of the shape
+     * @param yPoints - Position of Y points of the shape
+     */
     public Shape(double[] xPoints, double[] yPoints) {
         this.xPoints = xPoints;
         this.yPoints = yPoints;

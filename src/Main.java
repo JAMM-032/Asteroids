@@ -24,7 +24,8 @@ public class Main extends Application{
 
     // THIS IS FOR DEBUG ONLY - CHANGE AS YOU UPDATE, ie: 0.10V -> 0.11V
     // Please update the GitHub readme once you change it
-    private static final String VERSION = "0.12V"; //
+
+  private static final String VERSION = "0.13V"; //
     private Stage stage;
 
     // Background Attributes
