@@ -33,12 +33,13 @@ public class GameWorld {
     private static final double ASTEROID_PROB = 0.7;
     private static final double SHIP_PROB = 0.3;
 
+    // frequency in seconds of obstacle spawning
     private static final int MAX_DURATION = 10 * 1000;
+
     private static final int MAX_ASTEROIDS = 20;
     private static final int MAX_BULLETS = 6;
 
-    private long timeDur = 0;
-    private double gameTime;
+    private long timeDur;
     private long totalTime = 0;
 
     private static final String[] EDGES = {
@@ -58,7 +59,7 @@ public class GameWorld {
         stats = new GameStats();
         WIDTH = width;
         HEIGHT = height;
-        gameTime = System.currentTimeMillis();
+        timeDur = MAX_DURATION;
     }
 
     /**
