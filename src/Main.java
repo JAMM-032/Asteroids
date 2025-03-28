@@ -124,17 +124,22 @@ public class Main extends Application{
 
         Font pauseFont = new Font(30);
 
+        prevTime = System.nanoTime();
+
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                System.out.println(now);
+                System.out.println(prevTime);
 
                 long diff = now - prevTime;
-                prevTime += diff;
+                prevTime = now;
                 // converts from nano-seconds to seconds.
                 deltaTime = diff / 1_000_000_000.0f;
 
                 // get milliseconds
                 long timeDiff = diff / 1_000_000;
+                System.out.println(timeDiff);
 
                 fps = (int) (1 / deltaTime);
 

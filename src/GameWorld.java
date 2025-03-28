@@ -39,6 +39,7 @@ public class GameWorld {
 
     private long timeDur = 0;
     private double gameTime;
+    private long totalTime = 0;
 
     private static final String[] EDGES = {
         "LEFT", "RIGHT", "TOP", "BOTTOM"
@@ -87,6 +88,9 @@ public class GameWorld {
      */
     public void update(float dt, long timeDiff) {
 
+        totalTime += timeDiff;
+//        System.out.println(totalTime / 1000.0f);
+
         for (Bullet b : bullets) {
             b.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING, dt, timeDiff);
         }
@@ -114,7 +118,8 @@ public class GameWorld {
 
                 // Record final game stats
                 stats.setScore(score.getScore());
-                stats.setTime(System.currentTimeMillis() - gameTime);
+                System.out.println(totalTime);
+                stats.setTime(totalTime);
 
                 break;
             }
