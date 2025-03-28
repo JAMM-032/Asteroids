@@ -7,7 +7,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.*;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.VBox;
@@ -25,8 +24,8 @@ public class Main extends Application{
 
     // THIS IS FOR DEBUG ONLY - CHANGE AS YOU UPDATE, ie: 0.10V -> 0.11V
     // Please update the GitHub readme once you change it
-    private static final String VERSION = "0.13V"; //
-    private Label statusLabel;
+
+  private static final String VERSION = "0.13V"; //
     private Stage stage;
 
     // Background Attributes
@@ -39,9 +38,6 @@ public class Main extends Application{
     private AtomicBoolean pause;
 
     private final Set<KeyCode> pressedKeys = new HashSet<>();
-
-    private Canvas canvas;  // The game canvas
-    private GraphicsContext gc;
 
     float deltaTime;
     private long prevTime = 0;
@@ -80,8 +76,6 @@ public class Main extends Application{
         menuBar.makeMenuBar(root);
 
         pause = new AtomicBoolean(false);
-
-        statusLabel = new Label(VERSION);
 
         Pane contentPane = new BorderPane(null, null, null, null, null);
         root.getChildren().add(contentPane);
@@ -124,13 +118,19 @@ public class Main extends Application{
 
         Font pauseFont = new Font(30);
 
+        prevTime = System.nanoTime();
+
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
 
                 long diff = now - prevTime;
-                prevTime += diff;
+                prevTime = now;
+                // converts from nanoseconds to seconds.
                 deltaTime = diff / 1_000_000_000.0f;
+
+                // get milliseconds
+                long timeDiff = diff / 1_000_000;
 
                 fps = (int) (1 / deltaTime);
 
@@ -166,7 +166,7 @@ public class Main extends Application{
                 }
                 else {
                     game.handleKeyPress(pressedKeys, deltaTime);
-                    game.update(deltaTime);
+                    game.update(deltaTime, timeDiff);
                 }
 
                 // Draw background stars
@@ -218,10 +218,10 @@ public class Main extends Application{
                 Color.rgb(180, 190, 175)
         };
 
-        for (int i = 0; i < stars.length; i++){
-            double x = stars[i][0];
-            double y = stars[i][1];
-            double size = stars[i][2];
+        for (double[] star : stars) {
+            double x = star[0];
+            double y = star[1];
+            double size = star[2];
 
             gc.setFill(starColour[rand.nextInt(starColour.length)]);
             gc.fillRect(x, y, size, size);

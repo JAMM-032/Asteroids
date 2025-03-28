@@ -9,14 +9,11 @@ import javafx.scene.paint.Color;
  */
 public class Bullet{
 
-    Vector2 vector;
     private Vector2 position;
     private Vector2 velocity; // Current velocity of the bullet
-    private static final long TTL = 2 * 1000; // Time to live in milliseconds-
+    private long TTL; // Time to live in milliseconds-
     private static final double radius = 4.0;
     private static final int baseVel = 200;
-
-    private long startTime;
 
     private boolean alive; // If the bullet still exists or not [ True = Alive,  False = Dead ]
 
@@ -32,15 +29,16 @@ public class Bullet{
         this.velocity = Vector2.fromPolar(velocity + baseVel, angle);
         // Increases speed so that it moves faster than the player
 
+        TTL = 3 * 1000;
+
         alive = true; // Initally the bullet is alive
-        startTime = System.currentTimeMillis();
     }
 
     /**
      * Increments the position of the object - decrements the TTL
      * This allows for the translation of the bullet - moving in positions
      */
-    public void update(int minX, int minY, int maxX, int maxY, float dt) {
+    public void update(int minX, int minY, int maxX, int maxY, float dt, long timeDiff) {
 
         Vector2 newVel = velocity.copy();
         newVel.scalarMul(dt);
@@ -60,9 +58,10 @@ public class Bullet{
         else if (y < minY)
             position.setY(maxY);
 
-        if (System.currentTimeMillis() - startTime >= TTL){
-            alive = false;
-        }
+        TTL -= timeDiff;
+
+        if (TTL <= 0)
+            setDead();
     }
 
     /**

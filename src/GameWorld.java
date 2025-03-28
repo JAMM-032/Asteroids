@@ -35,9 +35,11 @@ public class GameWorld {
 
     private static final int MAX_DURATION = 10 * 1000;
     private static final int MAX_ASTEROIDS = 20;
+    private static final int MAX_BULLETS = 6;
 
-    private double startTime = 0.0;
+    private long timeDur = 0;
     private double gameTime;
+    private long totalTime = 0;
 
     private static final String[] EDGES = {
         "LEFT", "RIGHT", "TOP", "BOTTOM"
@@ -57,7 +59,6 @@ public class GameWorld {
         WIDTH = width;
         HEIGHT = height;
         gameTime = System.currentTimeMillis();
-        startTime = gameTime;
     }
 
     /**
@@ -85,10 +86,12 @@ public class GameWorld {
      * Calls for the updating of the display
      * Changes the current scenery, updating to the (new) positions
      */
-    public void update(float dt) {
+    public void update(float dt, long timeDiff) {
+
+        totalTime += timeDiff;
 
         for (Bullet b : bullets) {
-            b.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING, dt);
+            b.update(-PADDING, -PADDING, (int) WIDTH+PADDING, (int) HEIGHT+PADDING, dt, timeDiff);
         }
 
         // Remove 'dead' bullets
@@ -102,7 +105,7 @@ public class GameWorld {
 
         collisionResolution();
 
-        score.update(); // resets multiplier after some time
+        score.update(timeDiff); // resets multiplier after some time
 
         /*
         Player collision is handled here
@@ -114,12 +117,12 @@ public class GameWorld {
 
                 // Record final game stats
                 stats.setScore(score.getScore());
-                stats.setTime(System.currentTimeMillis() - gameTime);
+                stats.setTime(totalTime);
 
                 break;
             }
         }
-        spawnObstacles();
+        spawnObstacles(timeDiff);
     }
 
     /**
@@ -200,7 +203,7 @@ public class GameWorld {
                 }
                 case SPACE -> {
 
-                    if (!shotsFired) {
+                    if (!shotsFired && bullets.size() < MAX_BULLETS) {
                         shotsFired = true;
                         bullets.add(player.fire());
                     }
@@ -212,13 +215,13 @@ public class GameWorld {
         }
     }
 
-    private void spawnObstacles() {
+    private void spawnObstacles(long timeDiff) {
 
-        double timeDur = System.currentTimeMillis() - startTime;
+        timeDur += timeDiff;
 
         if (timeDur < MAX_DURATION || asteroids.size() >= MAX_ASTEROIDS)
             return;
-        startTime = System.currentTimeMillis();
+        timeDur = 0;
 
         for (int i = 0; i < 2; i++) {
             double prob = rand.nextDouble();
