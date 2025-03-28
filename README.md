@@ -4,6 +4,7 @@ Mindmap link [here](https://coggle.it/diagram/Z9GBtkGNzdcZ32hz/t/delegation/e9d6
 
 Motion Idea for enemy spaceships: [here](https://natureofcode.com/autonomous-agents/). 
 
+-- Official First Version - debuted : 28/03/2025 !!!
 
 # Task Delegation
 
