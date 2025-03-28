@@ -229,7 +229,7 @@ public class GameWorld {
             if (prob <= SHIP_PROB) {
                 asteroids.add(new AlienShip(player.getShape(), AsteroidType.LARGE, pos));
             }
-            else if (prob <= ASTEROID_PROB) {
+            else if (prob-SHIP_PROB <= ASTEROID_PROB) {
                 Vector2 vel = Vector2.fromPolar(AsteroidType.LARGE.getSpeed(), rand.nextDouble(0.0, 2*Math.PI));
                 asteroids.add(new Obstacle(AsteroidType.LARGE, vel, pos));
             }
