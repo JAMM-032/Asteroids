@@ -130,7 +130,11 @@ public class Main extends Application{
 
                 long diff = now - prevTime;
                 prevTime += diff;
+                // converts from nano-seconds to seconds.
                 deltaTime = diff / 1_000_000_000.0f;
+
+                // get milliseconds
+                long timeDiff = diff / 1_000_000;
 
                 fps = (int) (1 / deltaTime);
 
@@ -166,7 +170,7 @@ public class Main extends Application{
                 }
                 else {
                     game.handleKeyPress(pressedKeys, deltaTime);
-                    game.update(deltaTime);
+                    game.update(deltaTime, timeDiff);
                 }
 
                 // Draw background stars

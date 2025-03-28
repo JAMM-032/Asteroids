@@ -88,13 +88,9 @@ public class Score {
      * Updates the multiplier's time-to-live (TTL).
      * If TTL expires, resets the multiplier.
      */
-    public void update() {
-        long currTime = System.currentTimeMillis();
-        long diff = currTime - prevTime;
-        prevTime = currTime;
-
+    public void update(long timeDiff) {
         if (multiplierTTL > 0) {
-            multiplierTTL -= diff;
+            multiplierTTL -= timeDiff;
             if (multiplierTTL <= 0) {
                 resetMultiplier();
             }
