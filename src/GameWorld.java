@@ -35,7 +35,7 @@ public class GameWorld {
 
     private static final int MAX_DURATION = 10 * 1000;
     private static final int MAX_ASTEROIDS = 20;
-    private static final int MAX_BULLETS = 5;
+    private static final int MAX_BULLETS = 6;
 
     private long timeDur = 0;
     private double gameTime;
@@ -203,7 +203,7 @@ public class GameWorld {
                 }
                 case SPACE -> {
 
-                    if (!shotsFired && bullets.size() <= MAX_BULLETS) {
+                    if (!shotsFired && bullets.size() < MAX_BULLETS) {
                         shotsFired = true;
                         bullets.add(player.fire());
                     }
