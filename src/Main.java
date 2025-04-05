@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -23,6 +24,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Main extends Application{
 
     private Stage stage;
+
+    private final AudioPlayer player = new AudioPlayer();
 
     // Background Attributes
     private int backgroundDetail;
@@ -50,6 +53,8 @@ public class Main extends Application{
         backgroundDetail = 50; // The number of stars in the background
 
         Scene menuScene = mainMenu.createScene();
+
+        player.playLoop(new File("audio/atomic_amnesia.wav").getAbsolutePath());
 
         stage.setTitle("Asteroidz");
         stage.setScene(menuScene);
